@@ -7,18 +7,11 @@ def home(request):
     """
     首页
     """
-    return render_mako_context(request, '/home_application/home.html')
+    return render_mako_context(request, '/home_application/index.html')
 
 
-def dev_guide(request):
+def organization_management(request):
     """
-    开发指引
+    组织管理
     """
-    return render_mako_context(request, '/home_application/dev_guide.html')
-
-
-def contact(request):
-    """
-    联系我们
-    """
-    return render_mako_context(request, '/home_application/contact.html')
+    return render_mako_context(request, '/system_management/organization_management.html')
