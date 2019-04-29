@@ -16,6 +16,7 @@ INSTALLED_APPS_CUSTOM = (
     # add your app here...
     'home_application',
     'system_management',
+    'personal_center',
 )
 
 # ===============================================================================

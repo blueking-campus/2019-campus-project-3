@@ -13,4 +13,5 @@ urlpatterns_custom = patterns(
     # (此处home_application可以改成你想要的名字)
     url(r'^', include('home_application.urls')),
     url(r'^system_management/', include('system_management.urls')),
+    url(r'^personal_center/', include('personal_center.urls')),
 )
