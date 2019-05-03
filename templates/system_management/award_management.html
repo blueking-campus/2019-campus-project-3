@@ -78,11 +78,11 @@
                         <span class="pull-right"><i class="fa fa-angle-down"></i></span>
                     </a>
                     <ul class="sub-menu">
-                        <li class="active">
+                        <li>
                             <a href="${SITE_URL}system_management/organization_management/">组织管理<i
                                     class="fa fa-chevron-right pull-right"></i></a>
                         </li>
-                        <li>
+                        <li class="active">
                             <a href="${SITE_URL}system_management/award_management/">奖项信息<i class="fa fa-chevron-right pull-right"></i></a>
                         </li>
                     </ul>
@@ -106,42 +106,48 @@
         <div class="container-fluid">
             <div class="panel panel-default pannel-overflow panel-tables">
                 <div class="panel-heading">
-                    <i class="fa fa-list-ul"></i>组织管理
+                    <i class="fa fa-list-ul"></i>奖项管理
                 </div>
                 <div class="panel-btns">
-                    <a class="king-btn king-radius king-primary" title="新增组织" id="plugin4">新增组织</a>
+                    <a class="king-btn king-radius king-primary" title="新增" id="plugin4">新增</a>
                     <!--<a class="king-btn king-radius king-default" title="数据导入">数据导入</a>-->
                     <!--<a class="king-btn king-radius king-default" title="数据导出">数据导出</a>-->
                 </div>
                 <div class="panel-body panel-search-body">
 
                     <div class="panel-content">
-                        % if org_list:
+                        % if award_list:
                         <table class="table table-out-bordered table-header-bg table-hover" id="table_demo2">
                             <thead>
                             <tr>
                                 <th style="width: 25px"><input type="checkbox" name="checkall" value=""></th>
                                 <th style="width:10%">所属组织</th>
-                                <th style="width:10%">负责人</th>
-                                <th style="width:25%">参评人员</th>
-                                <th style="width:10%">更新人</th>
-                                <th style="width:15%">申报时间</th>
+                                <th style="width:10%">奖项级别</th>
+                                <th style="width:10%">申报奖项</th>
+                                <th style="width:10%">状态</th>
+                                <th style="width:10%">开始时间</th>
+                                <th style="width:10%">申报时间</th>
+                                <th style="width:10%">申报人数</th>
+                                <th style="width:10%">获奖人数</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
                             <tbody>
-                            % for org in org_list:
+                            % for award in award_list:
                             <tr>
                                 <td><input type="checkbox" value=""></td>
-                                <td>${org.name}</td>
-                                <td>${org.reviewer}</td>
-                                <td>${org.staff}</td>
-                                <td>${org.update_person}</td>
-                                <td>${org.pub_time}</td>
+                                <td>${award.organization}</td>
+                                <td>${award.level}</td>
+                                <td>${award.name}</td>
+                                <td>${award.status}</td>
+                                <td>${award.begin_time}</td>
+                                <td>${award.pub_time}</td>
+                                <td>${award.apply_num}</td>
+                                <td>${award.awarded_num}</td>
                                 <td>
-                                    <button class="btn btn-xs btn-primary" id="${org.id}" >
+                                    <button class="btn btn-xs btn-primary" id="${award.id}" >
                                         <i class="glyphicon glyphicon-edit"></i></button>
-                                    <button class="btn btn-xs btn-danger" onclick="Delete(${ org.id })"><i class="glyphicon glyphicon-remove"></i>
+                                    <button class="btn btn-xs btn-danger" onclick="Delete(${ award.id })"><i class="glyphicon glyphicon-remove"></i>
                                     </button>
                                 </td>
                             </tr>
@@ -150,7 +156,7 @@
                             <tfoot>
                             <tr>
                                 <td></td>
-                                <td colspan="7">
+                                <td colspan="10">
                                     <div class="pull-left">
                                         <a class="king-btn king-radius king-danger" id="deleteAll" title="删除">删除</a>
                                     </div>
@@ -164,62 +170,9 @@
             </div>
         </div>
 
-        <div id="dialog1" class="panel-body p20" display=none>
-            <div class="row mt20">
-                <div class="col-lg-8">
-                    <from class="form-horizontal">
-                        <div class="form-group">
-                            <label for="inputCount3" class="control-label">所属组织：</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="inputCount1" placeholder="">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputCount3" class="control-label">负责人员：</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="inputCount2" placeholder="">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputCount3" class="control-label" >参评人员：</label>
-                            <div class="col-sm-10">
-                                <textarea class="form-control" id="inputCount3" placeholder=""></textarea>
-                                <p class="help-block">参评人员qq,用;分隔</p>
-                            </div>
-                        </div>
-                    </from>
-                </div>
-            </div>
-        </div>
-        <div id="dialog2" class="panel-body p20" display=none>
-            <div class="row mt20">
-                <div class="col-lg-8">
-                    <from class="form-horizontal">
-                        % if data:
-                        <div class="form-group">
-                            <label for="inputCount3" class="control-label">所属组织：</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="inputCount4" placeholder="${data.name}">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputCount3" class="control-label">负责人员：</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="inputCount5" placeholder="">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputCount3" class="control-label" >参评人员：</label>
-                            <div class="col-sm-10">
-                                <textarea class="form-control" id="inputCount6" placeholder=""></textarea>
-                                <p class="help-block">参评人员qq,用;分隔</p>
-                            </div>
-                        </div>
-                        % endif
-                    </from>
-                </div>
-            </div>
-        </div>
+
+    </div>
+
 </div>
 <!-- 如果要使用Bootstrap的js插件，必须先调入jQuery -->
 <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/jquery-1.10.2.min.js"></script>
@@ -256,55 +209,13 @@
                 }
             });
         });
-        //带按钮弹窗
-        $("#plugin4").click(function() {
-            var d = dialog({
-                width: 450,
-                title: '新增组织',
-                content: document.getElementById('dialog1'),
-                okValue: '保存',
-                ok: function() {
-                    console.log(arguments)
-                    // do something
-                    var name = $("#inputCount1").val();
-                    var reviewer = $("#inputCount2").val();
-                    var staff = $("#inputCount3").val();
-                    var result = {
-                        name: name,
-                        reviewer: reviewer,
-                        staff: staff
-                    };
-                    $.ajax({
-                        type: "POST",
-                        url: "/system_management/add_organization/",
-                        data: JSON.stringify(result),
-                        headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
-                        success: function (result) {
-                            alert("保存成功！")
-                            window.location.reload()
-                            }
-                        });
-                },
-                cancelValue: '取消',
-                cancel: function() {
-                    console.log(arguments)
-                    // do something
-
-                },
-                onshow: function() {
-                    console.log(arguments)
-                    // do something
-                },
-            });
-            d.show();
-        });
         function Delete(id) {
             data = {
                 'id': id
             }
             $.ajax({
                 type: "POST",
-                url: "/system_management/delete_organization/",
+                url: "/system_management/delete_award/",
                 data: JSON.stringify(data),
                 headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
                 success: function (result) {
