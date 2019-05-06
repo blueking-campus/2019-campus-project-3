@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>奖项申报</title>
+
+    <!-- Bootstrap css -->
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/css/bootstrap_noresponsive.css"
+          rel="stylesheet">
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/fontawesome/css/font-awesome.css" rel="stylesheet">
+
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/bk/css/bk.css" rel="stylesheet">
+    <link href="${STATIC_URL}css/main.css" rel="stylesheet">
+    <!-- 以下两个插件用于在IE8以及以下版本浏览器支持HTML5元素和媒体查询，如果不需要用可以移除 -->
+    <!--[if lt IE 9]>
+    <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/html5shiv.min.js"></script>
+    <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div class="wrap">
+    <!-- 头部 -->
+    <header>
+        <div class="navbar navbar-black">
+            <div class="navbar-container">
+                <div class="navbar-header pull-left">
+                    <a class="navbar-brand" href="#">
+                        <i class="fa fa-leaf"></i>
+                        奖项申报
+                    </a>
+                </div>
+
+                <div class="navbar-header pull-right">
+                    <ul class="nav">
+                        <li class="user-info">
+                            <a href="#">
+                                <img class="img-rounded" src="${STATIC_URL}images/qq.png">
+                                <span>admin</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- 头部 -->
+
+    <!-- 侧边栏 -->
+    <div class="king-vertical-nav4">
+        <div class="sidebar-inner">
+            <ul class="navi">
+                <li class="current active">
+                    <a href="/">
+                        <i class="fa fa-gear"></i>首页
+                    </a>
+                </li>
+                <li class="has_submenu">
+                    <a href="javascript:;">
+                        <i class="fa fa-wrench"></i>个人中心
+                        <span class="pull-right"><i class="fa fa-angle-down"></i></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li>
+                            <a href="${SITE_URL}personal_center/my_apply/">我的申报<i
+                                    class="fa fa-chevron-right pull-right"></i></a>
+                        </li>
+                        <li>
+                            <a href="form2.html">我的审核<i class="fa fa-chevron-right pull-right"></i></a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="has_submenu">
+                    <a href="javascript:;">
+                        <i class="fa fa-tasks"></i>系统管理
+                        <span class="pull-right"><i class="fa fa-angle-down"></i></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li>
+                            <a href="${SITE_URL}admin/system_management/organization/">组织管理<i
+                                    class="fa fa-chevron-right pull-right"></i></a>
+                        </li>
+                        <li>
+                            <a href="${SITE_URL}admin/system_management/award/">奖项信息<i
+                                    class="fa fa-chevron-right pull-right"></i></a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="last has_submenu">
+                    <a href="javascript:;">
+                        <i class="fa fa-ellipsis-h"></i>其他
+                        <span class="pull-right"><i class="fa fa-angle-down"></i></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li>
+                            <a href="blank.html">空白<i class="fa fa-chevron-right pull-right"></i></a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="king-main-container">
+        <h1 align="center">可申报奖项</h1>
+        <div class="container-fluid">
+            <div class="row">
+                 <a href=http://www.baidu.com>
+                <div class="col-sm-4">
+                    <!-- 样例 Start -->
+                    <div class="king-widget1">
+                        <div class="icon-wrap">
+                                <span class="fa-stack king-bg-info">
+                                <i class="fa fa-flag fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </div>
+                        <div class="text-wrap">
+                            <h3>自助服务奖</h3>
+                            <p>
+                                10人
+                            </p>
+                        </div>
+                        <div class="clear"></div>
+                        <div class="progress progress-xs">
+                            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="80"
+                                 aria-valuemin="0" aria-valuemax="100" style="width: 20%">
+
+                            </div>
+                        </div>
+                        <p>
+                            已申报2人
+                        </p>
+                    </div>
+                    <!-- 样例 End -->
+                </div>
+                 </a>
+                <a href=http://www.baidu.com>
+                <div class="col-sm-4">
+                    <!-- 样例 Start -->
+                    <div class="king-widget1">
+                        <div class="icon-wrap">
+                                <span class="fa-stack king-bg-danger">
+                                <i class="fa fa-bell fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </div>
+                        <div class="text-wrap">
+                            <h3>自助服务奖</h3>
+                            <p>
+                                10人
+                            </p>
+                        </div>
+                        <div class="clear">
+                        </div>
+                        <div class="progress progress-xs">
+                            <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="65"
+                                 aria-valuemin="0" aria-valuemax="100" style="width: 30%">
+                            </div>
+                        </div>
+                        <p>
+                            已申报3人
+                        </p>
+                    </div>
+                    <!-- 样例 End -->
+                </div>
+                </a>
+                <a href=http://www.baidu.com>
+                <div class="col-sm-4">
+                    <!-- 样例 Start -->
+                    <div class="king-widget1">
+                        <div class="icon-wrap">
+                                <span class="fa-stack king-bg-success">
+                                <i class="fa fa-cloud-download fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </div>
+                        <div class="text-wrap">
+                            <h3>自助服务奖</h3>
+                            <p>
+                                ${tmp}
+                            </p>
+                        </div>
+                        <div class="clear">
+                        </div>
+                        <div class="progress progress-xs">
+                            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="95"
+                                 aria-valuemin="0" aria-valuemax="100" style="width: 90%">
+                            </div>
+                        </div>
+                        <p>
+                            已申报9人
+                        </p>
+                    </div>
+                    <!-- 样例 End -->
+                </div>
+                </a>
+            </div>
+
+            <div class="row mt30">
+                <div class="col-lg-15">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"><center>上次获奖名单</center></h3>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                <tr align="center">
+                                    <th><center>所属单位</center></th>
+                                    <th><center>申报奖项</center></th>
+                                    <th><center>申请时间</center></th>
+                                    <th><center>申请人/团队</center></th>
+                                    <th><center>申报详情</center></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td align="center">蓝鲸产品中心</td>
+                                    <td align="center">自助服务奖</td>
+                                    <td align="center">2017-11-10</td>
+                                    <td align="center">极品飞车online容器项目联合团队</td>
+                                    <td align="center">
+                                        <a href=http://www.baidu.com>查看</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>蓝鲸产品中心</td>
+                                    <td>自助服务奖</td>
+                                    <td>2017-11-10</td>
+                                    <td>极品飞车online容器项目联合团队</td>
+                                    <td>
+                                        <a href=http://www.baidu.com>查看</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>蓝鲸产品中心</td>
+                                    <td>自助服务奖</td>
+                                    <td>2017-11-10</td>
+                                    <td>极品飞车online容器项目联合团队</td>
+                                    <td>
+                                        <a href=http://www.baidu.com>查看</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>蓝鲸产品中心</td>
+                                    <td>自助服务奖</td>
+                                    <td>2017-11-10</td>
+                                    <td>极品飞车online容器项目联合团队</td>
+                                    <td>
+                                        <a href=http://www.baidu.com>查看</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>蓝鲸产品中心</td>
+                                    <td>自助服务奖</td>
+                                    <td>2017-11-10</td>
+                                    <td>极品飞车online容器项目联合团队</td>
+                                    <td>
+                                        <a href=http://www.baidu.com>查看</a>
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- 如果要使用Bootstrap的js插件，必须先调入jQuery -->
+<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/jquery-1.10.2.min.js"></script>
+<!-- 包括所有bootstrap的js插件或者可以根据需要使用的js插件调用　-->
+<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+
+<script src="https://magicbox.bk.tencent.com/static_api/v3/bk/js/bk.js"></script>
+
+<script src="${STATIC_URL}js/index.js"></script>
+
+
+</body>
+
+</html>
