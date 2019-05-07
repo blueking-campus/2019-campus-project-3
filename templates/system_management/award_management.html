@@ -53,7 +53,7 @@
     <div class="king-vertical-nav4">
         <div class="sidebar-inner">
             <ul class="navi">
-                <li class="current active">
+                <li>
                     <a href="/">
                         <i class="fa fa-gear"></i>首页
                     </a>
@@ -65,10 +65,10 @@
                     </a>
                     <ul class="sub-menu">
                         <li>
-                            <a href="form1.html">我的申报<i class="fa fa-chevron-right pull-right"></i></a>
+                            <a href="${SITE_URL}personal_center/my_apply/">我的申报<i class="fa fa-chevron-right pull-right"></i></a>
                         </li>
                         <li>
-                            <a href="form2.html">我的审核<i class="fa fa-chevron-right pull-right"></i></a>
+                            <a href="${SITE_URL}personal_center/my_review/">我的审核<i class="fa fa-chevron-right pull-right"></i></a>
                         </li>
                     </ul>
                 </li>
@@ -169,7 +169,67 @@
                 </div>
             </div>
         </div>
-
+        <div id="dialog1" class="panel-body p20" display=none>
+            <div class="row mt20">
+                <div class="col-lg-8">
+                    <from class="form-horizontal">
+                        <div class="form-group">
+                            <label for="inputCount1" class="control-label">奖项名称：</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="inputCount1" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputCount2" class="control-label" >评奖条件：</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" id="inputCount2" placeholder=""></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputCount3" class="control-label">奖项级别：</label>
+                            <div class="col-sm-10">
+                                <div class="col-sm-10">
+                                <select class="form-control" id="inputCount3">
+                                    <option>小组级</option>
+                                    <option>部门级</option>
+                                    <option>中心级</option>
+                                    <option>公司级</option>
+                                </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputCount4" class="control-label">所属组织：</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="inputCount4" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputCount5" class="control-label">开始日期：</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="inputCount5" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputCount6" class="control-label">结束日期：</label>
+                            <input type="text" class="form-control" id="inputCount6" placeholder="">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputCount7" class="control-label">上传附件：</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="inputCount7" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputCount8" class="control-label">状态：</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="inputCount8" placeholder="">
+                            </div>
+                        </div>
+                    </from>
+                </div>
+            </div>
+        </div>
 
     </div>
 
@@ -210,7 +270,7 @@
             });
         });
         function Delete(id) {
-            data = {
+            var data = {
                 'id': id
             }
             $.ajax({
@@ -224,7 +284,50 @@
                 }
             })
         }
+        //带按钮弹窗
+        $("#plugin4").click(function() {
+            var d = dialog({
+                width: 480,
+                title: '新增奖项',
+                content: document.getElementById('dialog1'),
+                okValue: '保存',
+                ok: function() {
+                    console.log(arguments)
+                    // do something
+                    var name = $("#inputCount1").val();
+                    var reviewer = $("#inputCount2").val();
+                    var staff = $("#inputCount3").val();
+                    var result = {
+                        name: name,
+                        reviewer: reviewer,
+                        staff: staff
+                    };
+                    $.ajax({
+                        type: "POST",
+                        url: "/system_management/add_award/",
+                        data: JSON.stringify(result),
+                        headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
+                        success: function (result) {
+                            if(result){
+                                alert("保存成功！")
+                            }
+                            window.location.reload()
+                            }
+                        });
+                },
+                cancelValue: '取消',
+                cancel: function() {
+                    console.log(arguments)
+                    // do something
 
+                },
+                onshow: function() {
+                    console.log(arguments)
+                    // do something
+                },
+            });
+            d.show();
+        });
 </script>
 </body>
 

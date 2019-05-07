@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Organization
-from .models import Openid2qq
+from .models import UserInfo
 from .models import Award
 
 
@@ -15,5 +15,5 @@ class AwardAdmin(admin.ModelAdmin):
 
 # Register your models here.
 admin.site.register(Organization, OrganizationAdmin)
-admin.site.register(Openid2qq)
+admin.site.register(UserInfo)
 admin.site.register(Award, AwardAdmin)
