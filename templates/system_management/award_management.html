@@ -11,7 +11,8 @@
     <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/css/bootstrap_noresponsive.css"
           rel="stylesheet">
     <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/fontawesome/css/font-awesome.css" rel="stylesheet">
-    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/artDialog-6.0.4/css/ui-dialog.css" rel="stylesheet">
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/artDialog-6.0.4/css/ui-dialog.css"
+          rel="stylesheet">
     <link href="https://magicbox.bk.tencent.com/static_api/v3/bk/css/bk.css" rel="stylesheet">
     <link href="${STATIC_URL}css/main.css" rel="stylesheet">
     <!-- 以下两个插件用于在IE8以及以下版本浏览器支持HTML5元素和媒体查询，如果不需要用可以移除 -->
@@ -19,6 +20,8 @@
     <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/html5shiv.min.js"></script>
     <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/respond.min.js"></script>
     <![endif]-->
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/daterangepicker-2.0.5/daterangepicker.css"
+          rel="stylesheet">
 </head>
 
 <body>
@@ -65,10 +68,12 @@
                     </a>
                     <ul class="sub-menu">
                         <li>
-                            <a href="${SITE_URL}personal_center/my_apply/">我的申报<i class="fa fa-chevron-right pull-right"></i></a>
+                            <a href="${SITE_URL}personal_center/my_apply/">我的申报<i
+                                    class="fa fa-chevron-right pull-right"></i></a>
                         </li>
                         <li>
-                            <a href="${SITE_URL}personal_center/my_review/">我的审核<i class="fa fa-chevron-right pull-right"></i></a>
+                            <a href="${SITE_URL}personal_center/my_review/">我的审核<i
+                                    class="fa fa-chevron-right pull-right"></i></a>
                         </li>
                     </ul>
                 </li>
@@ -83,7 +88,8 @@
                                     class="fa fa-chevron-right pull-right"></i></a>
                         </li>
                         <li class="active">
-                            <a href="${SITE_URL}system_management/award_management/">奖项信息<i class="fa fa-chevron-right pull-right"></i></a>
+                            <a href="${SITE_URL}system_management/award_management/">奖项信息<i
+                                    class="fa fa-chevron-right pull-right"></i></a>
                         </li>
                     </ul>
                 </li>
@@ -145,9 +151,10 @@
                                 <td>${award.apply_num}</td>
                                 <td>${award.awarded_num}</td>
                                 <td>
-                                    <button class="btn btn-xs btn-primary" id="${award.id}" >
+                                    <button class="btn btn-xs btn-primary" id="${award.id}">
                                         <i class="glyphicon glyphicon-edit"></i></button>
-                                    <button class="btn btn-xs btn-danger" onclick="Delete(${ award.id })"><i class="glyphicon glyphicon-remove"></i>
+                                    <button class="btn btn-xs btn-danger" onclick="Delete(${ award.id })"><i
+                                            class="glyphicon glyphicon-remove"></i>
                                     </button>
                                 </td>
                             </tr>
@@ -171,59 +178,65 @@
         </div>
         <div id="dialog1" class="panel-body p20" display=none>
             <div class="row mt20">
-                <div class="col-lg-8">
+                <div class="col-lg-12">
                     <from class="form-horizontal">
                         <div class="form-group">
                             <label for="inputCount1" class="control-label">奖项名称：</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="inputCount1" placeholder="">
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" id="inputCount1" placeholder="" value="蓝鲸king">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="inputCount2" class="control-label" >评奖条件：</label>
-                            <div class="col-sm-10">
-                                <textarea class="form-control" id="inputCount2" placeholder=""></textarea>
+                        <div class="form-group has-feedback">
+                            <label for="inputCount2" class="control-label">评奖条件：</label>
+                            <div class="col-sm-12">
+                                <textarea class="form-control" rows="3" id="inputCount2" placeholder=""></textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="inputCount3" class="control-label">奖项级别：</label>
-                            <div class="col-sm-10">
-                                <div class="col-sm-10">
+                            <div class="col-sm-12">
                                 <select class="form-control" id="inputCount3">
                                     <option>小组级</option>
                                     <option>部门级</option>
                                     <option>中心级</option>
                                     <option>公司级</option>
                                 </select>
-                                </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="inputCount4" class="control-label">所属组织：</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="inputCount4" placeholder="">
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" id="inputCount4" placeholder="" value="蓝鲸产品中心">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="inputCount5" class="control-label">开始日期：</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="inputCount5" placeholder="">
+                            <label for="daterangepicker_demo1" class="control-label">开始日期：</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control daterangepicker_demo" id="daterangepicker_demo1"
+                                       placeholder="选择日期...">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="inputCount6" class="control-label">结束日期：</label>
-                            <input type="text" class="form-control" id="inputCount6" placeholder="">
+                            <label for="daterangepicker_demo2" class="control-label">结束日期：</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control daterangepicker_demo" id="daterangepicker_demo2"
+                                       placeholder="选择日期...">
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="inputCount7" class="control-label">上传附件：</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="inputCount7" placeholder="">
+                            <div class="col-sm-12">
+                                <input type="file" id="inputCount7">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="inputCount8" class="control-label">状态：</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="inputCount8" placeholder="">
+                            <div class="radio push-right">
+                                <label class="radio-inline">
+                                    <input type="radio" name="status" value=True>生效
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="status" value=False>未生效
+                                </label>
                             </div>
                         </div>
                     </from>
@@ -241,93 +254,133 @@
 <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/artDialog-6.0.4/dist/dialog-min.js"></script>
 <script src="https://magicbox.bk.tencent.com/static_api/v3/bk/js/bk.js"></script>
+<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/daterangepicker-2.0.5/moment.min.js"></script>
+<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/daterangepicker-2.0.5/daterangepicker.js"></script>
 <script src="${STATIC_URL}js/index.js"></script>
 <script type="text/javascript">
-        $(document).ready(function() {
-            $('#table_demo2').find('input[name="checkall"]').click(function() {
-                var checked = $(this).prop('checked');
-                $('#table_demo2>tbody input').prop('checked', checked);
-            });
-            $('#table_demo2').find(':checkbox').on('click', function() {
-                if (!this.checked) {
-                    $('#table_demo2').find('input[name="checkall"]').prop('checked', false);
-                }
-            });
-            $('#table_demo2').find('.glyphicon-remove').parent('button').click(function() {
-                if (confirm('确定要删除？')) {
-                    $(this).closest('tr').remove();
-                }
-            });
-            $('#deleteAll').click(function(event) {
-                var records = $('#table_demo2>tbody input:checked').closest('tr');
-                if (!records.length) {
-                    alert('请选择要删除的记录！');
-                    return false;
-                }
-                if (confirm('确定要删除？')) {
-                    records.remove();
-                }
-            });
-        });
-        function Delete(id) {
-            var data = {
-                'id': id
-            }
-            $.ajax({
-                type: "POST",
-                url: "/system_management/delete_award/",
-                data: JSON.stringify(data),
-                headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
-                success: function (result) {
-                    alert("删除成功！")
-                    window.location.reload()
-                }
-            })
-        }
-        //带按钮弹窗
-        $("#plugin4").click(function() {
-            var d = dialog({
-                width: 480,
-                title: '新增奖项',
-                content: document.getElementById('dialog1'),
-                okValue: '保存',
-                ok: function() {
-                    console.log(arguments)
-                    // do something
-                    var name = $("#inputCount1").val();
-                    var reviewer = $("#inputCount2").val();
-                    var staff = $("#inputCount3").val();
-                    var result = {
-                        name: name,
-                        reviewer: reviewer,
-                        staff: staff
-                    };
-                    $.ajax({
-                        type: "POST",
-                        url: "/system_management/add_award/",
-                        data: JSON.stringify(result),
-                        headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
-                        success: function (result) {
-                            if(result){
-                                alert("保存成功！")
-                            }
-                            window.location.reload()
-                            }
-                        });
-                },
-                cancelValue: '取消',
-                cancel: function() {
-                    console.log(arguments)
-                    // do something
+    // 选择单个日期
+    $('#daterangepicker_demo1').daterangepicker({
+        locale: {
+            format: 'YYYY-MM-DD HH:mm:ss'
+        },
+        autoApply: true,//选择日期后自动设置值
+        singleDatePicker: true,//单选选择一个日期
+        timePicker: true,//支持时间选择
+        timePicker24Hour: true,//开启24小时时间制
+        timePickerIncrement: 5, //分钟间隔
+        timePickerSeconds: true //开启分钟选择
 
-                },
-                onshow: function() {
-                    console.log(arguments)
-                    // do something
-                },
-            });
-            d.show();
+    });
+    // 选择单个日期
+    $('#daterangepicker_demo2').daterangepicker({
+        locale: {
+            format: 'YYYY-MM-DD HH:mm:ss'
+        },
+        autoApply: true,//选择日期后自动设置值
+        singleDatePicker: true,//单选选择一个日期
+        timePicker: true,//支持时间选择
+        timePicker24Hour: true,//开启24小时时间制
+        timePickerIncrement: 5, //分钟间隔
+        timePickerSeconds: true //开启分钟选择
+
+    });
+    $(document).ready(function () {
+        $('#table_demo2').find('input[name="checkall"]').click(function () {
+            var checked = $(this).prop('checked');
+            $('#table_demo2>tbody input').prop('checked', checked);
         });
+        $('#table_demo2').find(':checkbox').on('click', function () {
+            if (!this.checked) {
+                $('#table_demo2').find('input[name="checkall"]').prop('checked', false);
+            }
+        });
+        $('#table_demo2').find('.glyphicon-remove').parent('button').click(function () {
+            if (confirm('确定要删除？')) {
+                $(this).closest('tr').remove();
+            }
+        });
+        $('#deleteAll').click(function (event) {
+            var records = $('#table_demo2>tbody input:checked').closest('tr');
+            if (!records.length) {
+                alert('请选择要删除的记录！');
+                return false;
+            }
+            if (confirm('确定要删除？')) {
+                records.remove();
+            }
+        });
+    });
+
+    function Delete(id) {
+        var data = {
+            'id': id
+        }
+        $.ajax({
+            type: "POST",
+            url: "/system_management/delete_award/",
+            data: JSON.stringify(data),
+            headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
+            success: function (result) {
+                alert("删除成功！")
+                window.location.reload()
+            }
+        })
+    }
+
+    //带按钮弹窗
+    $("#plugin4").click(function () {
+        var d = dialog({
+            width: 480,
+            title: '新增奖项',
+            content: document.getElementById('dialog1'),
+            okValue: '保存',
+            ok: function () {
+                console.log(arguments)
+                // do something
+                var name = $("#inputCount1").val();
+                var requirement = $("#inputCount2").val();
+                var level = $("#inputCount3").val();
+                var organization = $("#inputCount4").val();
+                var begin_time = $("#daterangepicker_demo1").val();
+                var end_time = $("#daterangepicker_demo2").val();
+                var appendix_status = false;
+                var status = true;
+                var result = {
+                    name: name,
+                    requirement: requirement,
+                    level: level,
+                    organization: organization,
+                    begin_time: begin_time,
+                    end_time: end_time,
+                    appendix_status: appendix_status,
+                    status: status
+                };
+                $.ajax({
+                    type: "POST",
+                    url: "/system_management/add_award/",
+                    data: JSON.stringify(result),
+                    headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
+                    success: function (result) {
+                        if (result) {
+                            alert("保存成功！")
+                        }
+                        window.location.reload()
+                    }
+                });
+            },
+            cancelValue: '取消',
+            cancel: function () {
+                console.log(arguments)
+                // do something
+
+            },
+            onshow: function () {
+                console.log(arguments)
+                // do something
+            },
+        });
+        d.show();
+    });
 </script>
 </body>
 

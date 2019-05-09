@@ -69,7 +69,8 @@
                                     class="fa fa-chevron-right pull-right"></i></a>
                         </li>
                         <li>
-                            <a href="${SITE_URL}personal_center/my_review/">我的审核<i class="fa fa-chevron-right pull-right"></i></a>
+                            <a href="${SITE_URL}personal_center/my_review/">我的审核<i
+                                    class="fa fa-chevron-right pull-right"></i></a>
                         </li>
                     </ul>
                 </li>
@@ -278,14 +279,17 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                % if apply_list:
+                                % for apply in apply_list:
                                 <tr>
-                                    <td>3326</td>
-                                    <td>10/21/2013</td>
-                                    <td>3:29 PM</td>
-                                    <td>$321.33</td>
-                                    <td>$321.33</td>
+                                    <td>${apply}</td>
+                                    <td>${apply.award}</td>
+                                    <td>${apply.applicant}</td>
+                                    <td>${apply.get_status_display()}</td>
+                                    <td>${apply.pub_time}</td>
                                 </tr>
-
+                                % endfor
+                                % endif
                                 </tbody>
                             </table>
                         </div>

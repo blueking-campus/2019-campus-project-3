@@ -11,7 +11,8 @@
     <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/css/bootstrap_noresponsive.css"
           rel="stylesheet">
     <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/fontawesome/css/font-awesome.css" rel="stylesheet">
-    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/artDialog-6.0.4/css/ui-dialog.css" rel="stylesheet">
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/artDialog-6.0.4/css/ui-dialog.css"
+          rel="stylesheet">
     <link href="https://magicbox.bk.tencent.com/static_api/v3/bk/css/bk.css" rel="stylesheet">
     <link href="${STATIC_URL}css/main.css" rel="stylesheet">
 
@@ -61,10 +62,12 @@
                     </a>
                     <ul class="sub-menu">
                         <li>
-                            <a href="${SITE_URL}personal_center/my_apply/">我的申报<i class="fa fa-chevron-right pull-right"></i></a>
+                            <a href="${SITE_URL}personal_center/my_apply/">我的申报<i
+                                    class="fa fa-chevron-right pull-right"></i></a>
                         </li>
                         <li>
-                            <a href="${SITE_URL}personal_center/my_review/">我的审核<i class="fa fa-chevron-right pull-right"></i></a>
+                            <a href="${SITE_URL}personal_center/my_review/">我的审核<i
+                                    class="fa fa-chevron-right pull-right"></i></a>
                         </li>
                     </ul>
                 </li>
@@ -79,7 +82,8 @@
                                     class="fa fa-chevron-right pull-right"></i></a>
                         </li>
                         <li>
-                            <a href="${SITE_URL}system_management/award_management/">奖项信息<i class="fa fa-chevron-right pull-right"></i></a>
+                            <a href="${SITE_URL}system_management/award_management/">奖项信息<i
+                                    class="fa fa-chevron-right pull-right"></i></a>
                         </li>
                     </ul>
                 </li>
@@ -130,14 +134,15 @@
                             <tr>
                                 <td><input type="checkbox" value=""></td>
                                 <td>${org.name}</td>
-                                <td>${org.reviewer}</td>
-                                <td>${org.staff}</td>
-                                <td>${org.update_person}</td>
+                                <td>${org.reviewers}</td>
+                                <td>${org.members}</td>
+                                <td>${org.update_person.get_full_name()}</td>
                                 <td>${org.pub_time}</td>
                                 <td>
-                                    <button class="btn btn-xs btn-primary" id="${org.id}" >
+                                    <button class="btn btn-xs btn-primary" id="${org.id}">
                                         <i class="glyphicon glyphicon-edit"></i></button>
-                                    <button class="btn btn-xs btn-danger" onclick="Delete(${ org.id })"><i class="glyphicon glyphicon-remove"></i>
+                                    <button class="btn btn-xs btn-danger" onclick="Delete(${ org.id })"><i
+                                            class="glyphicon glyphicon-remove"></i>
                                     </button>
                                 </td>
                             </tr>
@@ -177,7 +182,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="inputCount3" class="control-label" >参评人员：</label>
+                            <label for="inputCount3" class="control-label">参评人员：</label>
                             <div class="col-sm-10">
                                 <textarea class="form-control" id="inputCount3" placeholder=""></textarea>
                                 <p class="help-block">参评人员qq,用;分隔</p>
@@ -205,7 +210,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="inputCount3" class="control-label" >参评人员：</label>
+                            <label for="inputCount3" class="control-label">参评人员：</label>
                             <div class="col-sm-10">
                                 <textarea class="form-control" id="inputCount6" placeholder=""></textarea>
                                 <p class="help-block">参评人员qq,用;分隔</p>
@@ -221,14 +226,14 @@
 <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/jquery-1.10.2.min.js"></script>
 <!-- 包括所有bootstrap的js插件或者可以根据需要使用的js插件调用　-->
 <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/js/bootstrap.min.js"></script>
-<script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
-<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/artDialog-6.0.4/dist/dialog-min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/artDialog-6.0.4/dist/dialog-min.js"></script>
 <script src="https://magicbox.bk.tencent.com/static_api/v3/bk/js/bk.js"></script>
-<!-- 以下两个插件用于在IE8以及以下版本浏览器支持HTML5元素和媒体查询，如果不需要用可以移除 -->
-<!--[if lt IE 9]>
-<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/html5shiv.min.js"></script>
-<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/respond.min.js"></script>
-<![endif]-->
+    <!-- 以下两个插件用于在IE8以及以下版本浏览器支持HTML5元素和媒体查询，如果不需要用可以移除 -->
+    <!--[if lt IE 9]>
+    <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/html5shiv.min.js"></script>
+    <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/respond.min.js"></script>
+    <![endif]-->
 <script src="${STATIC_URL}js/index.js"></script>
 <script type="text/javascript">
         $(document).ready(function() {
@@ -258,13 +263,13 @@
             });
         });
         //带按钮弹窗
-        $("#plugin4").click(function() {
+        $("#plugin4").click(function () {
             var d = dialog({
                 width: 450,
                 title: '新增组织',
                 content: document.getElementById('dialog1'),
                 okValue: '保存',
-                ok: function() {
+                ok: function () {
                     console.log(arguments)
                     // do something
                     var name = $("#inputCount1").val();
@@ -284,22 +289,23 @@
                             alert("保存成功！")
                             console.log(result)
                             window.location.reload()
-                            }
-                        });
+                        }
+                    });
                 },
                 cancelValue: '取消',
-                cancel: function() {
+                cancel: function () {
                     console.log(arguments)
                     // do something
 
                 },
-                onshow: function() {
+                onshow: function () {
                     console.log(arguments)
                     // do something
                 },
             });
             d.show();
         });
+
         function Delete(id) {
             var data = {
                 'id': id

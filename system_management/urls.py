@@ -9,6 +9,8 @@ urlpatterns = patterns(
     (r'^update_organization/', 'update_organization'),
     (r'^delete_organization/', 'delete_organization'),
     (r'^get_organization/', 'get_organization'),
+
     (r'^award_management/', 'award_management'),
     (r'^add_award/', 'add_award'),
+    (r'^delete_award/', 'delete_award'),
 )

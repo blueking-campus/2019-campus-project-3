@@ -2,25 +2,56 @@
 
 from django.db import models
 
+from account.models import BkUser
+
 
 # Create your models here.
 # ===============================================================================
 # 组织相关的表
 # ===============================================================================
+class OrganizationManager(models.Manager):
+    """组织表Manager"""
+    def create_organization(self, data, user):
+        obj = self.create(name=data['name'], update_person=user)
+        OrganizationUser.create_reviewers(list(set(data['reviewers'])), obj)
+        OrganizationUser.create_members(list(set(data['members'])), obj)
+        return obj
+
+    def update_organization(self, obj, data, user):
+        obj.name = data['name']
+        obj.update_person = user
+        obj.save(update_fields=['name', 'update_person'])
+        OrganizationUser.del_members(obj)
+        OrganizationUser.del_reviewers(obj)
+        OrganizationUser.create_reviewers(list(set(data['reviewers'])), obj)
+        OrganizationUser.create_members(list(set(data['members'])), obj)
+
+
 class Organization(models.Model):
     """组织表"""
     name = models.CharField(u"组织名称", max_length=255, unique=True)
-    # level = models.CharField(max_length=2, verbose_name="部门级别", choices=LEVEL)
-    reviewer = models.CharField(u"负责人员", max_length=255)
-    staff = models.TextField(u"参评人员")
-    update_person = models.CharField(u"更新人", max_length=30)
-    pub_time = models.DateTimeField(u"申报时间", auto_now_add=True, null=True)
+
+    update_person = models.ForeignKey(BkUser, verbose_name=u"更新人")
+    pub_time = models.DateTimeField(u"申报时间", auto_now_add=True)
+
+    objects = OrganizationManager()
 
     def __unicode__(self):  # 在Python3中用 __str__ 代替 __unicode__
         return self.name
 
+    def to_json(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'reviewers': OrganizationUser.get_reviewers(self),
+            'members': OrganizationUser.get_members(self),
+            'update_person': self.update_person.get_full_name(),
+            'pub_time': self.pub_time,
+        }
+
 
 class OrganizationUser(models.Model):
+    """组织人员表"""
     organization = models.ForeignKey(Organization)
     user = models.CharField(max_length=20, verbose_name='人员qq号')
     TYPE_CHOICES = (
@@ -29,25 +60,49 @@ class OrganizationUser(models.Model):
     )
     type = models.CharField(max_length=1, choices=TYPE_CHOICES)
 
+    @classmethod
+    def create_reviewers(cls, reviewers, organ):
+        for item in reviewers:
+            obj = cls(user=item, organization=organ, type=u'0')
+            obj.save()
 
-class UserInfo(models.Model):
-    """open_id和qq的映射表"""
-    open_id = models.CharField(u"open_id", max_length=255, unique=True)
-    qq = models.CharField(u"qq", max_length=20, default="", unique=True)
+    @classmethod
+    def create_members(cls, members, organ):
+        for item in members:
+            obj = cls(user=item, organization=organ, type=u'1')
+            obj.save()
 
-    class Meta:
-        verbose_name = u'用户QQ信息'
-        verbose_name_plural = verbose_name
+    @classmethod
+    def del_reviewers(cls, organ):
+        cls.objects.filter(organization=organ, type=u'0').delete()
 
-    def __unicode__(self):
-        return 'id: %d' % self.id
+    @classmethod
+    def del_members(cls, organ):
+        cls.objects.filter(organization=organ, type=u'1').delete()
+
+    @classmethod
+    def get_reviewers(cls, organ):
+        reviewers = cls.objects.filter(organization=organ, type=u'0').all()
+        ret = []
+        for item in reviewers:
+            ret.append(item.user)
+        return ret
+
+    @classmethod
+    def get_members(cls, organ):
+        members = cls.objects.filter(
+            organization=organ, type=u'1').all()
+        ret = []
+        for item in members:
+            ret.append(item.user)
+        return ret
 
 
 # ===============================================================================
 # 奖项相关的表
 # ===============================================================================
 class LevelChoice(models.Model):
-    level = models.CharField( u'奖项级别', max_length=20)
+    level = models.CharField(u'奖项级别', max_length=20)
 
     class Meta:
         verbose_name = u'奖项级别选项'
@@ -67,11 +122,9 @@ class Award(models.Model):
     status = models.BooleanField(u"状态")
     appendix_status = models.BooleanField(u"附件状态", default=False)
     # TODO: appendix
-    apply_num = models.IntegerField(u"申报人数", )
-    awarded_num = models.IntegerField(u"获奖人数")
-    pub_time = models.DateTimeField(u"申报时间", auto_now_add=True, null=True)
+    apply_num = models.IntegerField(u"申报人数", default=0)
+    awarded_num = models.IntegerField(u"获奖人数", default=0)
+    pub_time = models.DateTimeField(u"申报时间", auto_now_add=True)
 
     def __unicode__(self):  # 在Python3中用 __str__ 代替 __unicode__
         return self.name
-
-
