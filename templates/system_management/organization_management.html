@@ -133,15 +133,15 @@
                             % for org in org_list:
                             <tr>
                                 <td><input type="checkbox" value=""></td>
-                                <td>${org.name}</td>
-                                <td>${org.reviewers}</td>
-                                <td>${org.members}</td>
-                                <td>${org.update_person.get_full_name()}</td>
-                                <td>${org.pub_time}</td>
+                                <td>${org['name']}</td>
+                                <td>${org['reviewers']}</td>
+                                <td>${org['members']}</td>
+                                <td>${org['update_person']}</td>
+                                <td>${org['pub_time']}</td>
                                 <td>
-                                    <button class="btn btn-xs btn-primary" id="${org.id}">
+                                    <button class="btn btn-xs btn-primary" onclick="Update(${ org['id'] })">
                                         <i class="glyphicon glyphicon-edit"></i></button>
-                                    <button class="btn btn-xs btn-danger" onclick="Delete(${ org.id })"><i
+                                    <button class="btn btn-xs btn-danger" onclick="Delete(${ org['id'] })"><i
                                             class="glyphicon glyphicon-remove"></i>
                                     </button>
                                 </td>
@@ -179,6 +179,7 @@
                             <label for="inputCount3" class="control-label">负责人员：</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="inputCount2" placeholder="">
+                                <p class="help-block">负责人员qq,用;分隔</p>
                             </div>
                         </div>
                         <div class="form-group">
@@ -207,6 +208,7 @@
                             <label for="inputCount3" class="control-label">负责人员：</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="inputCount5" placeholder="">
+                                <p class="help-block">负责人员qq,用;分隔</p>
                             </div>
                         </div>
                         <div class="form-group">
@@ -273,12 +275,12 @@
                     console.log(arguments)
                     // do something
                     var name = $("#inputCount1").val();
-                    var reviewer = $("#inputCount2").val();
-                    var staff = $("#inputCount3").val();
+                    var reviewers = $("#inputCount2").val();
+                    var members = $("#inputCount3").val();
                     var result = {
                         name: name,
-                        reviewer: reviewer,
-                        staff: staff
+                        reviewers: reviewers,
+                        members: members
                     };
                     $.ajax({
                         type: "POST",
@@ -319,6 +321,64 @@
                     alert("删除成功！")
                     window.location.reload()
                 }
+            })
+        }
+        function Update(id) {
+            var data = {
+                'id': id
+            };
+            $.ajax({
+                type: "POST",
+                url: "/system_management/get_organization/",
+                data: JSON.stringify(data),
+                headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
+                success: function (res) {
+                    console.log(res.data);
+                    document.getElementById("inputCount1").value=res.data.name;
+                    document.getElementById("inputCount2").value=res.data.reviewers;
+                    document.getElementById("inputCount3").value=res.data.members;
+                    var d = dialog({
+                        width: 450,
+                        title: '查看/编辑',
+                        content: document.getElementById('dialog1') ,
+                        okValue: '保存',
+                        ok: function () {
+                            console.log(arguments)
+                            // do something
+                            var name = $("#inputCount1").val();
+                            var reviewers = $("#inputCount2").val();
+                            var members = $("#inputCount3").val();
+                            var result = {
+                                name: name,
+                                reviewers: reviewers,
+                                members: members
+                            };
+                            $.ajax({
+                                type: "POST",
+                                url: "/system_management/update_organization/",
+                                data: JSON.stringify(result),
+                                headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
+                                success: function (result) {
+                                    alert("保存成功！")
+                                    console.log(result)
+                                    window.location.reload()
+                                }
+                            });
+                        },
+                        cancelValue: '取消',
+                        cancel: function () {
+                            console.log(arguments)
+                            // do something
+
+                        },
+                        onshow: function () {
+                            console.log(arguments)
+                            // do something
+                        },
+                    });
+                    d.show();
+                }
+
             })
         }
 

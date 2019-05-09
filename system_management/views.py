@@ -42,7 +42,8 @@ def organization_management(request):
     组织管理
     """
     organizations = Organization.objects.all()
-    org_list = {'org_list': organizations}
+
+    org_list = {'org_list': Organization.to_array(organizations)}
     return render_mako_context(request, '/system_management/organization_management.html', org_list)
 
 
@@ -54,14 +55,15 @@ def add_organization(request):
     return render_json({'result': True, 'data': "add success"})
 
 
-@require_GET
+@require_POST
 def get_organization(request):
-    organization_id = request.GET.get('id')
+    result = json.loads(request.body)
+    organization_id = int(result['id'])
     try:
         organization = Organization.objects.get(id=organization_id)
     except ObjectDoesNotExist:
         raise Http404("organization does not exist")
-    return render_json(organization.to_json())
+    return render_json({'result': True, 'data': organization.to_json()})
 
 
 @require_POST

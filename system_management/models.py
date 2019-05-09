@@ -13,8 +13,8 @@ class OrganizationManager(models.Manager):
     """组织表Manager"""
     def create_organization(self, data, user):
         obj = self.create(name=data['name'], update_person=user)
-        OrganizationUser.create_reviewers(list(set(data['reviewers'])), obj)
-        OrganizationUser.create_members(list(set(data['members'])), obj)
+        OrganizationUser.create_reviewers(list(set(data['reviewers'].split(';'))), obj)
+        OrganizationUser.create_members(list(set(data['members'].split(';'))), obj)
         return obj
 
     def update_organization(self, obj, data, user):
@@ -23,8 +23,8 @@ class OrganizationManager(models.Manager):
         obj.save(update_fields=['name', 'update_person'])
         OrganizationUser.del_members(obj)
         OrganizationUser.del_reviewers(obj)
-        OrganizationUser.create_reviewers(list(set(data['reviewers'])), obj)
-        OrganizationUser.create_members(list(set(data['members'])), obj)
+        OrganizationUser.create_reviewers(list(set(data['reviewers'].split(';'))), obj)
+        OrganizationUser.create_members(list(set(data['members'].split(';'), obj)))
 
 
 class Organization(models.Model):
@@ -43,11 +43,25 @@ class Organization(models.Model):
         return {
             'id': self.id,
             'name': self.name,
-            'reviewers': OrganizationUser.get_reviewers(self),
-            'members': OrganizationUser.get_members(self),
-            'update_person': self.update_person.get_full_name(),
-            'pub_time': self.pub_time,
+            'reviewers': ';'.join(OrganizationUser.get_reviewers(self)),
+            'members': ';'.join(OrganizationUser.get_members(self)),
+            'update_person': 'admin' if not self.update_person.get_full_name() else self.update_person.get_full_name(),
+            'pub_time': self.pub_time.strftime("%Y-%m-%d %H:%M:%S"),
         }
+
+    @staticmethod
+    def to_array(organizations):
+        data = []
+        for item in organizations:
+            data.append({
+                'id': item.id,
+                'name': item.name,
+                'reviewers': ';'.join(OrganizationUser.get_reviewers(item)),
+                'members': ';'.join(OrganizationUser.get_members(item)),
+                'update_person': 'admin' if not item.update_person.get_full_name() else item.update_person.get_full_name(),
+                'pub_time': item.pub_time.strftime("%Y-%m-%d %H:%M:%S"),
+            })
+        return data
 
 
 class OrganizationUser(models.Model):
