@@ -11,20 +11,22 @@ from account.models import BkUser
 # ===============================================================================
 class OrganizationManager(models.Manager):
     """组织表Manager"""
+
     def create_organization(self, data, user):
         obj = self.create(name=data['name'], update_person=user)
         OrganizationUser.create_reviewers(list(set(data['reviewers'].split(';'))), obj)
         OrganizationUser.create_members(list(set(data['members'].split(';'))), obj)
         return obj
 
-    def update_organization(self, obj, data, user):
+    @staticmethod
+    def update_organization(obj, data, user):
         obj.name = data['name']
         obj.update_person = user
-        obj.save(update_fields=['name', 'update_person'])
+        obj.save()
         OrganizationUser.del_members(obj)
         OrganizationUser.del_reviewers(obj)
         OrganizationUser.create_reviewers(list(set(data['reviewers'].split(';'))), obj)
-        OrganizationUser.create_members(list(set(data['members'].split(';'), obj)))
+        OrganizationUser.create_members(list(set(data['members'].split(';'))), obj)
 
 
 class Organization(models.Model):
@@ -74,6 +76,9 @@ class OrganizationUser(models.Model):
     )
     type = models.CharField(max_length=1, choices=TYPE_CHOICES)
 
+    def __unicode__(self):  # 在Python3中用 __str__ 代替 __unicode__
+        return self.user
+
     @classmethod
     def create_reviewers(cls, reviewers, organ):
         for item in reviewers:
@@ -115,30 +120,56 @@ class OrganizationUser(models.Model):
 # ===============================================================================
 # 奖项相关的表
 # ===============================================================================
-class LevelChoice(models.Model):
-    level = models.CharField(u'奖项级别', max_length=20)
-
-    class Meta:
-        verbose_name = u'奖项级别选项'
-        verbose_name_plural = verbose_name
-
-    def __unicode__(self):
-        return self.level
-
-
 class Award(models.Model):
     name = models.CharField(u"申报奖项", max_length=255)
     requirement = models.TextField(u"评奖条件")
-    level = models.CharField(u"奖项等级", max_length=20)
-    organization = models.CharField(u"所属组织", max_length=255)
+    LEVEL_CHOICES = (
+        (u'0', u'小组级'),
+        (u'1', u'部门级'),
+        (u'2', u'中心级'),
+        (u'3', u'公司级'),
+    )
+    level = models.CharField(u"奖项等级", max_length=1, choices=LEVEL_CHOICES)
+    organization = models.ForeignKey(Organization, verbose_name=u"所属组织")
     begin_time = models.DateTimeField(u"开始日期", auto_now=True)
     end_time = models.DateTimeField(u"结束日期")
-    status = models.BooleanField(u"状态")
+    STATUS_CHOICES = (
+        (True, u'生效中'),
+        (False, u'已过期'),
+    )
+    status = models.BooleanField(u"状态", choices=STATUS_CHOICES)
     appendix_status = models.BooleanField(u"附件状态", default=False)
     # TODO: appendix
-    apply_num = models.IntegerField(u"申报人数", default=0)
-    awarded_num = models.IntegerField(u"获奖人数", default=0)
     pub_time = models.DateTimeField(u"申报时间", auto_now_add=True)
 
     def __unicode__(self):  # 在Python3中用 __str__ 代替 __unicode__
         return self.name
+
+    @property
+    def apply_count(self):
+        from personal_center.models import Apply
+        return Apply.objects.filter(award=self).count()
+
+    @property
+    def apply_all(self):
+        from personal_center.models import Apply
+        return Apply.objects.filter(award=self)
+
+    @property
+    def awarded_count(self):
+        from personal_center.models import Apply
+        return Apply.objects.filter(award=self, status=u'4').count()
+
+    def to_json(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'requirement': self.requirement,
+            'reviewers': self.organization.to_json()['reviewers'],
+            'status': self.get_status_display(),
+            'level': self.get_level_display(),
+            'organization': self.organization.name,
+            'begin_time': self.begin_time,
+            'end_time': self.end_time,
+            'apply_all': self.apply_all
+        }

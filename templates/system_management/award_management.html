@@ -13,6 +13,7 @@
     <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/fontawesome/css/font-awesome.css" rel="stylesheet">
     <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/artDialog-6.0.4/css/ui-dialog.css"
           rel="stylesheet">
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/icheck-1.x/skins/all.css" rel="stylesheet">
     <link href="https://magicbox.bk.tencent.com/static_api/v3/bk/css/bk.css" rel="stylesheet">
     <link href="${STATIC_URL}css/main.css" rel="stylesheet">
     <!-- 以下两个插件用于在IE8以及以下版本浏览器支持HTML5元素和媒体查询，如果不需要用可以移除 -->
@@ -116,7 +117,7 @@
                 </div>
                 <div class="panel-btns">
                     <a class="king-btn king-radius king-primary" title="新增" id="plugin4">新增</a>
-                    <!--<a class="king-btn king-radius king-default" title="数据导入">数据导入</a>-->
+                    <a class="king-btn king-radius king-default" title="批量克隆">批量克隆</a>
                     <!--<a class="king-btn king-radius king-default" title="数据导出">数据导出</a>-->
                 </div>
                 <div class="panel-body panel-search-body">
@@ -143,18 +144,25 @@
                             <tr>
                                 <td><input type="checkbox" value=""></td>
                                 <td>${award.organization}</td>
-                                <td>${award.level}</td>
+                                <td>${award.get_level_display()}</td>
                                 <td>${award.name}</td>
-                                <td>${award.status}</td>
+                                <td>${award.get_status_display()}</td>
                                 <td>${award.begin_time}</td>
                                 <td>${award.pub_time}</td>
-                                <td>${award.apply_num}</td>
-                                <td>${award.awarded_num}</td>
+                                <td>${award.apply_count}</td>
+                                <td>${award.awarded_count}</td>
                                 <td>
-                                    <button class="btn btn-xs btn-primary" id="${award.id}">
-                                        <i class="glyphicon glyphicon-edit"></i></button>
-                                    <button class="btn btn-xs btn-danger" onclick="Delete(${ award.id })"><i
-                                            class="glyphicon glyphicon-remove"></i>
+                                    <button class="btn btn-xs btn-primary"><a
+                                            href="${SITE_URL}system_management/award/${award.id}/">查看</a>
+                                    </button>
+                                    <button class="btn btn-xs btn-primary" id="clone${award.id}">
+                                        克隆
+                                    </button>
+                                    <button class="btn btn-xs btn-primary" id="edit${award.id}">
+                                        编辑
+                                    </button>
+                                    <button class="btn btn-xs btn-danger" onclick="Delete(${ award.id })">
+                                        删除
                                     </button>
                                 </td>
                             </tr>
@@ -196,10 +204,10 @@
                             <label for="inputCount3" class="control-label">奖项级别：</label>
                             <div class="col-sm-12">
                                 <select class="form-control" id="inputCount3">
-                                    <option>小组级</option>
-                                    <option>部门级</option>
-                                    <option>中心级</option>
-                                    <option>公司级</option>
+                                    <option value="0">小组级</option>
+                                    <option value="1">部门级</option>
+                                    <option value="2">中心级</option>
+                                    <option value="3">公司级</option>
                                 </select>
                             </div>
                         </div>
@@ -232,7 +240,7 @@
                         <div class="form-group">
                             <div class="radio push-right">
                                 <label class="radio-inline">
-                                    <input type="radio" name="status" value=True>生效
+                                    <input type="radio" name="status" value=True checked>生效
                                 </label>
                                 <label class="radio-inline">
                                     <input type="radio" name="status" value=False>未生效
@@ -256,6 +264,7 @@
 <script src="https://magicbox.bk.tencent.com/static_api/v3/bk/js/bk.js"></script>
 <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/daterangepicker-2.0.5/moment.min.js"></script>
 <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/daterangepicker-2.0.5/daterangepicker.js"></script>
+<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/icheck-1.x/icheck.min.js"></script>
 <script src="${STATIC_URL}js/index.js"></script>
 <script type="text/javascript">
     // 选择单个日期
@@ -339,12 +348,12 @@
                 // do something
                 var name = $("#inputCount1").val();
                 var requirement = $("#inputCount2").val();
-                var level = $("#inputCount3").val();
+                var level = document.getElementsByTagName("option")[document.getElementById("inputCount3").selectedIndex].value;
                 var organization = $("#inputCount4").val();
                 var begin_time = $("#daterangepicker_demo1").val();
                 var end_time = $("#daterangepicker_demo2").val();
                 var appendix_status = false;
-                var status = true;
+                var status = document.getElementsByName("status")[0].checked;
                 var result = {
                     name: name,
                     requirement: requirement,

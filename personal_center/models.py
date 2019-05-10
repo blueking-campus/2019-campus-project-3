@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.db import models
+
 from system_management.models import Award
+from account.models import BkUser
 
 
 # Create your models here.
@@ -18,8 +20,10 @@ class Apply(models.Model):
         (3, u'未获奖'),
         (4, u'已获奖'),
     )
-    status = models.IntegerField(u"奖项状态", choices=STATUS_CHOICES)
-    award = models.ForeignKey(to=Award, on_delete=models.CASCADE)
+    status = models.IntegerField(u"奖项状态", choices=STATUS_CHOICES, default='0')
+    award = models.ForeignKey(to=Award, verbose_name="申请奖项", on_delete=models.CASCADE)
+    remark = models.TextField(u"评语", blank=True)
+    user = models.ForeignKey(BkUser)
     pub_time = models.DateTimeField(u"申报时间", auto_now_add=True)
 
     class Meta:

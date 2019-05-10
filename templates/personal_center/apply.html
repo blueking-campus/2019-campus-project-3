@@ -107,53 +107,87 @@
     <div class="king-main-container">
         <div class="container-fluid">
             <div class="row mt20">
-                <div class="col-lg-6">
+                <div class="col-lg-5">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3 class="panel-title">我的申报</h3>
+                            <h3 class="panel-title">奖项详情</h3>
                         </div>
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-hover">
+                        <div class="table-group">
+                            <table class="table table-out-bordered table-header-bg table-hover">
                                 <thead>
                                 <tr>
-                                    <th>所属单位</th>
-                                    <th>申报奖项</th>
-                                    <th>奖项状态</th>
-                                    <th>申报人/团队</th>
-                                    <th>申报状态</th>
-                                    <th>申报时间</th>
-                                    <th>操作</th>
+                                    <th>奖项名称</th>
+                                    <th>${name}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                % if apply_list:
-                                % for award in apply_list:
                                 <tr>
-                                    <td>${award.organization}</td>
-                                    <td>${award.name}</td>
-                                    <td>${award.get_status_display()}</td>
-                                    <td></td>
-                                    <td>未申报</td>
-                                    <td></td>
-                                    <td><a href="${SITE_URL}personal_center/applying/${award.id}">申报</a></td>
+                                    <td>参评要求</td>
+                                    <td>${requirement}</td>
                                 </tr>
-                                % endfor
-                                % endif
-                                % if applyed_list:
-                                % for apply in applyed_list:
                                 <tr>
-                                    <td>${apply.award.organization}</td>
-                                    <td>${apply.award}</td>
-                                    <td>${apply.award.get_status_display()}</td>
-                                    <td>${apply.applicant}</td>
-                                    <td>${apply.get_status_display()}</td>
-                                    <td>${apply.pub_time}</td>
-                                    <td><a href="${SITE_URL}personal_center/apply_info/${apply.id}">查看</a></td>
+                                    <td>审核人</td>
+                                    <td>${reviewers}</td>
                                 </tr>
-                                % endfor
-                                % endif
+                                <tr>
+                                    <td>状态</td>
+                                    <td>${status}</td>
+                                </tr>
+                                <tr>
+                                    <td>奖项级别</td>
+                                    <td>${level}</td>
+                                </tr>
+                                <tr>
+                                    <td>所属组织</td>
+                                    <td>${organization}</td>
+                                </tr>
+                                <tr>
+                                    <td>开始日期</td>
+                                    <td>${begin_time}</td>
+                                </tr>
+                                <tr>
+                                    <td>结束日期</td>
+                                    <td>${end_time}</td>
+                                </tr>
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-lg-5">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">申报该奖项</h3>
+                        </div>
+                        <div class="tab-pane fade king-block-content active in container-fluid">
+                            <div class="col-sm-10">
+                                <from class="form-horizontal">
+                                    <div class="form-group">
+                                        <label for="inputCount1" class="control-label">申报人/团队：</label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control" id="inputCount1" placeholder="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputCount2" class="control-label">事迹介绍：</label>
+                                        <div class="col-sm-12">
+                                            <textarea class="form-control" id="inputCount2" placeholder=""></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label">附件：</label>
+                                        <div class="col-sm-12">
+                                            <input type="file">
+                                        </div>
+                                    </div>
+                                </from>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                            <a class="king-btn king-primary" title="申报" onclick="Commit()">申报</a>
+                            <a class="king-btn king-default" title="取消"
+                               href="${SITE_URL}personal_center/my_apply/">取消</a>
                         </div>
                     </div>
                 </div>
@@ -166,12 +200,32 @@
 <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/jquery-1.10.2.min.js"></script>
 <!-- 包括所有bootstrap的js插件或者可以根据需要使用的js插件调用　-->
 <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/js/bootstrap.min.js"></script>
-
+<script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 <script src="https://magicbox.bk.tencent.com/static_api/v3/bk/js/bk.js"></script>
 
 <script src="${STATIC_URL}js/index.js"></script>
 
-
+<script>
+    function Commit() {
+        var applicant = $("#inputCount1").val();
+        var introduction = $("#inputCount2").val();
+        var data = {
+            id: ${id},
+            applicant: applicant,
+            introduction: introduction
+        };
+        $.ajax({
+            type: "POST",
+            url: "/personal_center/add_apply/",
+            data: JSON.stringify(data),
+            headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
+            success: function (result) {
+                alert("申报成功！")
+                window.location.assign("${SITE_URL}personal_center/my_apply/")
+            }
+        })
+    }
+</script>
 </body>
 
 </html>

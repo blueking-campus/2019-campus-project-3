@@ -35,6 +35,9 @@ def user_info(request):
     return render_json(data)
 
 
+# ===============================================================================
+# 组织相关
+# ===============================================================================
 @require_admin
 @require_GET
 def organization_management(request):
@@ -49,6 +52,7 @@ def organization_management(request):
 
 @csrf_exempt
 def add_organization(request):
+    """新增组织"""
     result = json.loads(request.body)
     # TODO：valid
     Organization.objects.create_organization(result, request.user)
@@ -57,6 +61,7 @@ def add_organization(request):
 
 @require_POST
 def get_organization(request):
+    """查看组织"""
     result = json.loads(request.body)
     organization_id = int(result['id'])
     try:
@@ -68,10 +73,11 @@ def get_organization(request):
 
 @require_POST
 def update_organization(request):
+    """更新组织"""
     result = json.loads(request.body)
     organization_id = int(result['id'])
     try:
-        organization = Organization.objects.filter(id=organization_id)
+        organization = Organization.objects.filter(id=organization_id)[0]
     except ObjectDoesNotExist:
         raise Http404("organization does not exist")
     Organization.objects.update_organization(organization, result, request.user)
@@ -80,6 +86,7 @@ def update_organization(request):
 
 @require_POST
 def delete_organization(request):
+    """删除组织"""
     result = json.loads(request.body)
     organization_id = int(result['id'])
     try:
@@ -90,6 +97,10 @@ def delete_organization(request):
     return render_mako_context(request, '/system_management/organization_management.html')
 
 
+# ===============================================================================
+# 奖项相关
+# ===============================================================================
+@require_admin
 def award_management(request):
     """奖项管理"""
     award = Award.objects.all()
@@ -97,62 +108,52 @@ def award_management(request):
     return render_mako_context(request, '/system_management/award_management.html', award_list)
 
 
+@require_POST
 @csrf_exempt
 def add_award(request):
     result = json.loads(request.body)
     Award.objects.create(name=result['name'],
                          requirement=result['requirement'],
                          level=result['level'],
-                         organization=result['organization'],
+                         organization=Organization.objects.get(name=result['organization']),
                          begin_time=result['begin_time'],
                          end_time=result['end_time'],
                          appendix_status=result['appendix_status'],
                          status=result['status'], )
-    return render_json("add success")
+    return render_json({'result': True, 'data': "add success"})
 
 
+@require_POST
 def delete_award(request):
     result = json.loads(request.body)
     award_id = int(result['id'])
     try:
         award = Award.objects.filter(id=award_id)
-        award.delete()
-    except Exception as e:
-        raise Http404(e)
+    except ObjectDoesNotExist:
+        raise Http404('ObjectDoesNotExist')
+    award.delete()
     return render_mako_context(request, '/system_management/award_management.html')
 
 
 @require_GET
-def get_award(request):
+def get_award(request, award_id):
     try:
-        award_id = request.GET.get('id')
         award = Award.objects.get(id=award_id)
-        data = {
-            'id': award.id,
-            'name': award.name,
-            'requirement': award.requirement,
-            'status': award.status,
-            'level': award.level,
-            'organization': award.organization,
-            'begin_time': award.begin_time,
-            'end_time': award.end_time,
-        }
-    except Exception:
-        raise Http404("award does not exist")
-    return render_mako_context(request, '/system_management/award_info.html', data)
+    except ObjectDoesNotExist:
+        raise Http404("Award does not exist")
+
+    return render_mako_context(request, '/system_management/award_info.html', award.to_json())
 
 
 @require_POST
-def update_organization(request):
+def update_award(request):
+    result = json.loads(request.body)
+    award_id = int(result['id'])
     try:
-        result = json.loads(request.body)
-        award_id = int(result['id'])
-
         award = Award.objects.filter(id=award_id)
-        award.update(name=result['name'])
-        award.update(reviewer=result['reviewer'])
-        award.update(staff=result['staff'])
-        award.update(update_person=request.user)
     except Exception:
         raise Http404("award does not exist")
+
+    award.update(name=result['name'])
+
     return render_mako_context(request, '/system_management/award_management.html')

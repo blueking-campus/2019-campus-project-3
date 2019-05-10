@@ -7,7 +7,6 @@ from django.conf import settings
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('system_management', '0009_auto_20190507_1806'),
     ]
@@ -27,7 +26,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='organization',
             name='pub_time',
-            field=models.DateTimeField(default=datetime.datetime(2019, 5, 9, 10, 14, 32, 293000), verbose_name='\u7533\u62a5\u65f6\u95f4', auto_now_add=True),
+            field=models.DateTimeField(default=datetime.datetime(2019, 5, 9, 10, 14, 32, 293000),
+                                       verbose_name='\u7533\u62a5\u65f6\u95f4', auto_now_add=True),
             preserve_default=False,
         ),
         migrations.AlterField(
