@@ -5,20 +5,15 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>奖项申报</title>
+    <title>awarding</title>
 
     <!-- Bootstrap css -->
     <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/css/bootstrap_noresponsive.css"
           rel="stylesheet">
     <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/fontawesome/css/font-awesome.css" rel="stylesheet">
-
     <link href="https://magicbox.bk.tencent.com/static_api/v3/bk/css/bk.css" rel="stylesheet">
     <link href="${STATIC_URL}css/main.css" rel="stylesheet">
-    <!-- 以下两个插件用于在IE8以及以下版本浏览器支持HTML5元素和媒体查询，如果不需要用可以移除 -->
-    <!--[if lt IE 9]>
-    <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/html5shiv.min.js"></script>
-    <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/respond.min.js"></script>
-    <![endif]-->
+
 </head>
 
 <body>
@@ -53,18 +48,18 @@
     <div class="king-vertical-nav4">
         <div class="sidebar-inner">
             <ul class="navi">
-                <li>
+                <li class="current active">
                     <a href="/">
                         <i class="fa fa-gear"></i>首页
                     </a>
                 </li>
-                <li class="has_submenu current open">
+                <li class="has_submenu">
                     <a href="javascript:;">
                         <i class="fa fa-wrench"></i>个人中心
                         <span class="pull-right"><i class="fa fa-angle-down"></i></span>
                     </a>
                     <ul class="sub-menu">
-                        <li class="current active">
+                        <li>
                             <a href="${SITE_URL}personal_center/my_apply/">我的申报<i
                                     class="fa fa-chevron-right pull-right"></i></a>
                         </li>
@@ -74,13 +69,13 @@
                         </li>
                     </ul>
                 </li>
-                <li class="has_submenu">
+                <li class="has_submenu current open">
                     <a href="javascript:;">
                         <i class="fa fa-tasks"></i>系统管理
                         <span class="pull-right"><i class="fa fa-angle-down"></i></span>
                     </a>
                     <ul class="sub-menu">
-                        <li>
+                        <li class="active">
                             <a href="${SITE_URL}system_management/organization_management/">组织管理<i
                                     class="fa fa-chevron-right pull-right"></i></a>
                         </li>
@@ -104,74 +99,116 @@
             </ul>
         </div>
     </div>
+
     <div class="king-main-container">
         <div class="container-fluid">
-            <div class="row mt20">
-                <div class="col-lg-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">我的申报</h3>
+            <div class="panel panel-default pannel-overflow panel-tables">
+                <div class="panel-heading">
+                    <i class="fa fa-list-ul"></i>查看奖项
+                </div>
+                <div class="panel-body">
+                    <div class="panel-content">
+                        <div class="table-title">
+                            <i class="fa fa-files-o"></i>奖项详情
                         </div>
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-hover">
+                        <div class="table-group">
+                            <table class="table table-out-bordered table-header-bg table-hover">
                                 <thead>
                                 <tr>
-                                    <th>所属单位</th>
-                                    <th>申报奖项</th>
-                                    <th>奖项状态</th>
-                                    <th>申报人/团队</th>
-                                    <th>申报状态</th>
-                                    <th>申报时间</th>
-                                    <th>操作</th>
+                                    <th>奖项名称</th>
+                                    <th>${name}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                % if apply_list:
-                                % for award in apply_list:
                                 <tr>
-                                    <td>${award.organization}</td>
-                                    <td>${award.name}</td>
-                                    <td>${award.get_status_display()}</td>
-                                    <td></td>
-                                    <td>未申报</td>
-                                    <td></td>
-                                    <td><a href="${SITE_URL}personal_center/applying/${award.id}">申报</a></td>
+                                    <td>参评要求</td>
+                                    <td>${requirement}</td>
                                 </tr>
-                                % endfor
-                                % endif
-                                % if applyed_list:
-                                % for apply in applyed_list:
                                 <tr>
-                                    <td>${apply.award.organization}</td>
-                                    <td>${apply.award}</td>
-                                    <td>${apply.award.get_status_display()}</td>
+                                    <td>审核人</td>
+                                    <td>${reviewers}</td>
+                                </tr>
+                                <tr>
+                                    <td>状态</td>
+                                    <td>${status}</td>
+                                </tr>
+                                <tr>
+                                    <td>奖项级别</td>
+                                    <td>${level}</td>
+                                </tr>
+                                <tr>
+                                    <td>所属组织</td>
+                                    <td>${organization}</td>
+                                </tr>
+                                <tr>
+                                    <td>开始日期</td>
+                                    <td>${begin_time}</td>
+                                </tr>
+                                <tr>
+                                    <td>结束日期</td>
+                                    <td>${end_time}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="table-group">
+                            <div class="table-title">
+                                <i class="fa fa-files-o"></i>申报情况
+                            </div>
+                            <table class="table table-out-bordered table-header-bg table-hover">
+                                <thead>
+                                <tr>
+                                    <th>申报人/团队</th>
+                                    <th>申报状态</th>
+                                    <th>申报时间</th>
+                                    <th>事迹介绍</th>
+                                    <th>上传附件</th>
+                                    <th>评语</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                % if apply_all:
+                                <tbody>
+                                % for apply in apply_all:
+                                <tr>
                                     <td>${apply.applicant}</td>
                                     <td>${apply.get_status_display()}</td>
                                     <td>${apply.pub_time}</td>
-                                    <td><a href="${SITE_URL}personal_center/apply_info/${apply.id}">查看</a></td>
+                                    <td>${apply.introduction}</td>
+                                    <td>无</td>
+                                    <td>${apply.remark}</td>
+                                    <td><a href="">查看</a></td>
                                 </tr>
                                 % endfor
-                                % endif
                                 </tbody>
+                                % endif
                             </table>
+
                         </div>
                     </div>
                 </div>
             </div>
+
+
         </div>
     </div>
 </div>
-
+</div>
 <!-- 如果要使用Bootstrap的js插件，必须先调入jQuery -->
 <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/jquery-1.10.2.min.js"></script>
 <!-- 包括所有bootstrap的js插件或者可以根据需要使用的js插件调用　-->
 <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/js/bootstrap.min.js"></script>
-
+<script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 <script src="https://magicbox.bk.tencent.com/static_api/v3/bk/js/bk.js"></script>
-
+<!-- 以下两个插件用于在IE8以及以下版本浏览器支持HTML5元素和媒体查询，如果不需要用可以移除 -->
+<!--[if lt IE 9]>
+<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/html5shiv.min.js"></script>
+<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/respond.min.js"></script>
+<![endif]-->
 <script src="${STATIC_URL}js/index.js"></script>
+<script type="text/javascript">
 
-
+</script>
 </body>
 
 </html>

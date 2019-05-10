@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>awarding</title>
+
+    <!-- Bootstrap css -->
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/css/bootstrap_noresponsive.css"
+          rel="stylesheet">
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/fontawesome/css/font-awesome.css" rel="stylesheet">
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/artDialog-6.0.4/css/ui-dialog.css"
+          rel="stylesheet">
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/icheck-1.x/skins/all.css" rel="stylesheet">
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/bk/css/bk.css" rel="stylesheet">
+    <link href="${STATIC_URL}css/main.css" rel="stylesheet">
+    <!-- 以下两个插件用于在IE8以及以下版本浏览器支持HTML5元素和媒体查询，如果不需要用可以移除 -->
+    <!--[if lt IE 9]>
+    <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/html5shiv.min.js"></script>
+    <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/respond.min.js"></script>
+    <![endif]-->
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/daterangepicker-2.0.5/daterangepicker.css"
+          rel="stylesheet">
+</head>
+
+<body>
+<div class="wrap">
+    <!-- 头部 -->
+    <header>
+        <div class="navbar navbar-black">
+            <div class="navbar-container">
+                <div class="navbar-header pull-left">
+                    <a class="navbar-brand" href="#">
+                        <i class="fa fa-leaf"></i>
+                        奖项申报
+                    </a>
+                </div>
+
+                <div class="navbar-header pull-right">
+                    <ul class="nav">
+                        <li class="user-info">
+                            <a href="#">
+                                <img class="img-rounded" src="${STATIC_URL}images/qq.png">
+                                <span>admin</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- 头部 -->
+
+    <!-- 侧边栏 -->
+    <div class="king-vertical-nav4">
+        <div class="sidebar-inner">
+            <ul class="navi">
+                <li>
+                    <a href="/">
+                        <i class="fa fa-gear"></i>首页
+                    </a>
+                </li>
+                <li class="has_submenu">
+                    <a href="javascript:;">
+                        <i class="fa fa-wrench"></i>个人中心
+                        <span class="pull-right"><i class="fa fa-angle-down"></i></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li>
+                            <a href="${SITE_URL}personal_center/my_apply/">我的申报<i
+                                    class="fa fa-chevron-right pull-right"></i></a>
+                        </li>
+                        <li>
+                            <a href="${SITE_URL}personal_center/my_review/">我的审核<i
+                                    class="fa fa-chevron-right pull-right"></i></a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="has_submenu current open">
+                    <a href="javascript:;">
+                        <i class="fa fa-tasks"></i>系统管理
+                        <span class="pull-right"><i class="fa fa-angle-down"></i></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li>
+                            <a href="${SITE_URL}system_management/organization_management/">组织管理<i
+                                    class="fa fa-chevron-right pull-right"></i></a>
+                        </li>
+                        <li class="active">
+                            <a href="${SITE_URL}system_management/award_management/">奖项信息<i
+                                    class="fa fa-chevron-right pull-right"></i></a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="last has_submenu">
+                    <a href="javascript:;">
+                        <i class="fa fa-ellipsis-h"></i>其他
+                        <span class="pull-right"><i class="fa fa-angle-down"></i></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li>
+                            <a href="blank.html">空白<i class="fa fa-chevron-right pull-right"></i></a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="king-main-container">
+        <div class="container-fluid">
+            <div class="panel panel-default pannel-overflow panel-tables">
+                <div class="panel-heading">
+                    <i class="fa fa-list-ul"></i>奖项管理
+                </div>
+                <div class="panel-btns">
+                    <a class="king-btn king-radius king-primary" title="新增" id="plugin4">新增</a>
+                    <a class="king-btn king-radius king-default" title="批量克隆">批量克隆</a>
+                    <!--<a class="king-btn king-radius king-default" title="数据导出">数据导出</a>-->
+                </div>
+                <div class="panel-body panel-search-body">
+
+                    <div class="panel-content">
+                        % if award_list:
+                        <table class="table table-out-bordered table-header-bg table-hover" id="table_demo2">
+                            <thead>
+                            <tr>
+                                <th style="width: 25px"><input type="checkbox" name="checkall" value=""></th>
+                                <th style="width:10%">所属组织</th>
+                                <th style="width:10%">奖项级别</th>
+                                <th style="width:10%">申报奖项</th>
+                                <th style="width:10%">状态</th>
+                                <th style="width:10%">开始时间</th>
+                                <th style="width:10%">申报时间</th>
+                                <th style="width:10%">申报人数</th>
+                                <th style="width:10%">获奖人数</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            % for award in award_list:
+                            <tr>
+                                <td><input type="checkbox" value=""></td>
+                                <td>${award.organization}</td>
+                                <td>${award.get_level_display()}</td>
+                                <td>${award.name}</td>
+                                <td>${award.get_status_display()}</td>
+                                <td>${award.begin_time}</td>
+                                <td>${award.pub_time}</td>
+                                <td>${award.apply_count}</td>
+                                <td>${award.awarded_count}</td>
+                                <td>
+                                    <button class="btn btn-xs btn-primary"><a
+                                            href="${SITE_URL}system_management/award/${award.id}/">查看</a>
+                                    </button>
+                                    <button class="btn btn-xs btn-primary" id="clone${award.id}">
+                                        克隆
+                                    </button>
+                                    <button class="btn btn-xs btn-primary" id="edit${award.id}">
+                                        编辑
+                                    </button>
+                                    <button class="btn btn-xs btn-danger" onclick="Delete(${ award.id })">
+                                        删除
+                                    </button>
+                                </td>
+                            </tr>
+                            % endfor
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <td></td>
+                                <td colspan="10">
+                                    <div class="pull-left">
+                                        <a class="king-btn king-radius king-danger" id="deleteAll" title="删除">删除</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                        % endif
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="dialog1" class="panel-body p20" display=none>
+            <div class="row mt20">
+                <div class="col-lg-12">
+                    <from class="form-horizontal">
+                        <div class="form-group">
+                            <label for="inputCount1" class="control-label">奖项名称：</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" id="inputCount1" placeholder="" value="蓝鲸king">
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label for="inputCount2" class="control-label">评奖条件：</label>
+                            <div class="col-sm-12">
+                                <textarea class="form-control" rows="3" id="inputCount2" placeholder=""></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputCount3" class="control-label">奖项级别：</label>
+                            <div class="col-sm-12">
+                                <select class="form-control" id="inputCount3">
+                                    <option value="0">小组级</option>
+                                    <option value="1">部门级</option>
+                                    <option value="2">中心级</option>
+                                    <option value="3">公司级</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputCount4" class="control-label">所属组织：</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" id="inputCount4" placeholder="" value="蓝鲸产品中心">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="daterangepicker_demo1" class="control-label">开始日期：</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control daterangepicker_demo" id="daterangepicker_demo1"
+                                       placeholder="选择日期...">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="daterangepicker_demo2" class="control-label">结束日期：</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control daterangepicker_demo" id="daterangepicker_demo2"
+                                       placeholder="选择日期...">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputCount7" class="control-label">上传附件：</label>
+                            <div class="col-sm-12">
+                                <input type="file" id="inputCount7">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="radio push-right">
+                                <label class="radio-inline">
+                                    <input type="radio" name="status" value=True checked>生效
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="status" value=False>未生效
+                                </label>
+                            </div>
+                        </div>
+                    </from>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<!-- 如果要使用Bootstrap的js插件，必须先调入jQuery -->
+<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/jquery-1.10.2.min.js"></script>
+<!-- 包括所有bootstrap的js插件或者可以根据需要使用的js插件调用　-->
+<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/artDialog-6.0.4/dist/dialog-min.js"></script>
+<script src="https://magicbox.bk.tencent.com/static_api/v3/bk/js/bk.js"></script>
+<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/daterangepicker-2.0.5/moment.min.js"></script>
+<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/daterangepicker-2.0.5/daterangepicker.js"></script>
+<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/icheck-1.x/icheck.min.js"></script>
+<script src="${STATIC_URL}js/index.js"></script>
+<script type="text/javascript">
+    // 选择单个日期
+    $('#daterangepicker_demo1').daterangepicker({
+        locale: {
+            format: 'YYYY-MM-DD HH:mm:ss'
+        },
+        autoApply: true,//选择日期后自动设置值
+        singleDatePicker: true,//单选选择一个日期
+        timePicker: true,//支持时间选择
+        timePicker24Hour: true,//开启24小时时间制
+        timePickerIncrement: 5, //分钟间隔
+        timePickerSeconds: true //开启分钟选择
+
+    });
+    // 选择单个日期
+    $('#daterangepicker_demo2').daterangepicker({
+        locale: {
+            format: 'YYYY-MM-DD HH:mm:ss'
+        },
+        autoApply: true,//选择日期后自动设置值
+        singleDatePicker: true,//单选选择一个日期
+        timePicker: true,//支持时间选择
+        timePicker24Hour: true,//开启24小时时间制
+        timePickerIncrement: 5, //分钟间隔
+        timePickerSeconds: true //开启分钟选择
+
+    });
+    $(document).ready(function () {
+        $('#table_demo2').find('input[name="checkall"]').click(function () {
+            var checked = $(this).prop('checked');
+            $('#table_demo2>tbody input').prop('checked', checked);
+        });
+        $('#table_demo2').find(':checkbox').on('click', function () {
+            if (!this.checked) {
+                $('#table_demo2').find('input[name="checkall"]').prop('checked', false);
+            }
+        });
+        $('#table_demo2').find('.glyphicon-remove').parent('button').click(function () {
+            if (confirm('确定要删除？')) {
+                $(this).closest('tr').remove();
+            }
+        });
+        $('#deleteAll').click(function (event) {
+            var records = $('#table_demo2>tbody input:checked').closest('tr');
+            if (!records.length) {
+                alert('请选择要删除的记录！');
+                return false;
+            }
+            if (confirm('确定要删除？')) {
+                records.remove();
+            }
+        });
+    });
+
+    function Delete(id) {
+        var data = {
+            'id': id
+        }
+        $.ajax({
+            type: "POST",
+            url: "/system_management/delete_award/",
+            data: JSON.stringify(data),
+            headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
+            success: function (result) {
+                alert("删除成功！")
+                window.location.reload()
+            }
+        })
+    }
+
+    //带按钮弹窗
+    $("#plugin4").click(function () {
+        var d = dialog({
+            width: 480,
+            title: '新增奖项',
+            content: document.getElementById('dialog1'),
+            okValue: '保存',
+            ok: function () {
+                console.log(arguments)
+                // do something
+                var name = $("#inputCount1").val();
+                var requirement = $("#inputCount2").val();
+                var level = document.getElementsByTagName("option")[document.getElementById("inputCount3").selectedIndex].value;
+                var organization = $("#inputCount4").val();
+                var begin_time = $("#daterangepicker_demo1").val();
+                var end_time = $("#daterangepicker_demo2").val();
+                var appendix_status = false;
+                var status = document.getElementsByName("status")[0].checked;
+                var result = {
+                    name: name,
+                    requirement: requirement,
+                    level: level,
+                    organization: organization,
+                    begin_time: begin_time,
+                    end_time: end_time,
+                    appendix_status: appendix_status,
+                    status: status
+                };
+                $.ajax({
+                    type: "POST",
+                    url: "/system_management/add_award/",
+                    data: JSON.stringify(result),
+                    headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
+                    success: function (result) {
+                        if (result) {
+                            alert("保存成功！")
+                        }
+                        window.location.reload()
+                    }
+                });
+            },
+            cancelValue: '取消',
+            cancel: function () {
+                console.log(arguments)
+                // do something
+
+            },
+            onshow: function () {
+                console.log(arguments)
+                // do something
+            },
+        });
+        d.show();
+    });
+</script>
+</body>
+
+</html>

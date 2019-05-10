@@ -11,14 +11,11 @@
     <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/css/bootstrap_noresponsive.css"
           rel="stylesheet">
     <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/fontawesome/css/font-awesome.css" rel="stylesheet">
-
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/artDialog-6.0.4/css/ui-dialog.css"
+          rel="stylesheet">
     <link href="https://magicbox.bk.tencent.com/static_api/v3/bk/css/bk.css" rel="stylesheet">
     <link href="${STATIC_URL}css/main.css" rel="stylesheet">
-    <!-- 以下两个插件用于在IE8以及以下版本浏览器支持HTML5元素和媒体查询，如果不需要用可以移除 -->
-    <!--[if lt IE 9]>
-    <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/html5shiv.min.js"></script>
-    <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/respond.min.js"></script>
-    <![endif]-->
+
 </head>
 
 <body>
@@ -54,7 +51,7 @@
         <div class="sidebar-inner">
             <ul class="navi">
                 <li class="current active">
-                    <a href="index.html">
+                    <a href="/">
                         <i class="fa fa-gear"></i>首页
                     </a>
                 </li>
@@ -65,10 +62,12 @@
                     </a>
                     <ul class="sub-menu">
                         <li>
-                            <a href="form1.html">我的申报<i class="fa fa-chevron-right pull-right"></i></a>
+                            <a href="${SITE_URL}personal_center/my_apply/">我的申报<i
+                                    class="fa fa-chevron-right pull-right"></i></a>
                         </li>
                         <li>
-                            <a href="form2.html">我的审核<i class="fa fa-chevron-right pull-right"></i></a>
+                            <a href="${SITE_URL}personal_center/my_review/">我的审核<i
+                                    class="fa fa-chevron-right pull-right"></i></a>
                         </li>
                     </ul>
                 </li>
@@ -83,7 +82,8 @@
                                     class="fa fa-chevron-right pull-right"></i></a>
                         </li>
                         <li>
-                            <a href="table2.html">奖项信息<i class="fa fa-chevron-right pull-right"></i></a>
+                            <a href="${SITE_URL}system_management/award_management/">奖项信息<i
+                                    class="fa fa-chevron-right pull-right"></i></a>
                         </li>
                     </ul>
                 </li>
@@ -109,140 +109,44 @@
                     <i class="fa fa-list-ul"></i>组织管理
                 </div>
                 <div class="panel-btns">
-                    <a class="king-btn king-radius king-primary" title="添加变量">新增组织</a>
-                    <a class="king-btn king-radius king-default" title="数据导入">数据导入</a>
-                    <a class="king-btn king-radius king-default" title="数据导出">数据导出</a>
+                    <a class="king-btn king-radius king-primary" title="新增组织" id="plugin4">新增组织</a>
+                    <!--<a class="king-btn king-radius king-default" title="数据导入">数据导入</a>-->
+                    <!--<a class="king-btn king-radius king-default" title="数据导出">数据导出</a>-->
                 </div>
                 <div class="panel-body panel-search-body">
 
                     <div class="panel-content">
+                        % if org_list:
                         <table class="table table-out-bordered table-header-bg table-hover" id="table_demo2">
                             <thead>
                             <tr>
                                 <th style="width: 25px"><input type="checkbox" name="checkall" value=""></th>
-                                <th style="width: 10px">所属组织</th>
-                                <th style="width:15%">负责人</th>
-                                <th style="width:15%">参评人员</th>
-                                <th style="width:15%">更新人</th>
+                                <th style="width:10%">所属组织</th>
+                                <th style="width:10%">负责人</th>
+                                <th style="width:25%">参评人员</th>
+                                <th style="width:10%">更新人</th>
                                 <th style="width:15%">申报时间</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
                             <tbody>
-
+                            % for org in org_list:
                             <tr>
                                 <td><input type="checkbox" value=""></td>
-                                <td>1</td>
-                                <td>TclsWorldID</td>
-                                <td>s1.*.*.*</td>
-                                <td>abc</td>
-                                <td>abc</td>
+                                <td>${org['name']}</td>
+                                <td>${org['reviewers']}</td>
+                                <td>${org['members']}</td>
+                                <td>${org['update_person']}</td>
+                                <td>${org['pub_time']}</td>
                                 <td>
-                                    <button class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i>
-                                    </button>
-                                    <button class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i>
+                                    <button class="btn btn-xs btn-primary" onclick="Update(${ org['id'] })">
+                                        <i class="glyphicon glyphicon-edit"></i></button>
+                                    <button class="btn btn-xs btn-danger" onclick="Delete(${ org['id'] })"><i
+                                            class="glyphicon glyphicon-remove"></i>
                                     </button>
                                 </td>
                             </tr>
-                            <tr>
-                                <td><input type="checkbox" value=""></td>
-                                <td>1</td>
-                                <td>TclsWorldID</td>
-                                <td>s1.*.*.*</td>
-                                <td>abc</td>
-                                <td>abc</td>
-                                <td>
-                                    <button class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i>
-                                    </button>
-                                    <button class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" value=""></td>
-                                <td>1</td>
-                                <td>TclsWorldID</td>
-                                <td>s1.*.*.*</td>
-                                <td>abc</td>
-                                <td>abc</td>
-                                <td>
-                                    <button class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i>
-                                    </button>
-                                    <button class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" value=""></td>
-                                <td>1</td>
-                                <td>TclsWorldID</td>
-                                <td>s1.*.*.*</td>
-                                <td>abc</td>
-                                <td>abc</td>
-                                <td>
-                                    <button class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i>
-                                    </button>
-                                    <button class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" value=""></td>
-                                <td>1</td>
-                                <td>TclsWorldID</td>
-                                <td>s1.*.*.*</td>
-                                <td>abc</td>
-                                <td>abc</td>
-                                <td>
-                                    <button class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i>
-                                    </button>
-                                    <button class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" value=""></td>
-                                <td>1</td>
-                                <td>TclsWorldID</td>
-                                <td>s1.*.*.*</td>
-                                <td>abc</td>
-                                <td>abc</td>
-                                <td>
-                                    <button class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i>
-                                    </button>
-                                    <button class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" value=""></td>
-                                <td>1</td>
-                                <td>TclsWorldID</td>
-                                <td>s1.*.*.*</td>
-                                <td>abc</td>
-                                <td>abc</td>
-                                <td>
-                                    <button class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i>
-                                    </button>
-                                    <button class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" value=""></td>
-                                <td>1</td>
-                                <td>TclsWorldID</td>
-                                <td>s1.*.*.*</td>
-                                <td>abc</td>
-                                <td>abc</td>
-                                <td>
-                                    <button class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i>
-                                    </button>
-                                    <button class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i>
-                                    </button>
-                                </td>
-                            </tr>
-
+                            % endfor
                             </tbody>
                             <tfoot>
                             <tr>
@@ -255,20 +159,83 @@
                             </tr>
                             </tfoot>
                         </table>
+                        % endif
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
+        <div id="dialog1" class="panel-body p20" display=none>
+            <div class="row mt20">
+                <div class="col-lg-8">
+                    <from class="form-horizontal">
+                        <div class="form-group">
+                            <label for="inputCount3" class="control-label">所属组织：</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="inputCount1" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputCount3" class="control-label">负责人员：</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="inputCount2" placeholder="">
+                                <p class="help-block">负责人员qq,用;分隔</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputCount3" class="control-label">参评人员：</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" id="inputCount3" placeholder=""></textarea>
+                                <p class="help-block">参评人员qq,用;分隔</p>
+                            </div>
+                        </div>
+                    </from>
+                </div>
+            </div>
+        </div>
+        <div id="dialog2" class="panel-body p20" display=none>
+            <div class="row mt20">
+                <div class="col-lg-8">
+                    <from class="form-horizontal">
+
+                        <div class="form-group">
+                            <label for="inputCount3" class="control-label">所属组织：</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="inputCount4" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputCount3" class="control-label">负责人员：</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="inputCount5" placeholder="">
+                                <p class="help-block">负责人员qq,用;分隔</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputCount3" class="control-label">参评人员：</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" id="inputCount6" placeholder=""></textarea>
+                                <p class="help-block">参评人员qq,用;分隔</p>
+                            </div>
+                        </div>
+
+                    </from>
+                </div>
+            </div>
+        </div>
 </div>
-
 <!-- 如果要使用Bootstrap的js插件，必须先调入jQuery -->
 <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/jquery-1.10.2.min.js"></script>
 <!-- 包括所有bootstrap的js插件或者可以根据需要使用的js插件调用　-->
 <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/js/bootstrap.min.js"></script>
-
+    <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/artDialog-6.0.4/dist/dialog-min.js"></script>
 <script src="https://magicbox.bk.tencent.com/static_api/v3/bk/js/bk.js"></script>
+    <!-- 以下两个插件用于在IE8以及以下版本浏览器支持HTML5元素和媒体查询，如果不需要用可以移除 -->
+    <!--[if lt IE 9]>
+    <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/html5shiv.min.js"></script>
+    <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/respond.min.js"></script>
+    <![endif]-->
 <script src="${STATIC_URL}js/index.js"></script>
 <script type="text/javascript">
         $(document).ready(function() {
@@ -297,6 +264,126 @@
                 }
             });
         });
+        //带按钮弹窗
+        $("#plugin4").click(function () {
+            var d = dialog({
+                width: 450,
+                title: '新增组织',
+                content: document.getElementById('dialog1'),
+                okValue: '保存',
+                ok: function () {
+                    console.log(arguments)
+                    // do something
+                    var name = $("#inputCount1").val();
+                    var reviewers = $("#inputCount2").val();
+                    var members = $("#inputCount3").val();
+                    var result = {
+                        name: name,
+                        reviewers: reviewers,
+                        members: members
+                    };
+                    $.ajax({
+                        type: "POST",
+                        url: "/system_management/add_organization/",
+                        data: JSON.stringify(result),
+                        headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
+                        success: function (result) {
+                            alert("保存成功！")
+                            console.log(result)
+                            window.location.reload()
+                        }
+                    });
+                },
+                cancelValue: '取消',
+                cancel: function () {
+                    console.log(arguments)
+                    // do something
+
+                },
+                onshow: function () {
+                    console.log(arguments)
+                    // do something
+                },
+            });
+            d.show();
+        });
+
+        function Delete(id) {
+            var data = {
+                'id': id
+            }
+            $.ajax({
+                type: "POST",
+                url: "/system_management/delete_organization/",
+                data: JSON.stringify(data),
+                headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
+                success: function (result) {
+                    alert("删除成功！")
+                    window.location.reload()
+                }
+            })
+        }
+
+        function Update(id) {
+            var data = {
+                'id': id
+            };
+            $.ajax({
+                type: "POST",
+                url: "/system_management/get_organization/",
+                data: JSON.stringify(data),
+                headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
+                success: function (res) {
+                    console.log(res.data);
+                    document.getElementById("inputCount1").value = res.data.name;
+                    document.getElementById("inputCount2").value = res.data.reviewers;
+                    document.getElementById("inputCount3").value = res.data.members;
+                    var d = dialog({
+                        width: 450,
+                        title: '查看/编辑',
+                        content: document.getElementById('dialog1'),
+                        okValue: '保存',
+                        ok: function () {
+                            console.log(arguments)
+                            // do something
+                            var name = $("#inputCount1").val();
+                            var reviewers = $("#inputCount2").val();
+                            var members = $("#inputCount3").val();
+                            var result = {
+                                id: res.data.id,
+                                name: name,
+                                reviewers: reviewers,
+                                members: members
+                            };
+                            $.ajax({
+                                type: "POST",
+                                url: "/system_management/update_organization/",
+                                async: false,
+                                data: JSON.stringify(result),
+                                headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
+                                success: function (result) {
+                                    alert("保存成功！")
+                                    console.log(result)
+                                    window.location.reload()
+                                }
+                            });
+                        },
+                        cancelValue: '取消',
+                        cancel: function () {
+                            console.log(arguments)
+                            // do something
+
+                        },
+                        onshow: function () {
+                            console.log(arguments)
+                            // do something
+                        },
+                    });
+                    d.show();
+                }
+
+            })
+        }
 
 </script>
 </body>
