@@ -15,10 +15,10 @@ class Apply(models.Model):
     # todo: 附件
     STATUS_CHOICES = (
         (0, u'申报中'),
-        (1, u'未通过'),
-        (2, u'已通过'),
+        (1, u'已通过'),
+        (2, u'已获奖'),
         (3, u'未获奖'),
-        (4, u'已获奖'),
+        (4, u'未通过'),
     )
     status = models.IntegerField(u"奖项状态", choices=STATUS_CHOICES, default='0')
     award = models.ForeignKey(to=Award, verbose_name="申请奖项", on_delete=models.CASCADE)

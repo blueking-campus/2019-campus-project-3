@@ -206,6 +206,12 @@
 <script src="${STATIC_URL}js/index.js"></script>
 
 <script>
+    % if apply_obj:
+        document.getElementById("inputCount1").value=${apply_obj.applicant};
+        document.getElementById("inputCount2").value=${apply_obj.introduction};
+        document.getElementById("inputCount1").disabled="disabled";
+        document.getElementById("inputCount2").disabled="disabled";
+    % endif
     function Commit() {
         var applicant = $("#inputCount1").val();
         var introduction = $("#inputCount2").val();

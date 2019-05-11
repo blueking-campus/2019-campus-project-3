@@ -22,7 +22,7 @@ def my_apply(request):
 
     uin = request.COOKIES.get('uin', '')
     user_qq = transform_uin(uin)  # 得到用户QQ
-    organ = OrganizationUser.objects.get(user=user_qq).organization  # 得到用户组织
+    organ = OrganizationUser.objects.get(user=user_qq, type=u'1').organization  # 得到用户组织
     award_can_apply_list = Award.objects.filter(organization=organ, status=True)  # 得到有权限且生效中的奖项
     apply_list = []  # 可申报奖项
     for award in award_can_apply_list:
@@ -41,7 +41,13 @@ def applying(request, award_id):
 
 
 def get_apply_info(request, apply_id):
-    return render_mako_context(request, '/personal_center/apply.html')
+    try:
+        apply_obj = Apply.objects.get(id=apply_id)
+    except ObjectDoesNotExist:
+        raise Http404("Apply does not exist")
+    data = apply_obj.award.to_json()
+    data['apply_obj'] = apply_obj
+    return render_mako_context(request, '/personal_center/apply.html', data)
 
 
 def add_apply(request):
@@ -56,5 +62,12 @@ def my_review(request):
     """
     我的审核
     """
-
-    return render_mako_context(request, '/personal_center/my_review.html')
+    uin = request.COOKIES.get('uin', '')
+    user_qq = transform_uin(uin)  # 得到用户QQ
+    try:
+        organ = OrganizationUser.objects.get(user=user_qq, type=u'1').organization  # 得到用户组织
+    except ObjectDoesNotExist:
+        raise Http404("Apply does not exist")
+    apply_list = Apply.objects.filter(award__organization=organ).order_by('status')
+    data = {'apply_list': apply_list}
+    return render_mako_context(request, '/personal_center/my_review.html', data)
