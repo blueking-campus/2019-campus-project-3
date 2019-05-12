@@ -137,11 +137,12 @@
                                     <td>${apply.pub_time}</td>
                                     <td>${apply.user.username}</td>
                                     <td>
-                                        % if apply.status==0:
-                                        <a href="">通过</a> <a href="">驳回</a>
-                                        % endif
-                                        % if apply.status==1:
-                                        <a href="">评奖</a>
+                                        % if apply.get_status_display()=="审核中":
+                                        <button class="btn btn-xs btn-primary" onclick="Review(${ apply.id }, true)">通过</button>
+                                        <button class="btn btn-xs btn-primary" onclick="Review(${ apply.id }, false)">驳回</button>
+                                        % elif apply.get_status_display()=="已通过":
+                                        <button class="btn btn-xs btn-primary">
+                                            <a href="${SITE_URL}personal_center/remark_apply/${ apply.id }">评奖</a></button>
                                         % endif
                                     </td>
                                 </tr>
@@ -162,11 +163,43 @@
 <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/jquery-1.10.2.min.js"></script>
 <!-- 包括所有bootstrap的js插件或者可以根据需要使用的js插件调用　-->
 <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/js/bootstrap.min.js"></script>
-
+<script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 <script src="https://magicbox.bk.tencent.com/static_api/v3/bk/js/bk.js"></script>
 
 <script src="${STATIC_URL}js/index.js"></script>
-
+<script type="text/javascript">
+    function Review(id, status) {
+        var data = {
+            'id': id,
+            'status': status
+        };
+        $.ajax({
+            type: "POST",
+            url: "/personal_center/review_apply/",
+            data: JSON.stringify(data),
+            headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
+            success: function (result) {
+                alert("成功！");
+                window.location.reload()
+            }
+        })
+    }
+    function Remark(id) {
+        var data = {
+            'id': id
+        };
+        $.ajax({
+            type: "POST",
+            url: "/personal_center/remark_apply/",
+            data: JSON.stringify(data),
+            headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
+            success: function (result) {
+                alert("成功！  ");
+                window.location.reload()
+            }
+        })
+    }
+</script>
 
 </body>
 

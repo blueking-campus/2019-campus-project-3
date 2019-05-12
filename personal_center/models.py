@@ -14,11 +14,11 @@ class Apply(models.Model):
     introduction = models.TextField(u"事迹介绍")
     # todo: 附件
     STATUS_CHOICES = (
-        (0, u'申报中'),
+        (0, u'审核中'),
         (1, u'已通过'),
-        (2, u'已获奖'),
-        (3, u'未获奖'),
-        (4, u'未通过'),
+        (2, u'未通过'),
+        (3, u'已获奖'),
+        (4, u'未获奖'),
     )
     status = models.IntegerField(u"奖项状态", choices=STATUS_CHOICES, default='0')
     award = models.ForeignKey(to=Award, verbose_name="申请奖项", on_delete=models.CASCADE)
@@ -32,3 +32,8 @@ class Apply(models.Model):
 
     def __unicode__(self):  # 在Python3中用 __str__ 代替 __unicode__
         return self.applicant
+
+    def review(self, status, remark=''):
+        self.status = status
+        self.remark = remark
+        self.save()

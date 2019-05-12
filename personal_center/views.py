@@ -17,7 +17,7 @@ def my_apply(request):
     """
     我的申报
     """
-    applyed_list = Apply.objects.filter(user=request.user)  # 我的已申报记录
+    applyed_list = Apply.objects.filter(user=request.user).order_by('status')  # 我的已申报记录
     award_applyed = Apply.objects.filter(user=request.user).values_list('award')  # 已申报的奖项
 
     uin = request.COOKIES.get('uin', '')
@@ -33,6 +33,7 @@ def my_apply(request):
 
 
 def applying(request, award_id):
+    """申报奖项"""
     try:
         award = Award.objects.get(id=award_id)
     except ObjectDoesNotExist:
@@ -40,22 +41,25 @@ def applying(request, award_id):
     return render_mako_context(request, '/personal_center/apply.html', award.to_json())
 
 
+def add_apply(request):
+    """提交申报"""
+    data = json.loads(request.body)
+
+    Apply.objects.create(award_id=data['id'], user=request.user, **data)
+
+    return render_json({'result': True, 'data': "add success"})
+
+
 def get_apply_info(request, apply_id):
+    """查看我的申请"""
     try:
         apply_obj = Apply.objects.get(id=apply_id)
     except ObjectDoesNotExist:
         raise Http404("Apply does not exist")
     data = apply_obj.award.to_json()
     data['apply_obj'] = apply_obj
-    return render_mako_context(request, '/personal_center/apply.html', data)
-
-
-def add_apply(request):
-    data = json.loads(request.body)
-
-    Apply.objects.create(award_id=data['id'], user=request.user, **data)
-
-    return render_json({'result': True, 'data': "add success"})
+    data['type'] = 'get_apply_info'
+    return render_mako_context(request, '/personal_center/apply_info.html', data)
 
 
 def my_review(request):
@@ -71,3 +75,45 @@ def my_review(request):
     apply_list = Apply.objects.filter(award__organization=organ).order_by('status')
     data = {'apply_list': apply_list}
     return render_mako_context(request, '/personal_center/my_review.html', data)
+
+
+def review_apply(request):
+    """审核申请"""
+    data = json.loads(request.body)
+    apply_obj = Apply.objects.get(id=data['id'])
+    status = 1 if data['status'] else 2
+    apply_obj.review(data['status'])
+    return render_json({'result': True, 'data': "review success"})
+
+
+def remark_apply(request, apply_id):
+    """评奖"""
+    try:
+        apply_obj = Apply.objects.get(id=apply_id)
+    except ObjectDoesNotExist:
+        raise Http404("Apply does not exist")
+    data = apply_obj.award.to_json()
+    data['apply_obj'] = apply_obj
+    return render_mako_context(request, '/personal_center/review.html', data)
+
+
+def commit_remark(request):
+    """提交评奖结果"""
+    data = json.loads(request.body)
+    apply_obj = Apply.objects.get(id=data['id'])
+    status = 3 if data['status'] else 4
+    apply_obj.review(status, data['remark'])
+
+    return render_json({'result': True, 'data': "remark success"})
+
+
+def get_review_info(request, apply_id):
+    """查看我的申请"""
+    try:
+        apply_obj = Apply.objects.get(id=apply_id)
+    except ObjectDoesNotExist:
+        raise Http404("Apply does not exist")
+    data = apply_obj.award.to_json()
+    data['apply_obj'] = apply_obj
+    data['type'] = 'get_review_info'
+    return render_mako_context(request, '/personal_center/apply_info.html', data)
