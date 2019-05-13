@@ -106,56 +106,73 @@
     </div>
     <div class="king-main-container">
         <div class="container-fluid">
-            <div class="row mt20">
-                <div class="col-lg-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">我的申报</h3>
-                        </div>
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-hover">
-                                <thead>
-                                <tr>
-                                    <th>所属单位</th>
-                                    <th>申报奖项</th>
-                                    <th>奖项状态</th>
-                                    <th>申报人/团队</th>
-                                    <th>申报状态</th>
-                                    <th>申报时间</th>
-                                    <th>操作</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                % if apply_list:
-                                % for award in apply_list:
-                                <tr>
-                                    <td>${award.organization}</td>
-                                    <td>${award.name}</td>
-                                    <td>${award.get_status_display()}</td>
-                                    <td></td>
-                                    <td>未申报</td>
-                                    <td></td>
-                                    <td><a href="${SITE_URL}personal_center/applying/${award.id}">申报</a></td>
-                                </tr>
-                                % endfor
-                                % endif
-                                % if applyed_list:
-                                % for apply in applyed_list:
-                                <tr>
-                                    <td>${apply.award.organization}</td>
-                                    <td>${apply.award}</td>
-                                    <td>${apply.award.get_status_display()}</td>
-                                    <td>${apply.applicant}</td>
-                                    <td>${apply.get_status_display()}</td>
-                                    <td>${apply.pub_time}</td>
-                                    <td><a href="${SITE_URL}personal_center/apply_info/${apply.id}">查看</a></td>
-                                </tr>
-                                % endfor
-                                % endif
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">我的申报</h3>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>所属单位</th>
+                            <th>申报奖项</th>
+                            <th>奖项状态</th>
+                            <th>申报人/团队</th>
+                            <th>申报状态</th>
+                            <th>申报时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        % if apply_list:
+                        % for award in apply_list:
+                        <tr>
+                            <td>${award.organization}</td>
+                            <td>${award.name}</td>
+                            <td>${award.get_status_display()}</td>
+                            <td></td>
+                            <td>未申报</td>
+                            <td></td>
+                            <td><a href="${SITE_URL}personal_center/applying/${award.id}">申报</a></td>
+                        </tr>
+                        % endfor
+                        % endif
+                        % if applyed_list:
+                        % for apply in applyed_list:
+                        <tr>
+                            <td>${apply.award.organization}</td>
+                            <td>${apply.award}</td>
+                            <td>${apply.award.get_status_display()}</td>
+                            <td>${apply.applicant}</td>
+                            <td>${apply.get_status_display()}</td>
+                            <td>${apply.pub_time}</td>
+                            % if apply.get_status_display()=="审核中":
+                            <td>
+                                <button class="btn btn-xs btn-primary"
+                                        onclick="location='${SITE_URL}personal_center/applying/${apply.award.id}'">编辑
+                                </button>
+                            </td>
+                            % elif apply.get_status_display()=="未通过":
+                            <td>
+                                <button class="btn btn-xs btn-primary"
+                                        onclick="location='${SITE_URL}personal_center/applying/${apply.award.id}'">编辑
+                                </button>
+                                <button class="btn btn-xs btn-primary"
+                                        onclick="location='${SITE_URL}personal_center/applying/${apply.award.id}'">重新申请
+                                </button>
+                            </td>
+                            % else:
+                            <td>
+                                <button class="btn btn-xs btn-primary"
+                                        onclick="location='${SITE_URL}personal_center/get_review_info/${apply.id}'">查看
+                                </button>
+                            </td>
+                            % endif
+                        </tr>
+                        % endfor
+                        % endif
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

@@ -106,235 +106,58 @@
     </div>
     <div class="king-main-container">
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-3">
-                    <!-- 样例 Start -->
-                    <div class="king-widget1">
-                        <div class="icon-wrap">
-                                <span class="fa-stack king-bg-info">
-                                <i class="fa fa-flag fa-stack-1x fa-inverse"></i>
-                            </span>
-                        </div>
-                        <div class="text-wrap">
-                            <h3>2,354</h3>
-                            <p>
-                                提醒消息
-                            </p>
-                        </div>
-                        <div class="clear"></div>
-                        <div class="progress progress-xs">
-                            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="80"
-                                 aria-valuemin="0" aria-valuemax="100" style="width: 80%">
-                                <span class="sr-only">80% Complete</span>
-                            </div>
-                        </div>
-                        <p>
-                            同比昨天增长15%
-                        </p>
-                    </div>
-                    <!-- 样例 End -->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">可申报奖项</h3>
                 </div>
-                <div class="col-sm-3">
-                    <!-- 样例 Start -->
-                    <div class="king-widget1">
-                        <div class="icon-wrap">
-                                <span class="fa-stack king-bg-danger">
-                                <i class="fa fa-bell fa-stack-1x fa-inverse"></i>
-                            </span>
-                        </div>
-                        <div class="text-wrap">
-                            <h3>1,234</h3>
-                            <p>
-                                警告消息
-                            </p>
-                        </div>
-                        <div class="clear">
-                        </div>
-                        <div class="progress progress-xs">
-                            <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="65"
-                                 aria-valuemin="0" aria-valuemax="100" style="width: 65%">
-                                <span class="sr-only">65% Complete</span>
-                            </div>
-                        </div>
-                        <p>
-                            同比昨天增长5%
-                        </p>
-                    </div>
-                    <!-- 样例 End -->
-                </div>
-                <div class="col-sm-3">
-                    <!-- 样例 Start -->
-                    <div class="king-widget1">
-                        <div class="icon-wrap">
-                                <span class="fa-stack king-bg-success">
-                                <i class="fa fa-cloud-download fa-stack-1x fa-inverse"></i>
-                            </span>
-                        </div>
-                        <div class="text-wrap">
-                            <h3>5,214</h3>
-                            <p>
-                                离线消息
-                            </p>
-                        </div>
-                        <div class="clear">
-                        </div>
-                        <div class="progress progress-xs">
-                            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="95"
-                                 aria-valuemin="0" aria-valuemax="100" style="width: 95%">
-                                <span class="sr-only">95% Complete</span>
-                            </div>
-                        </div>
-                        <p>
-                            同比昨天增长12%
-                        </p>
-                    </div>
-                    <!-- 样例 End -->
-                </div>
-                <div class="col-sm-3">
-                    <!-- 样例 Start -->
-                    <div class="king-widget1">
-                        <div class="icon-wrap">
-                                <span class="fa-stack king-bg-warning">
-                                <i class="fa fa-cloud-download fa-stack-1x fa-inverse"></i>
-                            </span>
-                        </div>
-                        <div class="text-wrap">
-                            <h3>5,214</h3>
-                            <p>
-                                警告消息
-                            </p>
-                        </div>
-                        <div class="clear">
-                        </div>
-                        <div class="progress progress-xs">
-                            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="95"
-                                 aria-valuemin="0" aria-valuemax="100" style="width: 25%">
-                                <span class="sr-only">25% Complete</span>
-                            </div>
-                        </div>
-                        <p>
-                            同比昨天增长12%
-                        </p>
-                    </div>
-                    <!-- 样例 End -->
+                <div class="list-group">
+                    % if award_list:
+                    % for award in award_list:
+                    <a href="${SITE_URL}personal_center/applying/${award.id}" class="list-group-item">
+                        <span class="badge king-info" style="float:none;">${award.organization}</span>
+                        <span class="badge king-warning" style="float:none;">${award.name}</span>
+                        <span class="badge king-success" style="float:none;">提报人数${award.apply_count}人</span>
+                    </a>
+                    % endfor
+                    % endif
                 </div>
             </div>
-
-            <div class="row mt20">
-                <div class="col-lg-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">任务面板</h3>
-                        </div>
-                        <div class="list-group">
-                            <a href="javascript:;" class="list-group-item">
-                                <span class="badge king-info">just now</span>
-                                <i class="fa fa-calendar"></i> 日历升级
-                            </a>
-                            <a href="javascript:;" class="list-group-item">
-                                <span class="badge king-warning">4 minutes ago</span>
-                                <i class="fa fa-comment"></i> 回复邮件
-                            </a>
-                            <a href="javascript:;" class="list-group-item">
-                                <span class="badge king-danger">23 minutes ago</span>
-                                <i class="fa fa-shopping-cart"></i> 购物车
-                            </a>
-                            <a href="javascript:;" class="list-group-item">
-                                <span class="badge king-primary">46 minutes ago</span>
-                                <i class="fa fa-check"></i> 支付
-                            </a>
-                            <a href="javascript:;" class="list-group-item">
-                                <span class="badge king-success">1 hour ago</span>
-                                <i class="fa fa-user"></i> 添加新用户
-                            </a>
-                            <a href="javascript:;" class="list-group-item">
-                                <span class="badge">2 hours ago</span>
-                                <i class="fa fa-tasks"></i> 任务: "pick up dry cleaning"
-                            </a>
-                            <a href="javascript:;" class="list-group-item">
-                                <span class="badge">yesterday</span>
-                                <i class="fa fa-globe"></i> 保存文件
-                            </a>
-                            <a href="javascript:;" class="list-group-item">
-                                <span class="badge">two days ago</span>
-                                <i class="fa fa-tasks"></i> 任务: "fix error on sales page"
-                            </a>
-                        </div>
-                    </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">上次获奖人名单</h3>
                 </div>
-                <div class="col-lg-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">交易面板</h3>
-                        </div>
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-hover">
-                                <thead>
-                                <tr>
-                                    <th>订单号</th>
-                                    <th>下单日期</th>
-                                    <th>下单时间</th>
-                                    <th>合计</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>3326</td>
-                                    <td>10/21/2013</td>
-                                    <td>3:29 PM</td>
-                                    <td>$321.33</td>
-                                </tr>
-                                <tr>
-                                    <td>3325</td>
-                                    <td>10/21/2013</td>
-                                    <td>3:20 PM</td>
-                                    <td>$234.34</td>
-                                </tr>
-                                <tr>
-                                    <td>3324</td>
-                                    <td>10/21/2013</td>
-                                    <td>3:03 PM</td>
-                                    <td>$724.17</td>
-                                </tr>
-                                <tr>
-                                    <td>3323</td>
-                                    <td>10/21/2013</td>
-                                    <td>3:00 PM</td>
-                                    <td>$23.71</td>
-                                </tr>
-                                <tr>
-                                    <td>3322</td>
-                                    <td>10/21/2013</td>
-                                    <td>2:49 PM</td>
-                                    <td>$8345.23</td>
-                                </tr>
-                                <tr>
-                                    <td>3321</td>
-                                    <td>10/21/2013</td>
-                                    <td>2:23 PM</td>
-                                    <td>$245.12</td>
-                                </tr>
-                                <tr>
-                                    <td>3320</td>
-                                    <td>10/21/2013</td>
-                                    <td>2:15 PM</td>
-                                    <td>$5663.54</td>
-                                </tr>
-                                <tr>
-                                    <td>3319</td>
-                                    <td>10/21/2013</td>
-                                    <td>2:13 PM</td>
-                                    <td>$943.45</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>所属单位</th>
+                            <th>申报奖项</th>
+                            <th>申报时间</th>
+                            <th>申报人/团队</th>
+                            <th>申报详情</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        % if apply_list:
+                        % for apply in apply_list:
+                        <tr>
+                            <td>${apply.award.organization}</td>
+                            <td>${apply.award}</td>
+                            <td>${apply.pub_time}</td>
+                            <td>${apply.applicant}</td>
+                            <td>
+                                <button class="btn btn-xs btn-primary"
+                                        onclick="location='${SITE_URL}personal_center/get_review_info/${apply.id}'">详情
+                                </button>
+                            </td>
+                        </tr>
+                        % endfor
+                        % endif
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-    </div>
-
 </div>
 
 <!-- 如果要使用Bootstrap的js插件，必须先调入jQuery -->

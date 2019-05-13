@@ -158,7 +158,8 @@ class Award(models.Model):
     @property
     def awarded_count(self):
         from personal_center.models import Apply
-        return Apply.objects.filter(award=self, status=u'4').count()
+        return Apply.objects.filter(award=self, status=u'3').count()
+
 
     def to_json(self):
         return {
