@@ -187,7 +187,8 @@
                         </div>
                         <div class="panel-footer">
                             <a class="king-btn king-primary" title="申报" onclick="Commit_apply()">申报</a>
-                            <a class="king-btn king-default" title="取消" href="${SITE_URL}personal_center/my_apply/">取消</a>
+                            <a class="king-btn king-default" title="取消"
+                               href="${SITE_URL}personal_center/my_apply/">取消</a>
                         </div>
                     </div>
                 </div>
@@ -206,6 +207,14 @@
 <script src="${STATIC_URL}js/index.js"></script>
 
 <script type="text/javascript">
+    %
+    if apply_obj:
+    $('#inputCount1').attr("value",${apply_obj.applicant});
+    $('#inputCount2').val(${apply_obj.introduction});
+    %
+    endif
+
+    // todo: 编辑后提交
     function Commit_apply() {
         var applicant = $("#inputCount1").val();
         var introduction = $("#inputCount2").val();

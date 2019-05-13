@@ -106,55 +106,52 @@
     </div>
     <div class="king-main-container">
         <div class="container-fluid">
-
-            <div class="row mt20">
-                <div class="col-lg-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">我的审核</h3>
-                        </div>
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-hover">
-                                <thead>
-                                <tr>
-                                    <th>所属单位</th>
-                                    <th>申报奖项</th>
-                                    <th>申报人/团队</th>
-                                    <th>申报状态</th>
-                                    <th>申报时间</th>
-                                    <th>操作人</th>
-                                    <th>操作</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                % if apply_list:
-                                % for apply in apply_list:
-                                <tr>
-                                    <td>${apply.award.organization}</td>
-                                    <td>${apply.award.name}</td>
-                                    <td>${apply.applicant}</td>
-                                    <td>${apply.get_status_display()}</td>
-                                    <td>${apply.pub_time}</td>
-                                    <td>${apply.user.username}</td>
-                                    <td>
-                                        % if apply.get_status_display()=="审核中":
-                                        <button class="btn btn-xs btn-primary" onclick="Review(${ apply.id }, true)">通过</button>
-                                        <button class="btn btn-xs btn-primary" onclick="Review(${ apply.id }, false)">驳回</button>
-                                        % elif apply.get_status_display()=="已通过":
-                                        <button class="btn btn-xs btn-primary">
-                                            <a href="${SITE_URL}personal_center/remark_apply/${ apply.id }">评奖</a></button>
-                                        % endif
-                                    </td>
-                                </tr>
-                                </tbody>
-                                % endfor
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">我的审核</h3>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>所属单位</th>
+                            <th>申报奖项</th>
+                            <th>申报人/团队</th>
+                            <th>申报状态</th>
+                            <th>申报时间</th>
+                            <th>操作人</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        % if apply_list:
+                        % for apply in apply_list:
+                        <tr>
+                            <td>${apply.award.organization}</td>
+                            <td>${apply.award.name}</td>
+                            <td>${apply.applicant}</td>
+                            <td>${apply.get_status_display()}</td>
+                            <td>${apply.pub_time}</td>
+                            <td>${apply.user.username}</td>
+                            <td>
+                                % if apply.get_status_display()=="审核中":
+                                <button class="btn btn-xs btn-primary" onclick="Review(${ apply.id }, true)">通过</button>
+                                <button class="btn btn-xs btn-primary" onclick="Review(${ apply.id }, false)">驳回
+                                </button>
+                                % elif apply.get_status_display()=="已通过":
+                                <button class="btn btn-xs btn-primary"
+                                        onclick="location='${SITE_URL}personal_center/remark_apply/${ apply.id }'">
+                                    评奖
+                                </button>
                                 % endif
-                            </table>
-                        </div>
-                    </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                        % endfor
+                        % endif
+                    </table>
                 </div>
             </div>
-        </div>
     </div>
 
 </div>
@@ -163,43 +160,44 @@
 <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/jquery-1.10.2.min.js"></script>
 <!-- 包括所有bootstrap的js插件或者可以根据需要使用的js插件调用　-->
 <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/js/bootstrap.min.js"></script>
-<script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 <script src="https://magicbox.bk.tencent.com/static_api/v3/bk/js/bk.js"></script>
 
 <script src="${STATIC_URL}js/index.js"></script>
-<script type="text/javascript">
-    function Review(id, status) {
-        var data = {
-            'id': id,
-            'status': status
-        };
-        $.ajax({
-            type: "POST",
-            url: "/personal_center/review_apply/",
-            data: JSON.stringify(data),
-            headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
-            success: function (result) {
-                alert("成功！");
-                window.location.reload()
-            }
-        })
-    }
-    function Remark(id) {
-        var data = {
-            'id': id
-        };
-        $.ajax({
-            type: "POST",
-            url: "/personal_center/remark_apply/",
-            data: JSON.stringify(data),
-            headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
-            success: function (result) {
-                alert("成功！  ");
-                window.location.reload()
-            }
-        })
-    }
-</script>
+    <script type="text/javascript">
+        function Review(id, status) {
+            var data = {
+                'id': id,
+                'status': status
+            };
+            $.ajax({
+                type: "POST",
+                url: "/personal_center/review_apply/",
+                data: JSON.stringify(data),
+                headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
+                success: function (result) {
+                    alert("成功！");
+                    window.location.reload()
+                }
+            })
+        }
+
+        function Remark(id) {
+            var data = {
+                'id': id
+            };
+            $.ajax({
+                type: "POST",
+                url: "/personal_center/remark_apply/",
+                data: JSON.stringify(data),
+                headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
+                success: function (result) {
+                    alert("成功！  ");
+                    window.location.reload()
+                }
+            })
+        }
+    </script>
 
 </body>
 

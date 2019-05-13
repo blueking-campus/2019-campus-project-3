@@ -38,7 +38,11 @@ def applying(request, award_id):
         award = Award.objects.get(id=award_id)
     except ObjectDoesNotExist:
         raise Http404("Award does not exist")
-    return render_mako_context(request, '/personal_center/apply.html', award.to_json())
+    data = award.to_json()
+    apply_obj = Apply.objects.filter(award=award, user=request.user)
+    if apply_obj:
+        data['apply_obj'] = apply_obj[0]
+    return render_mako_context(request, '/personal_center/apply.html', data)
 
 
 def add_apply(request):
@@ -62,6 +66,22 @@ def get_apply_info(request, apply_id):
     return render_mako_context(request, '/personal_center/apply_info.html', data)
 
 
+def update_apply(request):
+    """编辑申报"""
+    data = json.loads(request.body)
+    try:
+        apply_obj = Apply.objects.get(id=data['id'])
+    except ObjectDoesNotExist:
+        raise Http404("Apply does not exist")
+    apply_obj.applicant = data['applicant']
+    apply_obj.introduction = data['introduction']
+    apply_obj.save()
+    return render_json({'result': True, 'data': "update success"})
+
+
+# ===============================================================================
+# 审核相关
+# ===============================================================================
 def my_review(request):
     """
     我的审核

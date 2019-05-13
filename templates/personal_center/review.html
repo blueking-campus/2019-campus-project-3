@@ -64,7 +64,7 @@
                         <span class="pull-right"><i class="fa fa-angle-down"></i></span>
                     </a>
                     <ul class="sub-menu">
-                        <li >
+                        <li>
                             <a href="${SITE_URL}personal_center/my_apply/">我的申报<i
                                     class="fa fa-chevron-right pull-right"></i></a>
                         </li>
@@ -166,14 +166,16 @@
                                     <div class="form-group">
                                         <label for="inputCount1" class="control-label">申报人/团队：</label>
                                         <div class="col-sm-12">
-                                            <input type="text" class="form-control" id="inputCount1" placeholder="" readonly="readonly"
+                                            <input type="text" class="form-control" id="inputCount1" placeholder=""
+                                                   readonly="readonly"
                                                    value="${apply_obj.applicant}">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="inputCount2" class="control-label">事迹介绍：</label>
                                         <div class="col-sm-12">
-                                            <textarea class="form-control" id="inputCount2" placeholder="" readonly="readonly">
+                                            <textarea class="form-control" id="inputCount2" placeholder=""
+                                                      readonly="readonly" style="resize:none">
                                                 ${apply_obj.introduction}</textarea>
                                         </div>
                                     </div>
@@ -196,7 +198,8 @@
                                     <div class="form-group">
                                         <label for="inputCount2" class="control-label">评语：</label>
                                         <div class="col-sm-12">
-                                            <textarea class="form-control" id="inputCount3" placeholder=""></textarea>
+                                            <textarea class="form-control" id="inputCount3" placeholder=""
+                                                      style="resize:none"></textarea>
                                         </div>
                                     </div>
 
@@ -204,14 +207,9 @@
                             </div>
                         </div>
                         <div class="panel-footer">
-                            % if type=="remark":
-                                <a class="king-btn king-primary" title="提交" onclick="Commit_remark()">提交</a>
-                                <a class="king-btn king-default" title="取消"
-                                   href="${SITE_URL}personal_center/my_review/">取消</a>
-                            % elif type=="get_apply_info":
-                                <a class="king-btn king-default" title="返回"
-                                   href="${SITE_URL}personal_center/my_review/">返回</a>
-                            % endif
+                            <a class="king-btn king-primary" title="提交" onclick="Commit_remark()">提交</a>
+                            <a class="king-btn king-default" title="取消"
+                               href="${SITE_URL}personal_center/my_review/">取消</a>
                         </div>
                     </div>
                 </div>

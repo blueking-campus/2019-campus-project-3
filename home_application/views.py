@@ -13,4 +13,3 @@ def home(request):
     apply_list = Apply.objects.filter(status=3)
     data = {'award_list': award_list, 'apply_list': apply_list}
     return render_mako_context(request, '/home_application/index.html', data)
-

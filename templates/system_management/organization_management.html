@@ -139,11 +139,8 @@
                                 <td>${org['update_person']}</td>
                                 <td>${org['pub_time']}</td>
                                 <td>
-                                    <button class="btn btn-xs btn-primary" onclick="Update(${ org['id'] })">
-                                        <i class="glyphicon glyphicon-edit"></i></button>
-                                    <button class="btn btn-xs btn-danger" onclick="Delete(${ org['id'] })"><i
-                                            class="glyphicon glyphicon-remove"></i>
-                                    </button>
+                                    <button class="btn btn-xs btn-primary" onclick="Update(${ org['id'] })">编辑</button>
+                                    <button class="btn btn-xs btn-danger" onclick="Delete(${ org['id'] })">删除</button>
                                 </td>
                             </tr>
                             % endfor
