@@ -15,14 +15,17 @@
           rel="stylesheet">
     <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/icheck-1.x/skins/all.css" rel="stylesheet">
     <link href="https://magicbox.bk.tencent.com/static_api/v3/bk/css/bk.css" rel="stylesheet">
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/select2-3.5.2/select2.css" rel="stylesheet">
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/wangEditor-2.1.22/dist/css/wangEditor.min.css" rel="stylesheet">
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/daterangepicker-2.0.5/daterangepicker.css"
+          rel="stylesheet">
     <link href="${STATIC_URL}css/main.css" rel="stylesheet">
     <!-- 以下两个插件用于在IE8以及以下版本浏览器支持HTML5元素和媒体查询，如果不需要用可以移除 -->
     <!--[if lt IE 9]>
     <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/html5shiv.min.js"></script>
     <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/respond.min.js"></script>
     <![endif]-->
-    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/daterangepicker-2.0.5/daterangepicker.css"
-          rel="stylesheet">
+
 </head>
 
 <body>
@@ -42,8 +45,8 @@
                     <ul class="nav">
                         <li class="user-info">
                             <a href="#">
-                                <img class="img-rounded" src="${STATIC_URL}images/qq.png">
-                                <span>admin</span>
+                                <img class="img-rounded" src="${STATIC_URL}images/qq.png" id="avatar">
+                                <span id="nick">admin</span>
                             </a>
                         </li>
                     </ul>
@@ -62,7 +65,7 @@
                         <i class="fa fa-gear"></i>首页
                     </a>
                 </li>
-                <li class="has_submenu">
+                <li class="has_submenu" id="personal_center">
                     <a href="javascript:;">
                         <i class="fa fa-wrench"></i>个人中心
                         <span class="pull-right"><i class="fa fa-angle-down"></i></span>
@@ -78,7 +81,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="has_submenu current open">
+                <li class="has_submenu current open" id="system_management">
                     <a href="javascript:;">
                         <i class="fa fa-tasks"></i>系统管理
                         <span class="pull-right"><i class="fa fa-angle-down"></i></span>
@@ -133,7 +136,7 @@
                                 <th style="width:10%">申报奖项</th>
                                 <th style="width:10%">状态</th>
                                 <th style="width:10%">开始时间</th>
-                                <th style="width:10%">申报时间</th>
+                                <th style="width:10%">结束时间</th>
                                 <th style="width:10%">申报人数</th>
                                 <th style="width:10%">获奖人数</th>
                                 <th>操作</th>
@@ -148,17 +151,17 @@
                                 <td>${award.name}</td>
                                 <td>${award.get_status_display()}</td>
                                 <td>${award.begin_time}</td>
-                                <td>${award.pub_time}</td>
+                                <td>${award.end_time}</td>
                                 <td>${award.apply_count}</td>
                                 <td>${award.awarded_count}</td>
                                 <td>
                                     <button class="btn btn-xs btn-primary"
                                             onclick="location='${SITE_URL}system_management/award/${award.id}/'">查看
                                     </button>
-                                    <button class="btn btn-xs btn-primary" id="clone${award.id}">
+                                    <button class="btn btn-xs btn-primary" onclick="Clone(${ award.id })">
                                         克隆
                                     </button>
-                                    <button class="btn btn-xs btn-primary" id="edit${award.id}">
+                                    <button class="btn btn-xs btn-primary" onclick="Update(${ award.id })">
                                         编辑
                                     </button>
                                     <button class="btn btn-xs btn-danger" onclick="Delete(${ award.id })">
@@ -185,24 +188,25 @@
             </div>
         </div>
         <div id="dialog1" class="panel-body p20" display=none>
-            <div class="row mt20">
                 <div class="col-lg-12">
                     <from class="form-horizontal">
                         <div class="form-group">
-                            <label for="inputCount1" class="control-label">奖项名称：</label>
-                            <div class="col-sm-12">
+                            <label for="inputCount1" class="control-label col-sm-2">奖项名称：</label>
+                            <div class="col-sm-9">
                                 <input type="text" class="form-control" id="inputCount1" placeholder="" value="蓝鲸king">
                             </div>
                         </div>
                         <div class="form-group has-feedback">
-                            <label for="inputCount2" class="control-label">评奖条件：</label>
-                            <div class="col-sm-12">
-                                <textarea class="form-control" rows="3" id="inputCount2" placeholder=""></textarea>
+                            <label for="inputCount2" class="control-label col-sm-2">评奖条件：</label>
+                            <div class="col-sm-9">
+                                <div id="inputCount2" style="height: 400px;">
+                                        <p>请输入内容...</p>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="inputCount3" class="control-label">奖项级别：</label>
-                            <div class="col-sm-12">
+                            <label for="inputCount3" class="control-label col-sm-2">奖项级别：</label>
+                            <div class="col-sm-9">
                                 <select class="form-control" id="inputCount3">
                                     <option value="0">小组级</option>
                                     <option value="1">部门级</option>
@@ -212,46 +216,121 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="inputCount4" class="control-label">所属组织：</label>
-                            <div class="col-sm-12">
-                                <input type="text" class="form-control" id="inputCount4" placeholder="" value="蓝鲸产品中心">
+                            <label for="inputCount4" class="control-label col-sm-2">所属组织：</label>
+                            <div class="col-sm-9">
+                                <div class="plugin3_demo" id="plugin3_demo3" style="display:inline-block;">
+                            <!-- select2 通过ajax start -->
+                            <input type="hidden" class="select2_box" id="inputCount4" style="width:300px;">
+                            <!-- select2 通过ajax end -->
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="daterangepicker_demo1" class="control-label">开始日期：</label>
-                            <div class="col-sm-12">
+                            <label for="daterangepicker_demo1" class="control-label col-sm-2">开始日期：</label>
+                            <div class="col-sm-9">
                                 <input type="text" class="form-control daterangepicker_demo" id="daterangepicker_demo1"
                                        placeholder="选择日期...">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="daterangepicker_demo2" class="control-label">结束日期：</label>
-                            <div class="col-sm-12">
+                            <label for="daterangepicker_demo2" class="control-label col-sm-2">结束日期：</label>
+                            <div class="col-sm-9">
                                 <input type="text" class="form-control daterangepicker_demo" id="daterangepicker_demo2"
                                        placeholder="选择日期...">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="inputCount7" class="control-label">上传附件：</label>
-                            <div class="col-sm-12">
+                            <label for="inputCount7" class="control-label col-sm-2">上传附件：</label>
+                            <div class="col-sm-9">
                                 <input type="file" id="inputCount7">
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="radio push-right">
-                                <label class="radio-inline">
+                            <div class="radio  control-label col-sm-6">
+                                <label class="radio-inline" col-sm-3>
                                     <input type="radio" name="status" value=True checked>生效
                                 </label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="status" value=False>未生效
+                                <label class="radio-inline" col-sm-3>
+                                    <input type="radio" name="status" value=False>过期
                                 </label>
                             </div>
                         </div>
                     </from>
-                </div>
+
             </div>
         </div>
+        <div id="dialog2" class="panel-body p20" display=none>
+                <div class="col-lg-12">
+                    <from class="form-horizontal">
+                        <div class="form-group">
+                            <label for="updateCount1" class="control-label col-sm-2">奖项名称：</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="updateCount1" placeholder="" value="蓝鲸king">
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label for="updateCount1" class="control-label col-sm-2">评奖条件：</label>
+                            <div class="col-sm-9">
+                                <div id="updateCount2" style="height: 400px;">
+                                        <p>请输入内容...</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="updateCount3" class="control-label col-sm-2">奖项级别：</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="updateCount3">
+                                    <option value="0">小组级</option>
+                                    <option value="1">部门级</option>
+                                    <option value="2">中心级</option>
+                                    <option value="3">公司级</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="updateCount4" class="control-label col-sm-2">所属组织：</label>
+                            <div class="col-sm-9">
+                                <div class="plugin3_demo" id="plugin3_demo4" style="display:inline-block;">
+                                <!-- select2 通过ajax start -->
+                                <input class="select2_box" id="updateCount4" style="width:300px;">
+                                <!-- select2 通过ajax end -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="daterangepicker_demo3" class="control-label col-sm-2">开始日期：</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control daterangepicker_demo" id="daterangepicker_demo3"
+                                       placeholder="选择日期...">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="daterangepicker_demo4" class="control-label col-sm-2">结束日期：</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control daterangepicker_demo" id="daterangepicker_demo4"
+                                       placeholder="选择日期...">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="updateCount7" class="control-label col-sm-2">上传附件：</label>
+                            <div class="col-sm-9">
+                                <input type="file" id="updateCount7">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="radio  control-label col-sm-6" id="award_status">
+                                <label class="radio-inline col-sm-3" >
+                                    <input type="radio" name="生效中" value=True>生效
+                                </label>
+                                <label class="radio-inline col-sm-3" >
+                                    <input type="radio" name="已过期" value=False>过期
+                                </label>
+                            </div>
+                        </div>
+                    </from>
 
+            </div>
+        </div>
     </div>
 
 </div>
@@ -265,7 +344,9 @@
 <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/daterangepicker-2.0.5/moment.min.js"></script>
 <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/daterangepicker-2.0.5/daterangepicker.js"></script>
 <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/icheck-1.x/icheck.min.js"></script>
-<script src="${STATIC_URL}js/index.js"></script>
+<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/select2-3.5.2/select2.js"></script>
+<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/wangEditor-2.1.22/dist/js/wangEditor.min.js"></script>
+<script src="${STATIC_URL}js/index.js?v=${STATIC_VERSION}"></script>
 <script type="text/javascript">
     // 选择单个日期
     $('#daterangepicker_demo1').daterangepicker({
@@ -318,33 +399,48 @@
                 records.remove();
             }
         });
+        $("#plugin3_demo3 .select2_box").select2({
+        ajax: {
+            url: "/system_management/get_organization_name/",
+            headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
+            cache: false,
+            //对返回的数据进行处理
+            results: function(data){
+                return data;
+            }
+        }
+        });
+
     });
 
     function Delete(id) {
-        var data = {
-            'id': id
-        }
-        $.ajax({
-            type: "POST",
-            url: "/system_management/delete_award/",
-            data: JSON.stringify(data),
-            headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
-            success: function (result) {
-                alert("删除成功！")
-                window.location.reload()
+        if (confirm('确定要删除？')) {
+            var data = {
+                'id': id
             }
-        })
+            $.ajax({
+                type: "POST",
+                url: "/system_management/delete_award/",
+                data: JSON.stringify(data),
+                headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
+                success: function (result) {
+                    alert("删除成功！")
+                    window.location.reload()
+                }
+            })
+        }
     }
 
     //带按钮弹窗
     $("#plugin4").click(function () {
+        var editor = new wangEditor('inputCount2');
+        editor.create();
         var d = dialog({
-            width: 480,
+            width: 800,
             title: '新增奖项',
             content: document.getElementById('dialog1'),
             okValue: '保存',
             ok: function () {
-                console.log(arguments)
                 // do something
                 var name = $("#inputCount1").val();
                 var requirement = $("#inputCount2").val();
@@ -379,17 +475,209 @@
             },
             cancelValue: '取消',
             cancel: function () {
-                console.log(arguments)
                 // do something
-
             },
             onshow: function () {
-                console.log(arguments)
                 // do something
             },
         });
         d.show();
     });
+
+    function Update(id) {
+        $.get("/system_management/get_award/"+id,function(res){
+            $('#updateCount1').val(res.name);
+            var editor = new wangEditor('updateCount2');
+            editor.create();
+            editor.$txt.html(res.requirement)
+            $("#updateCount3").find("option:contains('" + res.level + "')").attr("selected",true);
+            $("#plugin3_demo4 .select2_box").select2({
+                placeholder:res.organization_name,
+                ajax: {
+                    url: "/system_management/get_organization_name/",
+                    headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
+                    cache: false,
+                    //对返回的数据进行处理
+                    results: function(data){
+                        return data;
+                    }
+                }
+                });
+            $('#daterangepicker_demo3').daterangepicker({
+                locale: {
+                    format: 'YYYY-MM-DD HH:mm:ss'
+                },
+                autoApply: true,//选择日期后自动设置值
+                singleDatePicker: true,//单选选择一个日期
+                timePicker: true,//支持时间选择
+                timePicker24Hour: true,//开启24小时时间制
+                timePickerIncrement: 5, //分钟间隔
+                timePickerSeconds: true, //开启分钟选择
+                startDate: res.begin_time
+            });
+            $('#daterangepicker_demo4').daterangepicker({
+                locale: {
+                    format: 'YYYY-MM-DD HH:mm:ss'
+                },
+                autoApply: true,//选择日期后自动设置值
+                singleDatePicker: true,//单选选择一个日期
+                timePicker: true,//支持时间选择
+                timePicker24Hour: true,//开启24小时时间制
+                timePickerIncrement: 5, //分钟间隔
+                timePickerSeconds: true, //开启分钟选择
+                startDate: res.end_time
+            });
+            $("input[name="+ res.status + "]").attr("checked",true);
+            var d = dialog({
+                    width: 800,
+                    title: '编辑',
+                    content: document.getElementById('dialog2'),
+                    okValue: '保存',
+                    ok: function () {
+                        var name = $("#updateCount1").val();
+                        var requirement = editor.$txt.html();
+                        editor.destroy();
+                        var level = document.getElementsByTagName("option")[document.getElementById("updateCount3").selectedIndex].value;
+                        var organization = $("#plugin3_demo4 .select2_box").select2("val");
+                        if (!organization){
+                            organization = res.organization_id;
+                        }
+                        var begin_time = $("#daterangepicker_demo3").val();
+                        var end_time = $("#daterangepicker_demo4").val();
+                        var appendix_status = false;
+                        var status = document.getElementsByName("status")[0].checked;
+                        var result = {
+                            id: id,
+                            name: name,
+                            requirement: requirement,
+                            level: level,
+                            organization: organization,
+                            begin_time: begin_time,
+                            end_time: end_time,
+                            appendix_status: appendix_status,
+                            status: status
+                        };
+                        $.ajax({
+                            type: "POST",
+                            url: "/system_management/update_award/",
+                            data: JSON.stringify(result),
+                            headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
+                            success: function (result) {
+                                if (result) {
+                                    alert("更新成功！")
+                                }
+                                window.location.reload()
+                            }
+                        });
+                    },
+                    cancelValue: '取消',
+                    cancel: function () {
+                        editor.destroy();
+                    },
+                    onshow: function () {
+                        // do something
+                    }
+                    });
+                    d.show();
+        });
+    }
+
+    function Clone(id) {
+        $.get("/system_management/get_award/"+id,function(res){
+            $('#updateCount1').val(res.name);
+            var editor = new wangEditor('updateCount2');
+            editor.create();
+            editor.$txt.html(res.requirement)
+            $("#updateCount3").find("option:contains('" + res.level + "')").attr("selected",true);
+            $("#plugin3_demo4 .select2_box").select2({
+                placeholder:res.organization_name,
+                ajax: {
+                    url: "/system_management/get_organization_name/",
+                    headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
+                    cache: false,
+                    //对返回的数据进行处理
+                    results: function(data){
+                        return data;
+                    }
+                }
+                });
+            $('#daterangepicker_demo3').daterangepicker({
+                locale: {
+                    format: 'YYYY-MM-DD HH:mm:ss'
+                },
+                autoApply: true,//选择日期后自动设置值
+                singleDatePicker: true,//单选选择一个日期
+                timePicker: true,//支持时间选择
+                timePicker24Hour: true,//开启24小时时间制
+                timePickerIncrement: 5, //分钟间隔
+                timePickerSeconds: true, //开启分钟选择
+                startDate: res.begin_time
+            });
+            $('#daterangepicker_demo4').daterangepicker({
+                locale: {
+                    format: 'YYYY-MM-DD HH:mm:ss'
+                },
+                autoApply: true,//选择日期后自动设置值
+                singleDatePicker: true,//单选选择一个日期
+                timePicker: true,//支持时间选择
+                timePicker24Hour: true,//开启24小时时间制
+                timePickerIncrement: 5, //分钟间隔
+                timePickerSeconds: true, //开启分钟选择
+                startDate: res.end_time
+            });
+            $("input[name="+ res.status + "]").attr("checked",true);
+            var d = dialog({
+                    width: 800,
+                    title: '克隆',
+                    content: document.getElementById('dialog2'),
+                    okValue: '保存',
+                    ok: function () {
+                        var name = $("#updateCount1").val();
+                        var requirement = editor.$txt.html();
+                        editor.destroy();
+                        var level = document.getElementsByTagName("option")[document.getElementById("updateCount3").selectedIndex].value;
+                        var organization = $("#plugin3_demo4 .select2_box").select2("val");
+                        if (!organization){
+                            organization = res.organization_id;
+                        }
+                        var begin_time = $("#daterangepicker_demo3").val();
+                        var end_time = $("#daterangepicker_demo4").val();
+                        var appendix_status = false;
+                        var status = document.getElementsByName("status")[0].checked;
+                        var result = {
+                            name: name,
+                            requirement: requirement,
+                            level: level,
+                            organization: organization,
+                            begin_time: begin_time,
+                            end_time: end_time,
+                            appendix_status: appendix_status,
+                            status: status
+                        };
+                        $.ajax({
+                            type: "POST",
+                            url: "/system_management/add_award/",
+                            data: JSON.stringify(result),
+                            headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
+                            success: function (result) {
+                                if (result) {
+                                    alert("克隆成功！")
+                                }
+                                window.location.reload()
+                            }
+                        });
+                    },
+                    cancelValue: '取消',
+                    cancel: function () {
+                        editor.destroy();
+                    },
+                    onshow: function () {
+                        // do something
+                    }
+                    });
+                    d.show();
+        });
+    }
 </script>
 </body>
 

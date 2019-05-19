@@ -24,3 +24,16 @@ $(function() {
         return false;
     });
 });
+
+$(document).ready(function(){
+    $.get("/user_info",function(data){
+        $("#nick").text(data.nick);
+        $("#avatar").attr("src", data.avatar);
+        if (data.permission.indexOf('admin')==-1){
+            $("#system_management").hide();
+        }
+        if (data.permission.indexOf('reviewer')==-1){
+            $("#my_review").hide();
+        }
+    });
+});

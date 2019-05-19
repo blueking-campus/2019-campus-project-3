@@ -65,6 +65,16 @@ class Organization(models.Model):
             })
         return data
 
+    @staticmethod
+    def to_name(organizations):
+        data = []
+        for item in organizations:
+            data.append({
+                'id': item.id,
+                'text': item.name,
+            })
+        return data
+
 
 class OrganizationUser(models.Model):
     """组织人员表"""
@@ -131,7 +141,7 @@ class Award(models.Model):
     )
     level = models.CharField(u"奖项等级", max_length=1, choices=LEVEL_CHOICES)
     organization = models.ForeignKey(Organization, verbose_name=u"所属组织")
-    begin_time = models.DateTimeField(u"开始日期", auto_now=True)
+    begin_time = models.DateTimeField(u"开始日期")
     end_time = models.DateTimeField(u"结束日期")
     STATUS_CHOICES = (
         (True, u'生效中'),
@@ -160,7 +170,6 @@ class Award(models.Model):
         from personal_center.models import Apply
         return Apply.objects.filter(award=self, status=u'3').count()
 
-
     def to_json(self):
         return {
             'id': self.id,
@@ -169,8 +178,8 @@ class Award(models.Model):
             'reviewers': self.organization.to_json()['reviewers'],
             'status': self.get_status_display(),
             'level': self.get_level_display(),
-            'organization': self.organization.name,
-            'begin_time': self.begin_time,
-            'end_time': self.end_time,
-            'apply_all': self.apply_all
+            'organization_name': self.organization.name,
+            'organization_id': self.organization.id,
+            'begin_time': self.begin_time.strftime("%Y-%m-%d %H:%M:%S"),
+            'end_time': self.end_time.strftime("%Y-%m-%d %H:%M:%S"),
         }

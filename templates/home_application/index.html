@@ -38,8 +38,8 @@
                     <ul class="nav">
                         <li class="user-info">
                             <a href="#">
-                                <img class="img-rounded" src="${STATIC_URL}images/qq.png">
-                                <span>admin</span>
+                                <img class="img-rounded" src="${STATIC_URL}images/qq.png" id="avatar">
+                                <span id="nick">admin</span>
                             </a>
                         </li>
                     </ul>
@@ -58,7 +58,7 @@
                         <i class="fa fa-gear"></i>首页
                     </a>
                 </li>
-                <li class="has_submenu">
+                <li class="has_submenu" id="personal_center">
                     <a href="javascript:;">
                         <i class="fa fa-wrench"></i>个人中心
                         <span class="pull-right"><i class="fa fa-angle-down"></i></span>
@@ -68,13 +68,13 @@
                             <a href="${SITE_URL}personal_center/my_apply/">我的申报<i
                                     class="fa fa-chevron-right pull-right"></i></a>
                         </li>
-                        <li>
+                        <li id="my_review">
                             <a href="${SITE_URL}personal_center/my_review/">我的审核<i
                                     class="fa fa-chevron-right pull-right"></i></a>
                         </li>
                     </ul>
                 </li>
-                <li class="has_submenu">
+                <li class="has_submenu" id="system_management">
                     <a href="javascript:;">
                         <i class="fa fa-tasks"></i>系统管理
                         <span class="pull-right"><i class="fa fa-angle-down"></i></span>
@@ -160,14 +160,13 @@
         </div>
 </div>
 
-<!-- 如果要使用Bootstrap的js插件，必须先调入jQuery -->
-<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/jquery-1.10.2.min.js"></script>
-<!-- 包括所有bootstrap的js插件或者可以根据需要使用的js插件调用　-->
-<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+    <!-- 如果要使用Bootstrap的js插件，必须先调入jQuery -->
+    <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/jquery-1.10.2.min.js"></script>
+    <!-- 包括所有bootstrap的js插件或者可以根据需要使用的js插件调用　-->
+    <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/js/bootstrap.min.js"></script>
 
-<script src="https://magicbox.bk.tencent.com/static_api/v3/bk/js/bk.js"></script>
-
-<script src="${STATIC_URL}js/index.js"></script>
+    <script src="https://magicbox.bk.tencent.com/static_api/v3/bk/js/bk.js"></script>
+    <script src="${STATIC_URL}js/index.js?v=${STATIC_VERSION}"></script>
 
 
 </body>

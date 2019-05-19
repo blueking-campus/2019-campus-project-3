@@ -1,38 +1,14 @@
 # -*- coding: utf-8 -*-
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST, require_GET
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 
 from common.mymako import render_mako_context, render_json
-from common.context_processors import mysetting
 
 import json
-from bkoauth.utils import transform_uin
 from system_management.models import Organization, Award
-from system_management.utils import is_reviewer
 from system_management.decorators import require_admin
-
-
-@require_GET
-def user_info(request):
-    """获取用户信息"""
-    uin = request.COOKIES.get('uin', '')
-    user_qq = transform_uin(uin)
-    user = request.user
-    permission = ['apply']
-    if user.is_admin():
-        permission.append('admin')
-    if is_reviewer(user, user_qq):
-        permission.append('reviewer')
-
-    setting = mysetting(request)
-    data = {
-        'nick': setting['NICK'],
-        'avatar': setting['AVATAR'],
-        'permission': permission
-    }
-    return render_json(data)
 
 
 # ===============================================================================
@@ -50,7 +26,6 @@ def organization_management(request):
     return render_mako_context(request, '/system_management/organization_management.html', org_list)
 
 
-@csrf_exempt
 def add_organization(request):
     """新增组织"""
     result = json.loads(request.body)
@@ -103,24 +78,31 @@ def delete_organization(request):
 @require_admin
 def award_management(request):
     """奖项管理"""
-    award = Award.objects.all()
+    award = Award.objects.all().order_by('-pub_time')
     award_list = {'award_list': award}
     return render_mako_context(request, '/system_management/award_management.html', award_list)
 
 
 @require_POST
-@csrf_exempt
 def add_award(request):
     result = json.loads(request.body)
     Award.objects.create(name=result['name'],
                          requirement=result['requirement'],
                          level=result['level'],
-                         organization=Organization.objects.get(name=result['organization']),
+                         organization=Organization.objects.get(id=result['organization']),
                          begin_time=result['begin_time'],
                          end_time=result['end_time'],
                          appendix_status=result['appendix_status'],
                          status=result['status'], )
     return render_json({'result': True, 'data': "add success"})
+
+
+@require_GET
+def get_organization_name(request):
+    """添加奖项组织时查询组织"""
+    organizations = Organization.objects.all()
+    data = Organization.to_name(organizations)
+    return render_json({"results": data})
 
 
 @require_POST
@@ -136,24 +118,46 @@ def delete_award(request):
 
 
 @require_GET
+def award_info(request, award_id):
+    """查看奖项详情页面"""
+    try:
+        award = Award.objects.get(id=award_id)
+    except ObjectDoesNotExist:
+        raise Http404("Award does not exist")
+    data = award.to_json()
+    data['apply_all'] = award.apply_all
+    return render_mako_context(request, '/system_management/award_info.html', data)
+
+
+@require_GET
 def get_award(request, award_id):
+    """得到奖项信息"""
     try:
         award = Award.objects.get(id=award_id)
     except ObjectDoesNotExist:
         raise Http404("Award does not exist")
 
-    return render_mako_context(request, '/system_management/award_info.html', award.to_json())
+    return render_json(award.to_json())
 
 
 @require_POST
 def update_award(request):
+    """更新奖项
+    返回组织id
+    """
     result = json.loads(request.body)
     award_id = int(result['id'])
     try:
-        award = Award.objects.filter(id=award_id)
+        award = Award.objects.get(id=award_id)
     except Exception:
         raise Http404("award does not exist")
 
-    award.update(name=result['name'])
-
-    return render_mako_context(request, '/system_management/award_management.html')
+    award.name = result['name']
+    award.requirement = result['requirement']
+    award.level = result['level']
+    award.organization = Organization.objects.get(id=result['organization'])
+    award.begin_time = result['begin_time']
+    award.end_time = result['end_time']
+    award.status = result['status']
+    award.save()
+    return render_json({'result': True, 'data': "update success"})

@@ -10,6 +10,7 @@
     <!-- Bootstrap css -->
     <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/css/bootstrap_noresponsive.css"
           rel="stylesheet">
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/fontawesome/css/font-awesome.css" rel="stylesheet">
     <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/artDialog-6.0.4/css/ui-dialog.css"
           rel="stylesheet">
@@ -35,8 +36,8 @@
                     <ul class="nav">
                         <li class="user-info">
                             <a href="#">
-                                <img class="img-rounded" src="${STATIC_URL}images/qq.png">
-                                <span>admin</span>
+                                <img class="img-rounded" src="${STATIC_URL}images/qq.png" id="avatar">
+                                <span id="nick">admin</span>
                             </a>
                         </li>
                     </ul>
@@ -55,7 +56,7 @@
                         <i class="fa fa-gear"></i>首页
                     </a>
                 </li>
-                <li class="has_submenu">
+                <li class="has_submenu" id="personal_center">
                     <a href="javascript:;">
                         <i class="fa fa-wrench"></i>个人中心
                         <span class="pull-right"><i class="fa fa-angle-down"></i></span>
@@ -71,7 +72,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="has_submenu current open">
+                <li class="has_submenu current open" id="system_management">
                     <a href="javascript:;">
                         <i class="fa fa-tasks"></i>系统管理
                         <span class="pull-right"><i class="fa fa-angle-down"></i></span>
@@ -161,62 +162,61 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        <div id="dialog1" class="panel-body p20" display=none>
-            <div class="row mt20">
-                <div class="col-lg-8">
-                    <from class="form-horizontal">
-                        <div class="form-group">
-                            <label for="inputCount3" class="control-label">所属组织：</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="inputCount1" placeholder="">
-                            </div>
+    <div id="dialog1" class="panel-body p20" display=none>
+            <div class="col-lg-12">
+                <from class="form-horizontal" id="form5_demo1">
+                    <div class="form-group">
+                        <label for="inputCount3" class="control-label col-sm-3" >所属组织：</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="organization" id="inputCount1" placeholder="" >
                         </div>
-                        <div class="form-group">
-                            <label for="inputCount3" class="control-label">负责人员：</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="inputCount2" placeholder="">
-                                <p class="help-block">负责人员qq,用;分隔</p>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputCount3" class="control-label col-sm-3">负责人员：</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="reviewers" id="inputCount2" placeholder="" >
+                            <p class="help-block">负责人员qq,用;分隔</p>
                         </div>
-                        <div class="form-group">
-                            <label for="inputCount3" class="control-label">参评人员：</label>
-                            <div class="col-sm-10">
-                                <textarea class="form-control" id="inputCount3" placeholder=""></textarea>
-                                <p class="help-block">参评人员qq,用;分隔</p>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputCount3" class="control-label col-sm-3">参评人员：</label>
+                        <div class="col-sm-9">
+                            <textarea class="form-control" name="members" id="inputCount3" placeholder="" style="resize:none"></textarea>
+                            <p class="help-block">参评人员qq,用;分隔</p>
                         </div>
-                    </from>
-                </div>
+                    </div>
+                </from>
             </div>
-        </div>
-        <div id="dialog2" class="panel-body p20" display=none>
-            <div class="row mt20">
-                <div class="col-lg-8">
+    </div>
+    <div id="dialog2" class="panel-body p20" display=none>
+
+                <div class="col-lg-12">
                     <from class="form-horizontal">
                         <div class="form-group">
-                            <label for="inputCount3" class="control-label">所属组织：</label>
-                            <div class="col-sm-10">
+                            <label for="inputCount3" class="control-label col-sm-3">所属组织：</label>
+                            <div class="col-sm-9">
                                 <input type="text" class="form-control" id="inputCount4" placeholder="">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="inputCount3" class="control-label">负责人员：</label>
-                            <div class="col-sm-10">
+                            <label for="inputCount3" class="control-label col-sm-3">负责人员：</label>
+                            <div class="col-sm-9">
                                 <input type="text" class="form-control" id="inputCount5" placeholder="">
                                 <p class="help-block">负责人员qq,用;分隔</p>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="inputCount3" class="control-label">参评人员：</label>
-                            <div class="col-sm-10">
+                            <label for="inputCount3" class="control-label col-sm-3">参评人员：</label>
+                            <div class="col-sm-9">
                                 <textarea class="form-control" id="inputCount6" placeholder=""></textarea>
                                 <p class="help-block">参评人员qq,用;分隔</p>
                             </div>
                         </div>
                     </from>
                 </div>
-            </div>
+
         </div>
 </div>
     <!-- 如果要使用Bootstrap的js插件，必须先调入jQuery -->
@@ -226,13 +226,8 @@
     <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/artDialog-6.0.4/dist/dialog-min.js"></script>
     <script src="https://magicbox.bk.tencent.com/static_api/v3/bk/js/bk.js"></script>
-    <!-- 以下两个插件用于在IE8以及以下版本浏览器支持HTML5元素和媒体查询，如果不需要用可以移除 -->
-    <!--[if lt IE 9]>
-    <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/html5shiv.min.js"></script>
-    <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/respond.min.js"></script>
-    <![endif]-->
-<script src="${STATIC_URL}js/index.js"></script>
-<script type="text/javascript">
+    <script src="${STATIC_URL}js/index.js?v=${STATIC_VERSION}"></script>
+    <script type="text/javascript">
         $(document).ready(function() {
             $('#table_demo2').find('input[name="checkall"]').click(function() {
                 var checked = $(this).prop('checked');
@@ -283,22 +278,17 @@
                         data: JSON.stringify(result),
                         headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
                         success: function (result) {
-                            alert("保存成功！")
-                            console.log(result)
-                            window.location.reload()
+                            alert("保存成功！");
+                            console.log(result);
+                            window.location.reload();
                         }
                     });
                 },
                 cancelValue: '取消',
                 cancel: function () {
-                    console.log(arguments)
-                    // do something
-
                 },
                 onshow: function () {
-                    console.log(arguments)
-                    // do something
-                },
+                }
             });
             d.show();
         });
@@ -306,17 +296,21 @@
         function Delete(id) {
             var data = {
                 'id': id
+            };
+            if (confirm('确定要删除？')) {
+                $.ajax({
+                    type: "POST",
+                    url: "/system_management/delete_organization/",
+                    data: JSON.stringify(data),
+                    headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
+                    success: function (result) {
+                        if (result) {
+                            alert("删除成功！")
+                        }
+                        window.location.reload()
+                    }
+                })
             }
-            $.ajax({
-                type: "POST",
-                url: "/system_management/delete_organization/",
-                data: JSON.stringify(data),
-                headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
-                success: function (result) {
-                    alert("删除成功！")
-                    window.location.reload()
-                }
-            })
         }
 
         function Update(id) {
@@ -330,20 +324,20 @@
                 headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
                 success: function (res) {
                     console.log(res.data);
-                    document.getElementById("inputCount1").value = res.data.name;
-                    document.getElementById("inputCount2").value = res.data.reviewers;
-                    document.getElementById("inputCount3").value = res.data.members;
+                    document.getElementById("inputCount4").value = res.data.name;
+                    document.getElementById("inputCount5").value = res.data.reviewers;
+                    document.getElementById("inputCount6").value = res.data.members;
                     var d = dialog({
                         width: 450,
                         title: '查看/编辑',
-                        content: document.getElementById('dialog1'),
+                        content: document.getElementById('dialog2'),
                         okValue: '保存',
                         ok: function () {
                             console.log(arguments)
                             // do something
-                            var name = $("#inputCount1").val();
-                            var reviewers = $("#inputCount2").val();
-                            var members = $("#inputCount3").val();
+                            var name = $("#inputCount4").val();
+                            var reviewers = $("#inputCount5").val();
+                            var members = $("#inputCount6").val();
                             var result = {
                                 id: res.data.id,
                                 name: name,
@@ -357,8 +351,8 @@
                                 data: JSON.stringify(result),
                                 headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
                                 success: function (result) {
-                                    alert("保存成功！")
-                                    console.log(result)
+                                    alert("保存成功！");
+                                    console.log(result);
                                     window.location.reload()
                                 }
                             });
@@ -367,16 +361,14 @@
                         cancel: function () {
                             console.log(arguments)
                             // do something
-
                         },
                         onshow: function () {
                             console.log(arguments)
                             // do something
-                        },
+                        }
                     });
                     d.show();
                 }
-
             })
         }
 

@@ -5,5 +5,5 @@ urlpatterns = patterns(
     'home_application.views',
     # 首页--your index
     (r'^$', 'home'),
-    # (r'^organization_management/$', 'organization_management'),
+    (r'^user_info/$', 'user_info'),
 )

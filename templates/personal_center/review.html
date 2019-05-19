@@ -38,8 +38,8 @@
                     <ul class="nav">
                         <li class="user-info">
                             <a href="#">
-                                <img class="img-rounded" src="${STATIC_URL}images/qq.png">
-                                <span>admin</span>
+                                <img class="img-rounded" src="${STATIC_URL}images/qq.png" id="avatar">
+                                <span id="nick">admin</span>
                             </a>
                         </li>
                     </ul>
@@ -58,7 +58,7 @@
                         <i class="fa fa-gear"></i>首页
                     </a>
                 </li>
-                <li class="has_submenu current open">
+                <li class="has_submenu current open" id="personal_center">
                     <a href="javascript:;">
                         <i class="fa fa-wrench"></i>个人中心
                         <span class="pull-right"><i class="fa fa-angle-down"></i></span>
@@ -74,7 +74,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="has_submenu">
+                <li class="has_submenu" id="system_management">
                     <a href="javascript:;">
                         <i class="fa fa-tasks"></i>系统管理
                         <span class="pull-right"><i class="fa fa-angle-down"></i></span>
@@ -225,7 +225,7 @@
 <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 <script src="https://magicbox.bk.tencent.com/static_api/v3/bk/js/bk.js"></script>
 
-<script src="${STATIC_URL}js/index.js"></script>
+<script src="${STATIC_URL}js/index.js?v=${STATIC_VERSION}"></script>
 <script type="text/javascript">
     function Commit_remark() {
         var status = document.getElementsByName("status")[0].checked;
