@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.utils.decorators import available_attrs
 
 from bkoauth.utils import transform_uin
-from system_management.utils import is_reviewer
+from personal_center.utils import is_reviewer
 
 
 def require_admin(func):

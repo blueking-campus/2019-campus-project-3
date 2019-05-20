@@ -68,7 +68,7 @@
                             <a href="${SITE_URL}personal_center/my_apply/">我的申报<i
                                     class="fa fa-chevron-right pull-right"></i></a>
                         </li>
-                        <li>
+                        <li id="my_review">
                             <a href="${SITE_URL}personal_center/my_review/">我的审核<i
                                     class="fa fa-chevron-right pull-right"></i></a>
                         </li>
@@ -107,7 +107,7 @@
     <div class="king-main-container">
         <div class="container-fluid">
             <div class="row mt20">
-                <div class="col-lg-5">
+                <div class="col-lg-6">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h3 class="panel-title">奖项详情</h3>
@@ -139,7 +139,7 @@
                                 </tr>
                                 <tr>
                                     <td>所属组织</td>
-                                    <td>${organization}</td>
+                                    <td>${organization_name}</td>
                                 </tr>
                                 <tr>
                                     <td>开始日期</td>
@@ -174,14 +174,18 @@
                                         <label for="inputCount2" class="control-label">事迹介绍：</label>
                                         <div class="col-sm-12">
                                             <textarea class="form-control" id="inputCount2" placeholder=""
-                                                      readonly="readonly">
+                                                      readonly="readonly" rows=10 style="resize:none">
                                                 ${apply_obj.introduction}</textarea>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label">附件：</label>
                                         <div class="col-sm-12">
-                                            <input type="file">
+                                             % if apply_obj.appendix:
+                                            <a href="${apply_obj.appendix.get_url()}">${apply_obj.appendix.name}</a>
+                                            % else:
+                                            无
+                                            % endif
                                         </div>
                                     </div>
                                     % if apply_obj.get_status_display()=="已获奖" or apply_obj.get_status_display()=="未获奖":
@@ -197,7 +201,7 @@
                                         <label for="inputCount2" class="control-label">评语：</label>
                                         <div class="col-sm-12">
                                             <textarea class="form-control" id="inputCount3" placeholder=""
-                                                      readonly="readonly">
+                                                      readonly="readonly" rows=4 style="resize:none">
                                                 ${apply_obj.remark}</textarea>
                                         </div>
                                     </div>

@@ -3,16 +3,45 @@ from django.db import models
 
 from system_management.models import Award
 from account.models import BkUser
+from qcloud_cos import CosS3Client
+from config.settings_custom import config
 
 
 # Create your models here.
 # ===============================================================================
 # 申请相关的表
 # ===============================================================================
+class Appendix(models.Model):
+    """附件表"""
+    name = models.CharField(u'文件名称', max_length=255)
+    path = models.FilePathField(u'文件地址')
+
+    def get_url(self):
+        client = CosS3Client(config)
+        response = client.get_presigned_download_url(
+            Bucket='awarding-1257208110',
+            Key=self.path
+        )
+        return response
+
+    class Meta:
+        verbose_name = u"附件"
+        verbose_name_plural = verbose_name
+
+    def __unicode__(self):  # 在Python3中用 __str__ 代替 __unicode__
+        return self.path
+    # def to_json(self):
+    #     return {
+    #         'name': self.name,
+    #         'url': self.getFileUrl(self.path),
+    #         'id': self.id
+    #     }
+
+
 class Apply(models.Model):
     applicant = models.CharField(u"申请人/团队", max_length=255)
     introduction = models.TextField(u"事迹介绍")
-    # todo: 附件
+    appendix = models.ForeignKey(Appendix, verbose_name=u'附件', null=True, blank=True)
     STATUS_CHOICES = (
         (0, u'审核中'),
         (1, u'已通过'),
@@ -37,3 +66,5 @@ class Apply(models.Model):
         self.status = status
         self.remark = remark
         self.save()
+
+

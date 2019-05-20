@@ -17,8 +17,9 @@
     <link href="https://magicbox.bk.tencent.com/static_api/v3/bk/css/bk.css" rel="stylesheet">
     <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/select2-3.5.2/select2.css" rel="stylesheet">
     <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/wangEditor-2.1.22/dist/css/wangEditor.min.css" rel="stylesheet">
-    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/daterangepicker-2.0.5/daterangepicker.css"
-          rel="stylesheet">
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/daterangepicker-2.0.5/daterangepicker.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://magicbox.bk.tencent.com/static_api/v3/bk/css-pro/bk.css">
+    <link rel="stylesheet" href="https://magicbox.bk.tencent.com/static_api/v3/bk/css-pro/components/switcher.css">
     <link href="${STATIC_URL}css/main.css" rel="stylesheet">
     <!-- 以下两个插件用于在IE8以及以下版本浏览器支持HTML5元素和媒体查询，如果不需要用可以移除 -->
     <!--[if lt IE 9]>
@@ -123,8 +124,7 @@
                     <a class="king-btn king-radius king-default" title="批量克隆">批量克隆</a>
                     <!--<a class="king-btn king-radius king-default" title="数据导出">数据导出</a>-->
                 </div>
-                <div class="panel-body panel-search-body">
-
+                <div class="panel-body panel-search-body" >
                     <div class="panel-content">
                         % if award_list:
                         <table class="table table-out-bordered table-header-bg table-hover" id="table_demo2">
@@ -187,13 +187,13 @@
                 </div>
             </div>
         </div>
-        <div id="dialog1" class="panel-body p20" display=none>
+        <div id="dialog1" class="panel-body p20"  display=none>
                 <div class="col-lg-12">
-                    <from class="form-horizontal">
+                    <from class="form-horizontal" id="form4_demo1">
                         <div class="form-group">
                             <label for="inputCount1" class="control-label col-sm-2">奖项名称：</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="inputCount1" placeholder="" value="蓝鲸king">
+                                <input type="text" class="form-control" id="inputCount1" name="inputCount1" placeholder="" value="">
                             </div>
                         </div>
                         <div class="form-group has-feedback">
@@ -242,15 +242,16 @@
                         <div class="form-group">
                             <label for="inputCount7" class="control-label col-sm-2">上传附件：</label>
                             <div class="col-sm-9">
-                                <input type="file" id="inputCount7">
+                                <input type="checkbox" checked="checked" id="inputCount7">
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="radio  control-label col-sm-6">
-                                <label class="radio-inline" col-sm-3>
+                            <div class="radio  control-label col-sm-10">
+                                <label class="control-label col-sm-2">状态：</label>
+                                <label class="radio-inline col-sm-2">
                                     <input type="radio" name="status" value=True checked>生效
                                 </label>
-                                <label class="radio-inline" col-sm-3>
+                                <label class="radio-inline col-sm-2">
                                     <input type="radio" name="status" value=False>过期
                                 </label>
                             </div>
@@ -314,15 +315,16 @@
                         <div class="form-group">
                             <label for="updateCount7" class="control-label col-sm-2">上传附件：</label>
                             <div class="col-sm-9">
-                                <input type="file" id="updateCount7">
+                                <input type="checkbox" checked="checked" id="updateCount7">
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="radio  control-label col-sm-6" id="award_status">
-                                <label class="radio-inline col-sm-3" >
+                            <div class="radio  control-label col-sm-10" id="award_status">
+                                <label class="control-label col-sm-2">状态：</label>
+                                <label class="radio-inline col-sm-2" >
                                     <input type="radio" name="生效中" value=True>生效
                                 </label>
-                                <label class="radio-inline col-sm-3" >
+                                <label class="radio-inline col-sm-2" >
                                     <input type="radio" name="已过期" value=False>过期
                                 </label>
                             </div>
@@ -346,9 +348,19 @@
 <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/icheck-1.x/icheck.min.js"></script>
 <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/select2-3.5.2/select2.js"></script>
 <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/wangEditor-2.1.22/dist/js/wangEditor.min.js"></script>
+<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/bkSwitcher-1.0/js/bkSwitcher.js"></script>
+<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/validate-1.14.0/js/jquery.validate.js"></script>
+<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/jquery-validation-bootstrap-tooltip-0.10.2/jquery-validate.bootstrap-tooltip.js"></script>
+<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/jquery-validation-bootstrap-tooltip-0.10.2/messages_zh.js"></script>
 <script src="${STATIC_URL}js/index.js?v=${STATIC_VERSION}"></script>
 <script type="text/javascript">
-    // 选择单个日期
+    $('#inputCount7').bkSwitcher({
+                isSquare: true
+            });
+    $('#updateCount7').bkSwitcher({
+                isSquare: true
+            });
+     // 选择单个日期
     $('#daterangepicker_demo1').daterangepicker({
         locale: {
             format: 'YYYY-MM-DD HH:mm:ss'
@@ -360,8 +372,22 @@
         timePickerIncrement: 5, //分钟间隔
         timePickerSeconds: true //开启分钟选择
 
-    });
-    // 选择单个日期
+     });
+    // 选择end日期
+    $('#daterangepicker_demo1').on('apply.daterangepicker', function(ev, picker) {
+                $('#daterangepicker_demo2').daterangepicker({
+                locale: {
+                    format: 'YYYY-MM-DD HH:mm:ss'
+                },
+                autoApply: true,//选择日期后自动设置值
+                singleDatePicker: true,//单选选择一个日期
+                timePicker: true,//支持时间选择
+                timePicker24Hour: true,//开启24小时时间制
+                timePickerIncrement: 5, //分钟间隔
+                timePickerSeconds: true, //开启分钟选择
+                minDate: $("#daterangepicker_demo1").val()
+                });
+            });
     $('#daterangepicker_demo2').daterangepicker({
         locale: {
             format: 'YYYY-MM-DD HH:mm:ss'
@@ -371,10 +397,27 @@
         timePicker: true,//支持时间选择
         timePicker24Hour: true,//开启24小时时间制
         timePickerIncrement: 5, //分钟间隔
-        timePickerSeconds: true //开启分钟选择
-
-    });
+        timePickerSeconds: true, //开启分钟选择
+        minDate: $("#daterangepicker_demo1").val()
+     });
     $(document).ready(function () {
+        // debugger
+        // $("#dialog1").css("display","");
+         $('#form4_demo1').validate(
+             {
+                errorElement: 'span',
+                errorClass: 'text-danger',
+                rules: {
+                    inputCount1: {
+                        required: true,
+                        minlength: 2
+                    }
+                },
+                messages: {
+                    inputCount1: "请输入姓名(至少两位)",
+
+                },
+            });
         $('#table_demo2').find('input[name="checkall"]').click(function () {
             var checked = $(this).prop('checked');
             $('#table_demo2>tbody input').prop('checked', checked);
@@ -434,6 +477,7 @@
     //带按钮弹窗
     $("#plugin4").click(function () {
         var editor = new wangEditor('inputCount2');
+        var switcher = $('#inputCount7').data('bkSwitcher');
         editor.create();
         var d = dialog({
             width: 800,
@@ -443,12 +487,13 @@
             ok: function () {
                 // do something
                 var name = $("#inputCount1").val();
-                var requirement = $("#inputCount2").val();
+                var requirement = editor.$txt.html();
+                editor.destroy();
                 var level = document.getElementsByTagName("option")[document.getElementById("inputCount3").selectedIndex].value;
                 var organization = $("#inputCount4").val();
                 var begin_time = $("#daterangepicker_demo1").val();
                 var end_time = $("#daterangepicker_demo2").val();
-                var appendix_status = false;
+                var appendix_status = switcher.getStatus();
                 var status = document.getElementsByName("status")[0].checked;
                 var result = {
                     name: name,
@@ -469,27 +514,29 @@
                         if (result) {
                             alert("保存成功！")
                         }
-                        window.location.reload()
+                        //window.location.reload()
                     }
                 });
+                return false;
             },
             cancelValue: '取消',
             cancel: function () {
-                // do something
+                editor.destroy();
             },
             onshow: function () {
                 // do something
             },
         });
-        d.show();
+        d.showModal();
     });
 
     function Update(id) {
         $.get("/system_management/get_award/"+id,function(res){
             $('#updateCount1').val(res.name);
+
             var editor = new wangEditor('updateCount2');
             editor.create();
-            editor.$txt.html(res.requirement)
+            editor.$txt.html(res.requirement);
             $("#updateCount3").find("option:contains('" + res.level + "')").attr("selected",true);
             $("#plugin3_demo4 .select2_box").select2({
                 placeholder:res.organization_name,
@@ -525,9 +572,27 @@
                 timePicker24Hour: true,//开启24小时时间制
                 timePickerIncrement: 5, //分钟间隔
                 timePickerSeconds: true, //开启分钟选择
-                startDate: res.end_time
+                startDate: res.end_time,
+                minDate: $("#daterangepicker_demo3").val()
+            });
+            $('#daterangepicker_demo3').on('apply.daterangepicker', function(ev, picker) {
+                $('#daterangepicker_demo4').daterangepicker({
+                locale: {
+                    format: 'YYYY-MM-DD HH:mm:ss'
+                },
+                autoApply: true,//选择日期后自动设置值
+                singleDatePicker: true,//单选选择一个日期
+                timePicker: true,//支持时间选择
+                timePicker24Hour: true,//开启24小时时间制
+                timePickerIncrement: 5, //分钟间隔
+                timePickerSeconds: true, //开启分钟选择
+                startDate: res.end_time,
+                minDate: $("#daterangepicker_demo3").val()
+                });
             });
             $("input[name="+ res.status + "]").attr("checked",true);
+            var switcher = $('#updateCount7').data('bkSwitcher');
+            switcher.setStatus(res.appendix_status);
             var d = dialog({
                     width: 800,
                     title: '编辑',
@@ -544,7 +609,7 @@
                         }
                         var begin_time = $("#daterangepicker_demo3").val();
                         var end_time = $("#daterangepicker_demo4").val();
-                        var appendix_status = false;
+                        var appendix_status = switcher.getStatus();
                         var status = document.getElementsByName("status")[0].checked;
                         var result = {
                             id: id,
@@ -578,7 +643,7 @@
                         // do something
                     }
                     });
-                    d.show();
+            d.showModal();
         });
     }
 
@@ -675,7 +740,7 @@
                         // do something
                     }
                     });
-                    d.show();
+            d.showModal();
         });
     }
 </script>

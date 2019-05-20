@@ -8,11 +8,11 @@
     <title>奖项申报</title>
 
     <!-- Bootstrap css -->
-    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/css/bootstrap_noresponsive.css"
-          rel="stylesheet">
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/css/bootstrap_noresponsive.css" rel="stylesheet">
     <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/fontawesome/css/font-awesome.css" rel="stylesheet">
-
     <link href="https://magicbox.bk.tencent.com/static_api/v3/bk/css/bk.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://magicbox.bk.tencent.com/static_api/v3/assets/kendoui-2015.2.624/styles/kendo.common.min.css" />
+    <link rel="stylesheet" href="https://magicbox.bk.tencent.com/static_api/v3/assets/kendoui-2015.2.624/styles/kendo.default.min.css" />
     <link href="${STATIC_URL}css/main.css" rel="stylesheet">
     <!-- 以下两个插件用于在IE8以及以下版本浏览器支持HTML5元素和媒体查询，如果不需要用可以移除 -->
     <!--[if lt IE 9]>
@@ -68,7 +68,7 @@
                             <a href="${SITE_URL}personal_center/my_apply/">我的申报<i
                                     class="fa fa-chevron-right pull-right"></i></a>
                         </li>
-                        <li>
+                        <li id="my_review">
                             <a href="${SITE_URL}personal_center/my_review/">我的审核<i
                                     class="fa fa-chevron-right pull-right"></i></a>
                         </li>
@@ -107,7 +107,7 @@
     <div class="king-main-container">
         <div class="container-fluid">
             <div class="row mt20">
-                <div class="col-lg-5">
+                <div class="col-lg-6">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h3 class="panel-title">奖项详情</h3>
@@ -139,7 +139,7 @@
                                 </tr>
                                 <tr>
                                     <td>所属组织</td>
-                                    <td>${organization}</td>
+                                    <td>${organization_name}</td>
                                 </tr>
                                 <tr>
                                     <td>开始日期</td>
@@ -172,21 +172,27 @@
                                     <div class="form-group">
                                         <label for="inputCount2" class="control-label">事迹介绍：</label>
                                         <div class="col-sm-12">
-                                            <textarea class="form-control" id="inputCount2" placeholder=""></textarea>
+                                            <textarea class="form-control" id="inputCount2" placeholder="" rows=10 style="resize:none"></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label">附件：</label>
                                         <div class="col-sm-12">
-                                            <input type="file">
+                                            <div class="demo" id="kendo_upload_demo3">
+                                                <input name="files" class="file_input" type="file" />
+                                                <span id="appendix_id"> </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </from>
                             </div>
                         </div>
                         <div class="panel-footer">
-                            <a class="king-btn king-primary" title="申报" onclick="Commit_apply()">申报</a>
-
+                            % if apply_obj:
+                            <a class="king-btn king-primary" title="申报" onclick="UpdateApply()">申报</a>
+                            % else:
+                            <a class="king-btn king-primary" title="申报" onclick="CommitApply()">申报</a>
+                            % endif
                             <a class="king-btn king-default" title="取消"
                                href="${SITE_URL}personal_center/my_apply/">取消</a>
                         </div>
@@ -203,24 +209,63 @@
 <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/js/bootstrap.min.js"></script>
 <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 <script src="https://magicbox.bk.tencent.com/static_api/v3/bk/js/bk.js"></script>
-
+<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/kendoui-2015.2.624/js/kendo.all.min.js"></script>
 <script src="${STATIC_URL}js/index.js?v=${STATIC_VERSION}"></script>
 
 
 <script type="text/javascript">
-    % if apply_obj:
-    $('#inputCount1').attr("value",${apply_obj.applicant});
-    $('#inputCount2').val(${apply_obj.introduction});
-    % endif
+    $("#kendo_upload_demo3 .file_input").kendoUpload({
+        localization: {
+            select: "请选择文件...",
+            remove: '删除',//删除按钮的tips
+            headerStatusUploading : '开始上传',
+            headerStatusUploaded : "文件上传成功"
+        },
+        async : {
+            autoUpload : true,
+            saveUrl : "/personal_center/upload_appendix/", //文件上传对应的接口
+            removeUrl : '/personal_center/remove_appendix/' //文件删除对应的接口
+        },
+        success: function(res) {
+            $('#appendix_id').val(res.response.appendix);
+        }
+    });
 
-    // todo: 编辑后提交
-    function Commit_apply() {
+    % if apply_obj and type=='edit':
+    $('#inputCount1').attr("value",'${apply_obj.applicant}');
+    $('#inputCount2').val('${apply_obj.introduction}');
+    % if apply_obj.appendix:
+        $('#appendix_id').text(<a href="${apply_obj.appendix.get_url()}">${apply_obj.appendix.name}</a>)
+    % endif
+    function UpdateApply() {
         var applicant = $("#inputCount1").val();
         var introduction = $("#inputCount2").val();
         var data = {
-            id: ${id},
+            id: ${apply_obj.id},
             applicant: applicant,
             introduction: introduction
+        };
+        $.ajax({
+            type: "POST",
+            url: "/personal_center/update_apply/",
+            data: JSON.stringify(data),
+            headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
+            success: function (result) {
+                alert("提交成功！");
+                window.location.assign("${SITE_URL}personal_center/my_apply/");
+            }
+        })
+    }
+    % else:
+    function CommitApply() {
+        var applicant = $("#inputCount1").val();
+        var introduction = $("#inputCount2").val();
+        var appendix = $('#appendix_id').val();
+        var data = {
+            id: ${id},
+            applicant: applicant,
+            introduction: introduction,
+            appendix: appendix
         };
         $.ajax({
             type: "POST",
@@ -233,6 +278,7 @@
             }
         })
     }
+    % endif
 </script>
 </body>
 

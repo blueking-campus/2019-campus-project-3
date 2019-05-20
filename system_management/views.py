@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST, require_GET
-from django.http import Http404, HttpResponse
+from django.http import Http404
 from django.core.exceptions import ObjectDoesNotExist
 
 from common.mymako import render_mako_context, render_json
@@ -9,6 +8,7 @@ from common.mymako import render_mako_context, render_json
 import json
 from system_management.models import Organization, Award
 from system_management.decorators import require_admin
+from system_management.utils import valid_organization, valid_award
 
 
 # ===============================================================================
@@ -29,7 +29,7 @@ def organization_management(request):
 def add_organization(request):
     """新增组织"""
     result = json.loads(request.body)
-    # TODO：valid
+    valid_organization(result)
     Organization.objects.create_organization(result, request.user)
     return render_json({'result': True, 'data': "add success"})
 
@@ -86,6 +86,7 @@ def award_management(request):
 @require_POST
 def add_award(request):
     result = json.loads(request.body)
+    valid_award(result)
     Award.objects.create(name=result['name'],
                          requirement=result['requirement'],
                          level=result['level'],
@@ -158,6 +159,9 @@ def update_award(request):
     award.organization = Organization.objects.get(id=result['organization'])
     award.begin_time = result['begin_time']
     award.end_time = result['end_time']
+    award.appendix_status = result['appendix_status']
     award.status = result['status']
     award.save()
     return render_json({'result': True, 'data': "update success"})
+
+

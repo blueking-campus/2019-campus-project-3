@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 from django.db import models
 
 from account.models import BkUser
@@ -149,7 +148,6 @@ class Award(models.Model):
     )
     status = models.BooleanField(u"状态", choices=STATUS_CHOICES)
     appendix_status = models.BooleanField(u"附件状态", default=False)
-    # TODO: appendix
     pub_time = models.DateTimeField(u"申报时间", auto_now_add=True)
 
     def __unicode__(self):  # 在Python3中用 __str__ 代替 __unicode__
@@ -182,4 +180,5 @@ class Award(models.Model):
             'organization_id': self.organization.id,
             'begin_time': self.begin_time.strftime("%Y-%m-%d %H:%M:%S"),
             'end_time': self.end_time.strftime("%Y-%m-%d %H:%M:%S"),
+            'appendix_status': self.appendix_status
         }

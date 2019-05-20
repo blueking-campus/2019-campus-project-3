@@ -113,10 +113,13 @@
                 <div class="list-group">
                     % if award_list:
                     % for award in award_list:
-                    <a href="${SITE_URL}personal_center/applying/${award.id}" class="list-group-item">
+                    <a href="${SITE_URL}personal_center/applying/${award.id}" >
+                        <div class="col-lg-3">
+                            <img width="80" height="120" src="http://img.redocn.com/sheying/20160321/jinsejiangbei_6033536_small.jpg">
                         <span class="badge king-info" style="float:none;">${award.organization}</span>
                         <span class="badge king-warning" style="float:none;">${award.name}</span>
                         <span class="badge king-success" style="float:none;">提报人数${award.apply_count}人</span>
+                        </div>
                     </a>
                     % endfor
                     % endif
