@@ -182,7 +182,11 @@
                                     <div class="form-group">
                                         <label class="control-label">附件：</label>
                                         <div class="col-sm-12">
+                                            % if apply_obj.appendix:
                                             <a href="${apply_obj.appendix.get_url()}">${apply_obj.appendix.name}</a>
+                                            % else:
+                                            无
+                                            % endif
                                         </div>
                                     </div>
                                     <div class="form-group">

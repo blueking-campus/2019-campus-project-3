@@ -28,12 +28,13 @@ def my_apply(request):
     uin = request.COOKIES.get('uin', '')
     user_qq = transform_uin(uin)  # 得到用户QQ
     if OrganizationUser.objects.filter(user=user_qq, type=u'1'):
-        organ = OrganizationUser.objects.get(user=user_qq, type=u'1').organization  # 得到用户组织
-        award_can_apply_list = Award.objects.filter(organization=organ, status=True)  # 得到有权限且生效中的奖项
+        organs = OrganizationUser.objects.filter(user=user_qq, type=u'1')
+        for organ in organs:  # 得到用户组织
+            award_can_apply_list = Award.objects.filter(organization=organ.organization, status=True)  # 得到有权限且生效中的奖项
+            for award in award_can_apply_list:
+                if (award.id,) not in award_applyed:
+                    apply_list.append(award)
 
-        for award in award_can_apply_list:
-            if (award.id,) not in award_applyed:
-                apply_list.append(award)
     data = {'apply_list': apply_list, 'applyed_list': applyed_list}
     return render_mako_context(request, '/personal_center/my_apply.html', data)
 
@@ -59,6 +60,8 @@ def add_apply(request):
     data = json.loads(request.body)
     if data['appendix']:
         appendix = Appendix.objects.get(id=data['appendix'])
+    else:
+        appendix = None
     Apply.objects.create(award_id=data['id'], user=request.user, applicant=data['applicant'],
                          introduction=data['introduction'], appendix=appendix)
 
@@ -86,6 +89,8 @@ def update_apply(request):
         raise Http404("Apply does not exist")
     apply_obj.applicant = data['applicant']
     apply_obj.introduction = data['introduction']
+    if data['appendix']:
+        apply_obj.appendix = Appendix.objects.get(id=data['appendix'])
     apply_obj.status = 0
     apply_obj.save()
     return render_json({'result': True, 'data': "update success"})
@@ -161,13 +166,13 @@ def my_review(request):
     """
     我的审核
     """
+    apply_list = []
     uin = request.COOKIES.get('uin', '')
     user_qq = transform_uin(uin)  # 得到用户QQ
-    try:
-        organ = OrganizationUser.objects.get(user=user_qq, type=u'1').organization  # 得到用户组织
-    except ObjectDoesNotExist:
-        raise Http404("Apply does not exist")
-    apply_list = Apply.objects.filter(award__organization=organ).order_by('status')
+    if OrganizationUser.objects.filter(user=user_qq, type=u'1'):
+        organs = OrganizationUser.objects.filter(user=user_qq, type=u'1')
+        for organ in organs:  # 得到用户组织
+            apply_list = Apply.objects.filter(award__organization=organ.organization).order_by('status')
     data = {'apply_list': apply_list}
     return render_mako_context(request, '/personal_center/my_review.html', data)
 

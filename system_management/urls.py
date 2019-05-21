@@ -16,4 +16,5 @@ urlpatterns = patterns(
     (r'^award/([0-9]{1,})/$', 'award_info'),
     (r'^get_award/([0-9]{1,})/$', 'get_award'),
     (r'^update_award/$', 'update_award'),
+    (r'^clone/$', 'clone'),
 )

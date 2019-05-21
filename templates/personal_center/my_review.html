@@ -143,11 +143,17 @@
                                         onclick="location='${SITE_URL}personal_center/remark_apply/${ apply.id }'">
                                     评奖
                                 </button>
+                                % else:
+                                <button class="btn btn-xs btn-primary"
+                                        onclick="location='${SITE_URL}personal_center/get_review_info/${apply.id}'">查看
+                                </button>
                                 % endif
                             </td>
                         </tr>
                         </tbody>
                         % endfor
+                        % else:
+                        暂无可审核申报
                         % endif
                     </table>
                 </div>

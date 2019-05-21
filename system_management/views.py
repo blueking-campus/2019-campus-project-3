@@ -165,3 +165,8 @@ def update_award(request):
     return render_json({'result': True, 'data': "update success"})
 
 
+def clone(request):
+    """批量克隆"""
+    return render_mako_context(request, '/system_management/clone.html')
+
+

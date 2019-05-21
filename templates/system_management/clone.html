@@ -12,6 +12,8 @@
           rel="stylesheet">
     <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/fontawesome/css/font-awesome.css" rel="stylesheet">
     <link href="https://magicbox.bk.tencent.com/static_api/v3/bk/css/bk.css" rel="stylesheet">
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/select2-3.5.2/select2.css" rel="stylesheet">
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/daterangepicker-2.0.5/daterangepicker.css" rel="stylesheet">
     <link href="${STATIC_URL}css/main.css" rel="stylesheet">
 
 </head>
@@ -102,8 +104,56 @@
 
     <div class="king-main-container">
         <div class="container-fluid">
-
-
+            <div class="king-block king-block-bordered">
+                <div class="king-block-header king-gray-light">
+                    <h3 class="king-block-title">批量克隆</h3>
+                </div>
+                <div class="king-block-content">
+                    <form class="form-horizontal" method="POST">
+                        <div class="form-group">
+                            <label for="inputCount1" class="col-sm-1 control-label">申报奖项：</label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control" id="inputCount1" placeholder="">
+                            </div>
+                            <label for="inputCount2" class="col-sm-1 control-label">替换为：</label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control" id="inputCount2" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputCount1" class="col-sm-1 control-label">选择组织：</label>
+                            <div class="plugin3_demo" id="plugin3_demo4" style="display:inline-block;">
+                                <!-- select2 下拉选项可多选 start -->
+                                <select multiple="true" class="select2_box" style="width:263px;padding-left:14px;">
+                                        <option value="石家庄">组织1</option>
+                                        <option value="保定">组织2</option>
+                                        <option value="郑州">组织3</option>
+                                        <option value="驻马店">组织4</option>
+                                </select>
+                                <!-- select2 下拉选项可多选 end -->
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="daterangepicker_demo1" class="control-label col-sm-1">开始日期：</label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control daterangepicker_demo" id="daterangepicker_demo1"
+                                       placeholder="选择日期...">
+                            </div>
+                            <label for="daterangepicker_demo2" class="control-label col-sm-1">结束日期：</label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control daterangepicker_demo" id="daterangepicker_demo2"
+                                       placeholder="选择日期...">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-2 col-sm-offset-1">
+                                <input type="button" class="king-btn king-success mr10" value="预览">
+                                <input type="reset" class="king-btn king-default" value="确认">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
         </div>
     </div>
@@ -115,13 +165,58 @@
 <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/js/bootstrap.min.js"></script>
 <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 <script src="https://magicbox.bk.tencent.com/static_api/v3/bk/js/bk.js"></script>
-<!-- 以下两个插件用于在IE8以及以下版本浏览器支持HTML5元素和媒体查询，如果不需要用可以移除 -->
-<!--[if lt IE 9]>
-<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/html5shiv.min.js"></script>
-<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/respond.min.js"></script>
-<![endif]-->
+<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/select2-3.5.2/select2.js"></script>
+<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/daterangepicker-2.0.5/moment.min.js"></script>
+<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/daterangepicker-2.0.5/daterangepicker.js"></script>
+
 <script src="${STATIC_URL}js/index.js?v=${STATIC_VERSION}"></script>
 <script type="text/javascript">
+    // select2 下拉选项多选
+    $("#plugin3_demo4 .select2_box").select2({
+        placeholder: "选择组织",
+        allowClear: true,
+        maximumSelectionSize: 3
+    });
+    $('#daterangepicker_demo1').daterangepicker({
+        locale: {
+            format: 'YYYY-MM-DD HH:mm:ss'
+        },
+        autoApply: true,//选择日期后自动设置值
+        singleDatePicker: true,//单选选择一个日期
+        timePicker: true,//支持时间选择
+        timePicker24Hour: true,//开启24小时时间制
+        timePickerIncrement: 5, //分钟间隔
+        timePickerSeconds: true //开启分钟选择
+
+     });
+    // 选择end日期
+    $('#daterangepicker_demo1').on('apply.daterangepicker', function(ev, picker) {
+                $('#daterangepicker_demo2').daterangepicker({
+                locale: {
+                    format: 'YYYY-MM-DD HH:mm:ss'
+                },
+                autoApply: true,//选择日期后自动设置值
+                singleDatePicker: true,//单选选择一个日期
+                timePicker: true,//支持时间选择
+                timePicker24Hour: true,//开启24小时时间制
+                timePickerIncrement: 5, //分钟间隔
+                timePickerSeconds: true, //开启分钟选择
+                minDate: $("#daterangepicker_demo1").val()
+                });
+            });
+    $('#daterangepicker_demo2').daterangepicker({
+        locale: {
+            format: 'YYYY-MM-DD HH:mm:ss'
+        },
+        autoApply: true,//选择日期后自动设置值
+        singleDatePicker: true,//单选选择一个日期
+        timePicker: true,//支持时间选择
+        timePicker24Hour: true,//开启24小时时间制
+        timePickerIncrement: 5, //分钟间隔
+        timePickerSeconds: true, //开启分钟选择
+        minDate: $("#daterangepicker_demo1").val()
+     });
+
 
 </script>
 </body>

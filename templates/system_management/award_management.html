@@ -19,8 +19,7 @@
     <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/wangEditor-2.1.22/dist/css/wangEditor.min.css" rel="stylesheet">
     <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/daterangepicker-2.0.5/daterangepicker.css" rel="stylesheet">
     <link href="https://magicbox.bk.tencent.com/static_api/v3/bk/css-pro/bk.css">
-    <link href="https://magicbox.bk.tencent.com/static_api/v3/bk/css-pro/components/switcher.css">
-    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/datatables-1.10.7/dataTables.bootstrap.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://magicbox.bk.tencent.com/static_api/v3/bk/css-pro/components/switcher.css">
     <link href="${STATIC_URL}css/main.css" rel="stylesheet">
     <!-- 以下两个插件用于在IE8以及以下版本浏览器支持HTML5元素和媒体查询，如果不需要用可以移除 -->
     <!--[if lt IE 9]>
@@ -122,7 +121,7 @@
                 </div>
                 <div class="panel-btns">
                     <a class="king-btn king-radius king-primary" title="新增" id="plugin4">新增</a>
-                    <a class="king-btn king-radius king-default" title="批量克隆">批量克隆</a>
+                    <a class="king-btn king-radius king-default" title="批量克隆" href="/system_management/clone">批量克隆</a>
                     <!--<a class="king-btn king-radius king-default" title="数据导出">数据导出</a>-->
                 </div>
                 <div class="panel-body panel-search-body" >
@@ -194,7 +193,7 @@
                         <div class="form-group">
                             <label for="inputCount1" class="control-label col-sm-2">奖项名称：</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="inputCount1" name="inputCount1" placeholder="" value="">
+                                <input type="text" class="form-control" id="inputCount1" name="inputCount1" placeholder="" value="蓝鲸最佳个人">
                             </div>
                         </div>
                         <div class="form-group has-feedback">
@@ -220,9 +219,9 @@
                             <label for="inputCount4" class="control-label col-sm-2">所属组织：</label>
                             <div class="col-sm-9">
                                 <div class="plugin3_demo" id="plugin3_demo3" style="display:inline-block;">
-                            <!-- select2 通过ajax start -->
-                            <input type="hidden" class="select2_box" id="inputCount4" style="width:300px;">
-                            <!-- select2 通过ajax end -->
+                                <!-- select2 通过ajax start -->
+                                <input type="hidden" class="select2_box" name="inputCount4" id="inputCount4" style="width:300px;">
+                                <!-- select2 通过ajax end -->
                                 </div>
                             </div>
                         </div>
@@ -263,11 +262,11 @@
         </div>
         <div id="dialog2" class="panel-body p20" display=none>
                 <div class="col-lg-12">
-                    <from class="form-horizontal">
+                    <form class="form-horizontal" id="form4_demo2">
                         <div class="form-group">
                             <label for="updateCount1" class="control-label col-sm-2">奖项名称：</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="updateCount1" placeholder="" value="蓝鲸king">
+                                <input type="text" class="form-control" name="updateCount1" id="updateCount1" placeholder="" value="蓝鲸最佳个人">
                             </div>
                         </div>
                         <div class="form-group has-feedback">
@@ -294,7 +293,7 @@
                             <div class="col-sm-9">
                                 <div class="plugin3_demo" id="plugin3_demo4" style="display:inline-block;">
                                 <!-- select2 通过ajax start -->
-                                <input class="select2_box" id="updateCount4" style="width:300px;">
+                                <input class="select2_box" name="updateCount4" id="updateCount4" style="width:300px;">
                                 <!-- select2 通过ajax end -->
                                 </div>
                             </div>
@@ -330,7 +329,7 @@
                                 </label>
                             </div>
                         </div>
-                    </from>
+                    </form>
 
             </div>
         </div>
@@ -403,20 +402,6 @@
         minDate: $("#daterangepicker_demo1").val()
      });
     $(document).ready(function () {
-         $('#form4_demo1').validate(
-             {
-                errorElement: 'span',
-                errorClass: 'text-danger',
-                rules: {
-                    inputCount1: {
-                        required: true,
-                    }
-                },
-                messages: {
-                    inputCount1: "请输入名称",
-
-                },
-            });
         $('#table_demo2').find('input[name="checkall"]').click(function () {
             var checked = $(this).prop('checked');
             $('#table_demo2>tbody input').prop('checked', checked);
@@ -454,7 +439,37 @@
         });
 
     });
+    var v = $('#form4_demo1').validate(
+        {
+            errorElement: 'span',
+            errorClass: 'text-danger',
+            rules: {
+                inputCount1: {
+                    required: true,
+                },
+                inputCount4: {
+                    required: true
+                }
+            },
+            messages: {
+                inputCount1: "请输入名称",
+                inputCount4: "请选择组织",
+            },
+        });
+    var vv = $('#form4_demo2').validate(
+     {
+        errorElement: 'span',
+        errorClass: 'text-danger',
+        rules: {
+            updateCount1: {
+                required: true,
+            }
+        },
+        messages: {
+            updateCount1: "请输入名称",
 
+        },
+    });
     function Delete(id) {
         if (confirm('确定要删除？')) {
             var data = {
@@ -484,38 +499,44 @@
             content: document.getElementById('dialog1'),
             okValue: '保存',
             ok: function () {
-                // do something
-                var name = $("#inputCount1").val();
-                var requirement = editor.$txt.html();
-                editor.destroy();
-                var level = document.getElementsByTagName("option")[document.getElementById("inputCount3").selectedIndex].value;
-                var organization = $("#inputCount4").val();
-                var begin_time = $("#daterangepicker_demo1").val();
-                var end_time = $("#daterangepicker_demo2").val();
-                var appendix_status = switcher.getStatus();
-                var status = document.getElementsByName("status")[0].checked;
-                var result = {
-                    name: name,
-                    requirement: requirement,
-                    level: level,
-                    organization: organization,
-                    begin_time: begin_time,
-                    end_time: end_time,
-                    appendix_status: appendix_status,
-                    status: status
-                };
-                $.ajax({
-                    type: "POST",
-                    url: "/system_management/add_award/",
-                    data: JSON.stringify(result),
-                    headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
-                    success: function (result) {
-                        if (result) {
-                            alert("保存成功！")
+                debugger
+                if (v.form() && $('#inputCount4').val()) {
+                    // do something
+                    var name = $("#inputCount1").val();
+                    var requirement = editor.$txt.html();
+                    editor.destroy();
+                    var level = document.getElementsByTagName("option")[document.getElementById("inputCount3").selectedIndex].value;
+                    var organization = $("#inputCount4").val();
+                    var begin_time = $("#daterangepicker_demo1").val();
+                    var end_time = $("#daterangepicker_demo2").val();
+                    var appendix_status = switcher.getStatus();
+                    var status = document.getElementsByName("status")[0].checked;
+                    var result = {
+                        name: name,
+                        requirement: requirement,
+                        level: level,
+                        organization: organization,
+                        begin_time: begin_time,
+                        end_time: end_time,
+                        appendix_status: appendix_status,
+                        status: status
+                    };
+                    $.ajax({
+                        type: "POST",
+                        url: "/system_management/add_award/",
+                        data: JSON.stringify(result),
+                        headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
+                        success: function (result) {
+                            if (result) {
+                                alert("保存成功！")
+                            }
+                            //window.location.reload()
                         }
-                        //window.location.reload()
-                    }
-                });
+                    });
+                }else{
+                    if (!$('#inputCount4').val()){alert("请选择组织");}
+                    return false;
+                }
             },
             cancelValue: '取消',
             cancel: function () {
@@ -597,41 +618,46 @@
                     content: document.getElementById('dialog2'),
                     okValue: '保存',
                     ok: function () {
-                        var name = $("#updateCount1").val();
-                        var requirement = editor.$txt.html();
-                        editor.destroy();
-                        var level = document.getElementsByTagName("option")[document.getElementById("updateCount3").selectedIndex].value;
-                        var organization = $("#plugin3_demo4 .select2_box").select2("val");
-                        if (!organization){
-                            organization = res.organization_id;
-                        }
-                        var begin_time = $("#daterangepicker_demo3").val();
-                        var end_time = $("#daterangepicker_demo4").val();
-                        var appendix_status = switcher.getStatus();
-                        var status = document.getElementsByName("status")[0].checked;
-                        var result = {
-                            id: id,
-                            name: name,
-                            requirement: requirement,
-                            level: level,
-                            organization: organization,
-                            begin_time: begin_time,
-                            end_time: end_time,
-                            appendix_status: appendix_status,
-                            status: status
-                        };
-                        $.ajax({
-                            type: "POST",
-                            url: "/system_management/update_award/",
-                            data: JSON.stringify(result),
-                            headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
-                            success: function (result) {
-                                if (result) {
-                                    alert("更新成功！")
-                                }
-                                window.location.reload()
+                        if (vv.form() && $('#updateCount4').val()) {
+                            var name = $("#updateCount1").val();
+                            var requirement = editor.$txt.html();
+                            editor.destroy();
+                            var level = document.getElementsByTagName("option")[document.getElementById("updateCount3").selectedIndex].value;
+                            var organization = $("#plugin3_demo4 .select2_box").select2("val");
+                            if (!organization) {
+                                organization = res.organization_id;
                             }
-                        });
+                            var begin_time = $("#daterangepicker_demo3").val();
+                            var end_time = $("#daterangepicker_demo4").val();
+                            var appendix_status = switcher.getStatus();
+                            var status = document.getElementsByName("status")[0].checked;
+                            var result = {
+                                id: id,
+                                name: name,
+                                requirement: requirement,
+                                level: level,
+                                organization: organization,
+                                begin_time: begin_time,
+                                end_time: end_time,
+                                appendix_status: appendix_status,
+                                status: status
+                            };
+                            $.ajax({
+                                type: "POST",
+                                url: "/system_management/update_award/",
+                                data: JSON.stringify(result),
+                                headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
+                                success: function (result) {
+                                    if (result) {
+                                        alert("更新成功！")
+                                    }
+                                    window.location.reload()
+                                }
+                            });
+                        }else {
+                            if (!$('#updateCount4').val()){alert("请选择组织");}
+                            return false;
+                        }
                     },
                     cancelValue: '取消',
                     cancel: function () {
@@ -695,40 +721,44 @@
                     content: document.getElementById('dialog2'),
                     okValue: '保存',
                     ok: function () {
-                        var name = $("#updateCount1").val();
-                        var requirement = editor.$txt.html();
-                        editor.destroy();
-                        var level = document.getElementsByTagName("option")[document.getElementById("updateCount3").selectedIndex].value;
-                        var organization = $("#plugin3_demo4 .select2_box").select2("val");
-                        if (!organization){
-                            organization = res.organization_id;
-                        }
-                        var begin_time = $("#daterangepicker_demo3").val();
-                        var end_time = $("#daterangepicker_demo4").val();
-                        var appendix_status = false;
-                        var status = document.getElementsByName("status")[0].checked;
-                        var result = {
-                            name: name,
-                            requirement: requirement,
-                            level: level,
-                            organization: organization,
-                            begin_time: begin_time,
-                            end_time: end_time,
-                            appendix_status: appendix_status,
-                            status: status
-                        };
-                        $.ajax({
-                            type: "POST",
-                            url: "/system_management/add_award/",
-                            data: JSON.stringify(result),
-                            headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
-                            success: function (result) {
-                                if (result) {
-                                    alert("克隆成功！")
-                                }
-                                window.location.reload()
+                        if (vv.form()) {
+                            var name = $("#updateCount1").val();
+                            var requirement = editor.$txt.html();
+                            editor.destroy();
+                            var level = document.getElementsByTagName("option")[document.getElementById("updateCount3").selectedIndex].value;
+                            var organization = $("#plugin3_demo4 .select2_box").select2("val");
+                            if (!organization) {
+                                organization = res.organization_id;
                             }
-                        });
+                            var begin_time = $("#daterangepicker_demo3").val();
+                            var end_time = $("#daterangepicker_demo4").val();
+                            var appendix_status = false;
+                            var status = document.getElementsByName("status")[0].checked;
+                            var result = {
+                                name: name,
+                                requirement: requirement,
+                                level: level,
+                                organization: organization,
+                                begin_time: begin_time,
+                                end_time: end_time,
+                                appendix_status: appendix_status,
+                                status: status
+                            };
+                            $.ajax({
+                                type: "POST",
+                                url: "/system_management/add_award/",
+                                data: JSON.stringify(result),
+                                headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
+                                success: function (result) {
+                                    if (result) {
+                                        alert("克隆成功！")
+                                    }
+                                    window.location.reload()
+                                }
+                            });
+                        }else {
+                            return false;
+                        }
                     },
                     cancelValue: '取消',
                     cancel: function () {

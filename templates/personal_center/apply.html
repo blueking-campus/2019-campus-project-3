@@ -9,6 +9,7 @@
 
     <!-- Bootstrap css -->
     <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/css/bootstrap_noresponsive.css" rel="stylesheet">
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/fontawesome/css/font-awesome.css" rel="stylesheet">
     <link href="https://magicbox.bk.tencent.com/static_api/v3/bk/css/bk.css" rel="stylesheet">
     <link rel="stylesheet" href="https://magicbox.bk.tencent.com/static_api/v3/assets/kendoui-2015.2.624/styles/kendo.common.min.css" />
@@ -162,17 +163,17 @@
                         </div>
                         <div class="tab-pane fade king-block-content active in container-fluid">
                             <div class="col-sm-10">
-                                <from class="form-horizontal">
+                                <form class="form-horizontal" id="form5_demo1">
                                     <div class="form-group">
                                         <label for="inputCount1" class="control-label">申报人/团队：</label>
                                         <div class="col-sm-12">
-                                            <input type="text" class="form-control" id="inputCount1" placeholder="">
+                                            <input type="text" class="form-control" id="inputCount1" placeholder="" required>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="inputCount2" class="control-label">事迹介绍：</label>
                                         <div class="col-sm-12">
-                                            <textarea class="form-control" id="inputCount2" placeholder="" rows=10 style="resize:none"></textarea>
+                                            <textarea class="form-control" id="inputCount2" placeholder="" rows=10 style="resize:none" required></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -180,18 +181,18 @@
                                         <div class="col-sm-12">
                                             <div class="demo" id="kendo_upload_demo3">
                                                 <input name="files" class="file_input" type="file" />
-                                                <span id="appendix_id"> </span>
+                                                <div id="appendix_id"> </div>
                                             </div>
                                         </div>
                                     </div>
-                                </from>
+                                </form>
                             </div>
                         </div>
                         <div class="panel-footer">
                             % if apply_obj:
-                            <a class="king-btn king-primary" title="申报" onclick="UpdateApply()">申报</a>
+                            <a class="king-btn king-primary"  title="申报" onclick="UpdateApply()">申报</a>
                             % else:
-                            <a class="king-btn king-primary" title="申报" onclick="CommitApply()">申报</a>
+                            <a class="king-btn king-primary"  title="申报" onclick="CommitApply()">申报</a>
                             % endif
                             <a class="king-btn king-default" title="取消"
                                href="${SITE_URL}personal_center/my_apply/">取消</a>
@@ -210,10 +211,14 @@
 <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 <script src="https://magicbox.bk.tencent.com/static_api/v3/bk/js/bk.js"></script>
 <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/kendoui-2015.2.624/js/kendo.all.min.js"></script>
+<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/validate-1.14.0/js/jquery.validate.js"></script>
+<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/jquery-validation-bootstrap-tooltip-0.10.2/jquery-validate.bootstrap-tooltip.js"></script>
+<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/jquery-validation-bootstrap-tooltip-0.10.2/messages_zh.js"></script>
 <script src="${STATIC_URL}js/index.js?v=${STATIC_VERSION}"></script>
 
 
 <script type="text/javascript">
+    var v = $("#form5_demo1").validate();
     $("#kendo_upload_demo3 .file_input").kendoUpload({
         localization: {
             select: "请选择文件...",
@@ -235,48 +240,54 @@
     $('#inputCount1').attr("value",'${apply_obj.applicant}');
     $('#inputCount2').val('${apply_obj.introduction}');
     % if apply_obj.appendix:
-        $('#appendix_id').text(<a href="${apply_obj.appendix.get_url()}">${apply_obj.appendix.name}</a>)
+        $('#appendix_id').html("<a href='${apply_obj.appendix.get_url()}'>${apply_obj.appendix.name}</a>")
     % endif
     function UpdateApply() {
-        var applicant = $("#inputCount1").val();
-        var introduction = $("#inputCount2").val();
-        var data = {
-            id: ${apply_obj.id},
-            applicant: applicant,
-            introduction: introduction
-        };
-        $.ajax({
-            type: "POST",
-            url: "/personal_center/update_apply/",
-            data: JSON.stringify(data),
-            headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
-            success: function (result) {
-                alert("提交成功！");
-                window.location.assign("${SITE_URL}personal_center/my_apply/");
-            }
-        })
+        if(v.form()) {
+            var applicant = $("#inputCount1").val();
+            var introduction = $("#inputCount2").val();
+            var appendix = $('#appendix_id').val();
+            var data = {
+                id: ${apply_obj.id},
+                applicant: applicant,
+                introduction: introduction,
+                appendix: appendix
+            };
+            $.ajax({
+                type: "POST",
+                url: "/personal_center/update_apply/",
+                data: JSON.stringify(data),
+                headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
+                success: function (result) {
+                    alert("提交成功！");
+                    window.location.assign("${SITE_URL}personal_center/my_apply/");
+                }
+            })
+        }
     }
     % else:
     function CommitApply() {
-        var applicant = $("#inputCount1").val();
-        var introduction = $("#inputCount2").val();
-        var appendix = $('#appendix_id').val();
-        var data = {
-            id: ${id},
-            applicant: applicant,
-            introduction: introduction,
-            appendix: appendix
-        };
-        $.ajax({
-            type: "POST",
-            url: "/personal_center/add_apply/",
-            data: JSON.stringify(data),
-            headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
-            success: function (result) {
-                alert("申报成功！");
-                window.location.assign("${SITE_URL}personal_center/my_apply/");
-            }
-        })
+        if(v.form()) {
+            var applicant = $("#inputCount1").val();
+            var introduction = $("#inputCount2").val();
+            var appendix = $('#appendix_id').val();
+            var data = {
+                id: ${id},
+                applicant: applicant,
+                introduction: introduction,
+                appendix: appendix
+            };
+            $.ajax({
+                type: "POST",
+                url: "/personal_center/add_apply/",
+                data: JSON.stringify(data),
+                headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
+                success: function (result) {
+                    alert("申报成功！");
+                    window.location.assign("${SITE_URL}personal_center/my_apply/");
+                }
+            })
+        }
     }
     % endif
 </script>
