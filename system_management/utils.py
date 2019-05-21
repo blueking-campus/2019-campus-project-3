@@ -13,7 +13,7 @@ def valid_organization(data):
     else:
         raise InvalidData(u'组织名字不能为空')
 
-    if len(data['head']) == 0 or len(data['eva_member']) == 0:
+    if len(data['reviewers']) == 0 or len(data['members']) == 0:
         raise InvalidData(u'负责人或评价人员不能为空')
 
 

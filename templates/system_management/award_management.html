@@ -18,8 +18,9 @@
     <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/select2-3.5.2/select2.css" rel="stylesheet">
     <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/wangEditor-2.1.22/dist/css/wangEditor.min.css" rel="stylesheet">
     <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/daterangepicker-2.0.5/daterangepicker.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://magicbox.bk.tencent.com/static_api/v3/bk/css-pro/bk.css">
-    <link rel="stylesheet" href="https://magicbox.bk.tencent.com/static_api/v3/bk/css-pro/components/switcher.css">
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/bk/css-pro/bk.css">
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/bk/css-pro/components/switcher.css">
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/datatables-1.10.7/dataTables.bootstrap.css" rel="stylesheet"/>
     <link href="${STATIC_URL}css/main.css" rel="stylesheet">
     <!-- 以下两个插件用于在IE8以及以下版本浏览器支持HTML5元素和媒体查询，如果不需要用可以移除 -->
     <!--[if lt IE 9]>
@@ -189,7 +190,7 @@
         </div>
         <div id="dialog1" class="panel-body p20"  display=none>
                 <div class="col-lg-12">
-                    <from class="form-horizontal" id="form4_demo1">
+                    <form class="form-horizontal" id="form4_demo1">
                         <div class="form-group">
                             <label for="inputCount1" class="control-label col-sm-2">奖项名称：</label>
                             <div class="col-sm-9">
@@ -256,7 +257,7 @@
                                 </label>
                             </div>
                         </div>
-                    </from>
+                    </form>
 
             </div>
         </div>
@@ -352,6 +353,7 @@
 <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/validate-1.14.0/js/jquery.validate.js"></script>
 <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/jquery-validation-bootstrap-tooltip-0.10.2/jquery-validate.bootstrap-tooltip.js"></script>
 <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/jquery-validation-bootstrap-tooltip-0.10.2/messages_zh.js"></script>
+
 <script src="${STATIC_URL}js/index.js?v=${STATIC_VERSION}"></script>
 <script type="text/javascript">
     $('#inputCount7').bkSwitcher({
@@ -401,8 +403,6 @@
         minDate: $("#daterangepicker_demo1").val()
      });
     $(document).ready(function () {
-        // debugger
-        // $("#dialog1").css("display","");
          $('#form4_demo1').validate(
              {
                 errorElement: 'span',
@@ -410,11 +410,10 @@
                 rules: {
                     inputCount1: {
                         required: true,
-                        minlength: 2
                     }
                 },
                 messages: {
-                    inputCount1: "请输入姓名(至少两位)",
+                    inputCount1: "请输入名称",
 
                 },
             });
@@ -517,7 +516,6 @@
                         //window.location.reload()
                     }
                 });
-                return false;
             },
             cancelValue: '取消',
             cancel: function () {

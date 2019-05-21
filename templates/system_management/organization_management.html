@@ -166,55 +166,54 @@
 
     <div id="dialog1" class="panel-body p20" display=none>
             <div class="col-lg-12">
-                <from class="form-horizontal" id="form5_demo1">
+                <form class="form-horizontal" id="form5_demo1">
                     <div class="form-group">
-                        <label for="inputCount3" class="control-label col-sm-3" >所属组织：</label>
+                        <label for="inputCount1" class="control-label col-sm-3" >所属组织：</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" name="organization" id="inputCount1" placeholder="" >
+                            <input type="text" class="form-control" name="inputCount1" id="inputCount1" placeholder="" >
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="inputCount3" class="control-label col-sm-3">负责人员：</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" name="reviewers" id="inputCount2" placeholder="" >
+                            <input type="text" class="form-control" name="inputCount2" id="inputCount2" placeholder="" >
                             <p class="help-block">负责人员qq,用;分隔</p>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="inputCount3" class="control-label col-sm-3">参评人员：</label>
                         <div class="col-sm-9">
-                            <textarea class="form-control" name="members" id="inputCount3" placeholder="" style="resize:none"></textarea>
+                            <textarea class="form-control" name="inputCount3" id="inputCount3" placeholder="" style="resize:none"></textarea>
                             <p class="help-block">参评人员qq,用;分隔</p>
                         </div>
                     </div>
-                </from>
+                </form>
             </div>
     </div>
     <div id="dialog2" class="panel-body p20" display=none>
-
                 <div class="col-lg-12">
-                    <from class="form-horizontal">
+                    <form class="form-horizontal" id="form5_demo2">
                         <div class="form-group">
-                            <label for="inputCount3" class="control-label col-sm-3">所属组织：</label>
+                            <label for="inputCount4" class="control-label col-sm-3">所属组织：</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="inputCount4" placeholder="">
+                                <input type="text" class="form-control" name="inputCount4" id="inputCount4" placeholder="">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="inputCount3" class="control-label col-sm-3">负责人员：</label>
+                            <label for="inputCount5" class="control-label col-sm-3">负责人员：</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="inputCount5" placeholder="">
+                                <input type="text" class="form-control" name="inputCount5" id="inputCount5" placeholder="">
                                 <p class="help-block">负责人员qq,用;分隔</p>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="inputCount3" class="control-label col-sm-3">参评人员：</label>
+                            <label for="inputCount6" class="control-label col-sm-3">参评人员：</label>
                             <div class="col-sm-9">
-                                <textarea class="form-control" id="inputCount6" placeholder=""></textarea>
+                                <textarea class="form-control" name="inputCount6" id="inputCount6" placeholder="" style="resize:none"></textarea>
                                 <p class="help-block">参评人员qq,用;分隔</p>
                             </div>
                         </div>
-                    </from>
+                    </form>
                 </div>
 
         </div>
@@ -226,8 +225,68 @@
     <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/artDialog-6.0.4/dist/dialog-min.js"></script>
     <script src="https://magicbox.bk.tencent.com/static_api/v3/bk/js/bk.js"></script>
+    <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/validate-1.14.0/js/jquery.validate.js"></script>
+    <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/jquery-validation-bootstrap-tooltip-0.10.2/jquery-validate.bootstrap-tooltip.js"></script>
+    <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/jquery-validation-bootstrap-tooltip-0.10.2/messages_zh.js"></script>
     <script src="${STATIC_URL}js/index.js?v=${STATIC_VERSION}"></script>
     <script type="text/javascript">
+        $.validator.addMethod("qqs",function(value, element, param){
+                if(/^([0-9]{3,};)*([0-9]{3,})?$/.test(value)){
+                     return true;
+                }
+        });
+        var v = jQuery('#form5_demo1').validate(
+             {
+                errorElement: 'span',
+                errorClass: 'text-danger',
+                rules: {
+                    inputCount1: {
+                        required: true,
+                        minlength: 1
+                    },
+                    inputCount2: {
+                        qqs: true,
+                        required: true,
+                        minlength: 1
+                    },
+                    inputCount3: {
+                        qqs: true,
+                        required: true,
+                        minlength: 1
+                    }
+                },
+                messages: {
+                    inputCount1: "请输入组织名称",
+                    inputCount2: "请输入负责人员qq,用;分隔",
+                    inputCount3: "请输入参评人员qq,用;分隔"
+                }
+            });
+        var vv = jQuery('#form5_demo2').validate(
+             {
+                errorElement: 'span',
+                errorClass: 'text-danger',
+                rules: {
+                    inputCount4: {
+                        required: true,
+                        minlength: 1
+                    },
+                    inputCount5: {
+                        qqs: true,
+                        required: true,
+                        minlength: 1
+                    },
+                    inputCount6: {
+                        qqs: true,
+                        required: true,
+                        minlength: 1
+                    }
+                },
+                messages: {
+                    inputCount4: "请输入组织名称",
+                    inputCount5: "请输入负责人员qq,用;分隔",
+                    inputCount6: "请输入参评人员qq,用;分隔"
+                }
+            });
         $(document).ready(function() {
             $('#table_demo2').find('input[name="checkall"]').click(function() {
                 var checked = $(this).prop('checked');
@@ -262,32 +321,38 @@
                 content: document.getElementById('dialog1'),
                 okValue: '保存',
                 ok: function () {
-                    console.log(arguments)
-                    // do something
-                    var name = $("#inputCount1").val();
-                    var reviewers = $("#inputCount2").val();
-                    var members = $("#inputCount3").val();
-                    var result = {
-                        name: name,
-                        reviewers: reviewers,
-                        members: members
-                    };
-                    $.ajax({
-                        type: "POST",
-                        url: "/system_management/add_organization/",
-                        data: JSON.stringify(result),
-                        headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
-                        success: function (result) {
-                            alert("保存成功！");
-                            console.log(result);
-                            window.location.reload();
-                        }
-                    });
+                    debugger
+                    if (v.form()){
+                        //提交
+                        var name = $("#inputCount1").val();
+                        var reviewers = $("#inputCount2").val();
+                        var members = $("#inputCount3").val();
+                        var result = {
+                            name: name,
+                            reviewers: reviewers,
+                            members: members
+                        };
+                        $.ajax({
+                            type: "POST",
+                            url: "/system_management/add_organization/",
+                            data: JSON.stringify(result),
+                            headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
+                            success: function (result) {
+                                alert("保存成功！");
+                                console.log(result);
+                                window.location.reload();
+                            }
+                        });
+                    }
+                    else {
+                    return false;
+                    }
                 },
                 cancelValue: '取消',
                 cancel: function () {
                 },
                 onshow: function () {
+
                 }
             });
             d.show();
