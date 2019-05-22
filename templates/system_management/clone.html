@@ -12,6 +12,8 @@
           rel="stylesheet">
     <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/fontawesome/css/font-awesome.css" rel="stylesheet">
     <link href="https://magicbox.bk.tencent.com/static_api/v3/bk/css/bk.css" rel="stylesheet">
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/select2-3.5.2/select2.css" rel="stylesheet">
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/daterangepicker-2.0.5/daterangepicker.css" rel="stylesheet">
     <link href="${STATIC_URL}css/main.css" rel="stylesheet">
 
 </head>
@@ -102,9 +104,97 @@
 
     <div class="king-main-container">
         <div class="container-fluid">
-
-
-
+            <div class="king-block king-block-bordered">
+                <div class="king-block-header king-gray-light">
+                    <h3 class="king-block-title">批量克隆</h3>
+                </div>
+                <div class="king-block-content">
+                    <form class="form-horizontal" method="POST">
+                        <div class="form-group">
+                            <label for="inputCount1" class="col-sm-1 control-label">申报奖项：</label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control" id="inputCount1" placeholder="" value="蓝鲸">
+                            </div>
+                            <label for="inputCount2" class="col-sm-1 control-label">替换为：</label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control" id="inputCount2" placeholder="" value="腾讯">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="plugin3_demo4" class="col-sm-1 control-label">选择组织：</label>
+                            <div class="plugin3_demo" id="plugin3_demo4" style="display:inline-block;">
+                                <!-- select2 下拉选项可多选 start -->
+                                <select multiple="true" class="select2_box" placeholder="不限" style="width:263px;padding-left:14px;">
+                                    % if organizations:
+                                    % for organ in organizations:
+                                    <option value=${organ.id}>${organ.name}</option>
+                                    % endfor
+                                    % endif
+                                </select>
+                                <!-- select2 下拉选项可多选 end -->
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="daterangepicker_demo1" class="control-label col-sm-1">开始日期：</label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control daterangepicker_demo" id="daterangepicker_demo1"
+                                       placeholder="选择日期...">
+                            </div>
+                            <label for="daterangepicker_demo2" class="control-label col-sm-1">替换为：</label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control daterangepicker_demo" id="daterangepicker_demo3"
+                                       placeholder="选择日期...">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="daterangepicker_demo3" class="control-label col-sm-1">结束日期：</label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control daterangepicker_demo" id="daterangepicker_demo2"
+                                       placeholder="选择日期...">
+                            </div>
+                            <label for="daterangepicker_demo4" class="control-label col-sm-1">替换为：</label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control daterangepicker_demo" id="daterangepicker_demo4"
+                                       placeholder="选择日期...">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-2 col-sm-offset-1">
+                                <input type="button" class="king-btn king-success mr10"  onclick="clone_preview()" value="预览">
+                                <input type="reset" class="king-btn king-default" onclick="batch_clone()" value="确认">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="panel-body panel-search-body" >
+                    <div class="panel-content">
+                        <table class="table table-out-bordered table-header-bg table-hover" id="table_demo2">
+                            <thead>
+                            <tr>
+                                <th style="width:10%">所属组织</th>
+                                <th style="width:10%">奖项级别</th>
+                                <th style="width:10%">申报奖项</th>
+                                <th style="width:10%">替换后奖项名称</th>
+                                <th style="width:15%">开始时间</th>
+                                <th style="width:15%">结束时间</th>
+                                <th style="width:15%">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <td></td>
+                                <td colspan="10">
+                                </td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
         </div>
     </div>
 </div>
@@ -115,14 +205,152 @@
 <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/js/bootstrap.min.js"></script>
 <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 <script src="https://magicbox.bk.tencent.com/static_api/v3/bk/js/bk.js"></script>
-<!-- 以下两个插件用于在IE8以及以下版本浏览器支持HTML5元素和媒体查询，如果不需要用可以移除 -->
-<!--[if lt IE 9]>
-<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/html5shiv.min.js"></script>
-<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/respond.min.js"></script>
-<![endif]-->
+<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/select2-3.5.2/select2.js"></script>
+<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/daterangepicker-2.0.5/moment.min.js"></script>
+<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/daterangepicker-2.0.5/daterangepicker.js"></script>
+
 <script src="${STATIC_URL}js/index.js?v=${STATIC_VERSION}"></script>
 <script type="text/javascript">
+    // select2 下拉选项多选
+    $("#plugin3_demo4 .select2_box").select2({
+        placeholder: "选择组织",
+        allowClear: true,
+    });
+    $('#daterangepicker_demo1').daterangepicker({
+        locale: {
+            format: 'YYYY-MM-DD HH:mm:ss'
+        },
+        autoApply: true,//选择日期后自动设置值
+        singleDatePicker: true,//单选选择一个日期
+        timePicker: true,//支持时间选择
+        timePicker24Hour: true,//开启24小时时间制
+        timePickerIncrement: 5, //分钟间隔
+        timePickerSeconds: true //开启分钟选择
 
+     });
+    // 选择end日期
+    $('#daterangepicker_demo1').on('apply.daterangepicker', function(ev, picker) {
+                $('#daterangepicker_demo2').daterangepicker({
+                locale: {
+                    format: 'YYYY-MM-DD HH:mm:ss'
+                },
+                autoApply: true,//选择日期后自动设置值
+                singleDatePicker: true,//单选选择一个日期
+                timePicker: true,//支持时间选择
+                timePicker24Hour: true,//开启24小时时间制
+                timePickerIncrement: 5, //分钟间隔
+                timePickerSeconds: true, //开启分钟选择
+                minDate: $("#daterangepicker_demo1").val()
+                });
+            });
+    $('#daterangepicker_demo2').daterangepicker({
+        locale: {
+            format: 'YYYY-MM-DD HH:mm:ss'
+        },
+        autoApply: true,//选择日期后自动设置值
+        singleDatePicker: true,//单选选择一个日期
+        timePicker: true,//支持时间选择
+        timePicker24Hour: true,//开启24小时时间制
+        timePickerIncrement: 5, //分钟间隔
+        timePickerSeconds: true, //开启分钟选择
+        minDate: $("#daterangepicker_demo1").val()
+     });
+    $('#daterangepicker_demo3').daterangepicker({
+        locale: {
+            format: 'YYYY-MM-DD HH:mm:ss'
+        },
+        autoApply: true,//选择日期后自动设置值
+        singleDatePicker: true,//单选选择一个日期
+        timePicker: true,//支持时间选择
+        timePicker24Hour: true,//开启24小时时间制
+        timePickerIncrement: 5, //分钟间隔
+        timePickerSeconds: true //开启分钟选择
+     });
+    // 选择end日期
+    $('#daterangepicker_demo3').on('apply.daterangepicker', function(ev, picker) {
+                $('#daterangepicker_demo4').daterangepicker({
+                locale: {
+                    format: 'YYYY-MM-DD HH:mm:ss'
+                },
+                autoApply: true,//选择日期后自动设置值
+                singleDatePicker: true,//单选选择一个日期
+                timePicker: true,//支持时间选择
+                timePicker24Hour: true,//开启24小时时间制
+                timePickerIncrement: 5, //分钟间隔
+                timePickerSeconds: true, //开启分钟选择
+                minDate: $("#daterangepicker_demo3").val()
+                });
+            });
+    $('#daterangepicker_demo4').daterangepicker({
+        locale: {
+            format: 'YYYY-MM-DD HH:mm:ss'
+        },
+        autoApply: true,//选择日期后自动设置值
+        singleDatePicker: true,//单选选择一个日期
+        timePicker: true,//支持时间选择
+        timePicker24Hour: true,//开启24小时时间制
+        timePickerIncrement: 5, //分钟间隔
+        timePickerSeconds: true, //开启分钟选择
+        minDate: $("#daterangepicker_demo1").val()
+     });
+
+    function clone_preview() {
+        var name = $('#inputCount1').val();
+        var organ_ids = $('#plugin3_demo4 .select2_box').select2("val");
+        var begin_time = $("#daterangepicker_demo1").val();
+        var end_time = $("#daterangepicker_demo2").val();
+        var alter_name = $('#inputCount2').val();
+        var alter_begin_time = $("#daterangepicker_demo3").val();
+        var alter_end_time = $("#daterangepicker_demo4").val();
+        var data = {
+            name: name,
+            organ_ids: organ_ids,
+            begin_time: begin_time,
+            end_time: end_time,
+            alter_name: alter_name,
+            alter_begin_time: alter_begin_time,
+            alter_end_time: alter_end_time
+        };
+        $.ajax({
+            url: "/system_management/clone_preview/",
+            type: "Post",
+            data: JSON.stringify(data),
+            headers: {"X-CSRFToken": $.cookie('csrftoken')},// 从Cookie取csrf_token，并设置ajax请求头
+            success: function (result) {
+                var tbody = $('#table_demo2 > tbody ') //找到节点
+                for (var i = 0; i <= result.preview_data.length - 1; i++) {
+                    var tr = document.createElement('tr');
+                    var td = document.createElement('td');
+                    td.innerHTML = result.preview_data[i].organization;
+                    tr.append(td);
+                    var td = document.createElement('td');
+                    td.innerHTML = result.preview_data[i].level;
+                    tr.append(td);
+                    var td = document.createElement('td');
+                    td.innerHTML = result.preview_data[i].name;
+                    tr.append(td);
+                    var td = document.createElement('td');
+                    td.innerHTML = result.preview_data[i].alter_name;
+                    tr.append(td);
+                    var td = document.createElement('td');
+                    td.innerHTML = result.preview_data[i].begin_time;
+                    tr.append(td);
+                    var td = document.createElement('td');
+                    td.innerHTML = result.preview_data[i].end_time;
+                    tr.append(td);
+                    var td = document.createElement('td');
+                    td.innerHTML = '<button class="btn btn-xs btn-primary" >查看</button>' +
+                                    '<button class="btn btn-xs btn-primary" > 编辑 </button>' +
+                                    '<button class="btn btn-xs btn-danger" > 删除 </button>'
+                    tr.append(td);
+                    tbody.append(tr);
+                }
+            }
+        })
+    }
+    function batch_clone() {
+        window.location.href("/")
+    }
 </script>
 </body>
 

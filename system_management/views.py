@@ -165,3 +165,43 @@ def update_award(request):
     return render_json({'result': True, 'data': "update success"})
 
 
+@require_GET
+def clone(request):
+    """批量克隆"""
+    organizations = Organization.objects.all()
+    return render_mako_context(request, '/system_management/clone.html', {'organizations': organizations})
+
+
+@require_POST
+def clone_preview(request):
+    """
+    批量克隆预览
+    POST api: {name: "蓝鲸q1"，organ_ids: "[1,2]", begin_time: "2019-05-22 00:00:00", "end_time": "2019-05-22 00:00:00",
+    alter_name: "蓝鲸q2", alter_begin_time: "2019-05-22 00:00:00", "alter_end_time": "2019-05-22 00:00:00"}
+    """
+    result = json.loads(request.body)
+    if result['organ_ids']:
+        awards = Award.objects.filter(
+            name__contains=result['name'],
+            begin_time__range=(result['begin_time'], result['end_time']),
+            end_time__range=(result['begin_time'], result['end_time']),
+            organization_id__in=result['organ_ids']
+        )
+    else:
+        awards = Award.objects.filter(
+            name__contains=result['name'],
+            begin_time__range=(result['begin_time'], result['end_time']),
+            end_time__range=(result['begin_time'], result['end_time']),
+        )
+    preview_data = [
+            {
+                "id": award.id,
+                "name": award.name,
+                "alter_name": award.name.replace(result['name'], result['alter_name']),
+                "organization": award.organization.name,
+                "level": award.get_level_display(),
+                "begin_time": result['alter_begin_time'],
+                "end_time": result['alter_end_time']
+            } for award in awards
+        ]
+    return render_json({'preview_data': preview_data})

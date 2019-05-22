@@ -39,7 +39,7 @@
                         <li class="user-info">
                             <a href="#">
                                 <img class="img-rounded" src="${STATIC_URL}images/qq.png" id="avatar">
-                                <span id="nick">admin</span>
+                                <span id="nick">未登录</span>
                             </a>
                         </li>
                     </ul>
@@ -97,7 +97,7 @@
                     </a>
                     <ul class="sub-menu">
                         <li>
-                            <a href="blank.html">空白<i class="fa fa-chevron-right pull-right"></i></a>
+                            <a href="/admin/">admin<i class="fa fa-chevron-right pull-right"></i></a>
                         </li>
                     </ul>
                 </li>
@@ -114,14 +114,19 @@
                     % if award_list:
                     % for award in award_list:
                     <a href="${SITE_URL}personal_center/applying/${award.id}" >
-                        <div class="col-lg-3">
+                        <div class="col-lg-2" align="center">
                             <img width="80" height="120" src="http://img.redocn.com/sheying/20160321/jinsejiangbei_6033536_small.jpg">
-                        <span class="badge king-info" style="float:none;">${award.organization}</span>
+                        <div class="row mt15"><span class="badge king-info" style="float:none;">${award.organization}</span>
                         <span class="badge king-warning" style="float:none;">${award.name}</span>
-                        <span class="badge king-success" style="float:none;">提报人数${award.apply_count}人</span>
+                        </div>
+                            <div class="row"><span class="badge king-success" style="float:none;">提报人数${award.apply_count}人</span></div>
                         </div>
                     </a>
                     % endfor
+                    % else:
+                    <div class="col-lg-2">
+                        暂无可申报奖项
+                    </div>
                     % endif
                 </div>
             </div>

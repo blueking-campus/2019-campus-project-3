@@ -8,9 +8,11 @@ from bkoauth.utils import transform_uin
 from personal_center.utils import is_reviewer
 from personal_center.models import Apply
 from system_management.models import Award, OrganizationUser
+from account.decorators import login_exempt
 # 开发框架中通过中间件默认是需要登录态的，如有不需要登录的，可添加装饰器login_exempt【装饰器引入from account.decorators import login_exempt】
 
 
+@login_exempt
 def home(request):
     """
     首页
@@ -19,13 +21,14 @@ def home(request):
     uin = request.COOKIES.get('uin', '')
     user_qq = transform_uin(uin)
     if OrganizationUser.objects.filter(user=user_qq, type=u'1'):
-        organ = OrganizationUser.objects.get(user=user_qq, type=u'1').organization  # 得到用户组织
-        award_can_apply_list = Award.objects.filter(organization=organ, status=True)  # 得到有权限且生效中的奖项
+        organs = OrganizationUser.objects.filter(user=user_qq, type=u'1')
         award_applyed = Apply.objects.filter(user=request.user).values_list('award')  # 已申报的奖项
+        for organ in organs:    # 得到用户组织
+            award_can_apply_list = Award.objects.filter(organization=organ.organization, status=True)    # 得到有权限且生效中的奖项
+            for award in award_can_apply_list:
+                if (award.id,) not in award_applyed:
+                    award_list.append(award)
 
-        for award in award_can_apply_list:
-            if (award.id,) not in award_applyed:
-                award_list.append(award)
     # award_list = Award.objects.filter(status=True)
     apply_list = Apply.objects.filter(status=3).order_by('-pub_time')
     data = {'award_list': award_list, 'apply_list': apply_list}
